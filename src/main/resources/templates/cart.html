@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kurv</title>
+</head>
+<body>
+
+<!-- Hver ordrelinje gives som en række i en tabel, så det er lettere at strukturere -->
+<table class="orderlines-table">
+    <tr th:each="orderline : ${session.order.orderlines}">
+        <td th:text="${orderline.quantity}">Amount</td>
+        <td> x </td>
+        <td th:text="${orderline.bottom}">Bottom</td>
+        <td>/</td>
+        <td th:text="${orderline.topping}">Topping</td>
+        <td> á </td>
+        <td th:text="${orderline.individualPrice}">Price</td>
+        <td> kr./stk. - </td>
+        <td th:text="${orderline.totalPrice}">TotalPrice</td>
+        <td> kr.</td>
+    </tr>
+</table>
+
+<div class="totalContainer">
+    <p>Total: </p>
+    <p th:text="${session.order.total}">Total</p>
+    <p> kr.</p>
+</div>
+</body>
+</html>
