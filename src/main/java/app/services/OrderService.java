@@ -1,11 +1,5 @@
 package app.services;
 
-import app.entities.CupcakeBottom;
-import app.entities.CupcakeTop;
-import app.persistence.OrderMapper;
-
-
-import java.util.List;
 
 public class OrderService {
    private ConnectionPool connectionPool;
@@ -26,6 +20,4 @@ public class OrderService {
     public List<CupcakeBottom> allCakeBottoms(){
         return orderMapper.allCakeBottoms();
     }
-
-
 }

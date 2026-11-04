@@ -1,22 +1,20 @@
 package app.controllers;
 
-import app.entities.CupcakeBottom;
-import app.entities.CupcakeTop;
 import app.services.OrderService;
 import io.javalin.http.Context;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class OrderController {
+    private ConnectionPool connectionPool;
+    private OrderService orderService;
 
+    public OrderController(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+        this.orderService = new OrderService(connectionPool);
+    }
 
-private OrderService orderService;
-
-public OrderController(){
-    orderService= new OrderService();
-}
-
+    public void setRoutes(JavalinConfig config) {
+        config.routes.get("/cart", ctx -> renderCart(ctx));
+    }
 
 
 
@@ -55,6 +53,4 @@ public OrderController(){
 
 
     }
-
-
 }

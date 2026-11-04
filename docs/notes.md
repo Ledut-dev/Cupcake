@@ -32,3 +32,6 @@ Navigationsdiagram
 - Efter login som admin routes til en "admin-forside" med links til adminfunktionerne.
 - Hvis en admin forsøger at åbne den normale forside eller menu eller kurv, bliver den rerouted til admin-forsiden.
 - To admin ordre-oversigter? Hvor skal admin man kunne bekræfte eller godkende ordrer?
+
+Først ville vi bruge email som primær nøgle til users, men brugeren kunne måske ændre email i fremtiden, så vi skiftede 
+til en kunstig nøgle.

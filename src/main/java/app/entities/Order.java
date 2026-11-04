@@ -1,7 +1,6 @@
 package app.entities;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Order {
     private int id;
@@ -15,10 +14,16 @@ public class Order {
         items= new ArrayList<>();
     }
 
+    public ArrayList<Orderline> getOrderlines() {
+        return orderlines;
+    }
 
     public Order(OrderStatus status){ //constructor to use when new user is logged in and cart is empty
         this.status=OrderStatus.CART;
         items= new ArrayList<>();
     }
 
+    public void addOrderline (Orderline orderline){
+        orderlines.add(orderline);
+    }
 }
