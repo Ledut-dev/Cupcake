@@ -30,7 +30,9 @@ public class UserController {
 	}
 
 	private void register(Context ctx) {
-		// User user = userService.createUser(ctx.formParam("email"), ctx.formParam("psw"));
-		ctx.redirect("/");
+		User user = userService.createUser(ctx.formParam("email"), ctx.formParam("psw"));
+		ctx.sessionAttribute("user", user);
+
+		ctx.redirect("/menu");
 	}
 }
