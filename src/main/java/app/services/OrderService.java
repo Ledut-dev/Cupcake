@@ -1,12 +1,19 @@
 package app.services;
 
 
+import app.entities.CupcakeBottom;
+import app.entities.CupcakeTop;
+import app.persistence.ConnectionPool;
+import app.persistence.OrderMapper;
+
+import java.util.List;
+
 public class OrderService {
    private ConnectionPool connectionPool;
    private OrderMapper orderMapper;
 
 
-    public OrderService (){
+    public OrderService (ConnectionPool connectionPool){
         this.connectionPool=connectionPool;
         this.orderMapper=new OrderMapper(connectionPool);
     }

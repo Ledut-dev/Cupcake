@@ -1,7 +1,14 @@
 package app.controllers;
 
+import app.entities.CupcakeBottom;
+import app.entities.CupcakeTop;
+import app.persistence.ConnectionPool;
 import app.services.OrderService;
+import io.javalin.config.JavalinConfig;
 import io.javalin.http.Context;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderController {
     private ConnectionPool connectionPool;
@@ -13,7 +20,9 @@ public class OrderController {
     }
 
     public void setRoutes(JavalinConfig config) {
-        config.routes.get("/cart", ctx -> renderCart(ctx));
+
+       // config.routes.get("/cart", ctx -> renderCart(ctx));
+        config.routes.get("/menu", ctx -> renderMenu(ctx));
     }
 
 
@@ -51,6 +60,6 @@ public class OrderController {
         ctx.attribute("cupcakeTops", cupcakeTops);
         ctx.attribute("cupcakeBottoms", cupcakeBottoms);
 
-
+        ctx.render("public/menu.html");
     }
 }

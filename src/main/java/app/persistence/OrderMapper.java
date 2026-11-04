@@ -2,6 +2,8 @@ package app.persistence;
 
 import app.entities.CupcakeBottom;
 import app.entities.CupcakeTop;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
