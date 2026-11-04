@@ -4,7 +4,7 @@ body{
 
 
 #header{
-   background-image:url(Group2.svg);
+   background-image:url(../svg/Group2.svg);
     /*background-size: cover;*/
     width: 100vw;
     height: 500px;
