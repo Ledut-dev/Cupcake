@@ -1,0 +1,101 @@
+@startuml
+'https://plantuml.com/class-diagram
+!pragma layout smetana
+
+class CupcakeTop{
+-String flavor
+-double price
+}
+
+class CupcakeBottom{
+-String flavor
+-double price
+}
+
+class Orderline{
+- CupcakeBottom cupcakeBottom;
+- CupcakeTop cupcakeTop;
+- int amount;
+}
+
+
+
+class Order {
+ - int id;
+ - List<Orderline> items;
+ - Enum status;
+}
+
+Enum status{
+CART
+PLACED
+APPROVED
+COMPLETED
+DENIED
+}
+
+class OrderService{
+-OrderMapper orderMapper
+
++calculateLineTotal()
++calculateOrderTotal()
+}
+
+class OrderController{
+-OrderService orderService
+}
+
+class OrderMapper {
+-ConnectionPool connectionPool
+
++List <Cake> allCakes()
++List <Topping>allToppings()
+
++void saveOrder()
+}
+
+abstract class User{
+-String email;
+-String name;
+-String password;
+}
+
+class Customer extends User{
+}
+
+class Admin extends User{
+}
+
+class UserController{
+- UserService userService
+}
+
+class UserService{
+- UserMapper userMapper
++createUser()
++login()
++logout()
+}
+
+class UserMapper{
+-ConnectionPool connectionPool
+
++ User createUser()
++ User updateUser()
++ User getUserByEmail()
++ List <User> allUsers ()
+
+}
+
+
+Order *-- Orderline
+Orderline *-- CupcakeBottom
+Orderline *-- CupcakeTop
+Customer "1"-- "0..*"Order
+OrderService --> OrderMapper
+OrderController --> OrderService
+UserService --> UserMapper
+UserController --> UserService
+
+
+@enduml
