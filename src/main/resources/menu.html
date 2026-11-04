@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Menu</title>
-  <link rel="stylesheet" href="public/css/color.css">
+  <link rel="stylesheet" href="public/css/colors.css">
   <link rel="stylesheet" href="public/css/menu-style.css">
 </head>
 <body>
@@ -16,7 +16,7 @@
 <div id="test">  </div>
 
 <div id="select-options">
-  <form id="grid-container-1" action="/" method="post">
+  <form id="grid-container-1" action="/addToCart" method="post">
 
     <div id="cake-option" class="grid-container-1-item">
       <select id="cake-options" name="cake">
@@ -32,17 +32,19 @@
       </select>
     </div>
 
-    <div id="line-price" value="">
+    <div id="line-price" class="grid-container-1-item" value="">
       <label>Pris:</label>
       <p th:text="${cupcakeBottom.price + cupcakeTop.price}">0</p>
     </div>
-    <button type="submit">Læg i kurv</button>
+    <button id="add-to-cart" class="grid-container-1-item" type="submit">Læg i kurv</button>
 
 
 
 
   </form>
 </div>
+
+<div id="footer"> </div>
 
 
 </body>

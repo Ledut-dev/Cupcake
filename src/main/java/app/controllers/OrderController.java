@@ -62,4 +62,11 @@ public class OrderController {
 
         ctx.render("public/menu.html");
     }
+
+    public void addToCart(){
+        //lav orderline objekter
+        //add til ssessionattribute cart
+        //gem i databasen med status cart
+    }
+
 }
