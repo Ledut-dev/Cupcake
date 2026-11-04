@@ -1,0 +1,19 @@
+:Root{
+    /*primary*/
+    --lightBlue: #88A2B7;
+    --yellow: #EBD885;
+    --brown: #66410D;
+    --red: #C30C00;
+    --grey: #B1AFA0;
+
+
+
+
+
+
+    /*secondary*/
+    --darkBlue: #4A5A67;
+    --lightYellow: #FBF7E7;
+    --darkBrown: #482E09;
+    --highlightRed: #FF1000;
+}

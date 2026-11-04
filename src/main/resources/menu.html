@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu</title>
+  <link rel="stylesheet" href="menu-style.css">
+</head>
+<body>
+
+<div id="header">
+
+
+</div>
+
+<div id="test">  </div>
+
+<div id="select-options">
+  <form id="grid-container-1" action="/" method="post">
+
+    <div id="cake-option" class="grid-container-1-item">
+      <select id="cake-options" name="cake">
+        <option th:each="Cake : ${cakes}"
+                th:text="${cake.type}+' '+${cake.price}">vælg kage</option>
+      </select>
+    </div>
+
+    <div id="topping-option" class="grid-container-1-item">
+      <select id="topping-options" name="topping">
+        <option th:each="Topping : ${toppings}"
+                th:text="${topping.type}+' '+${topping.price}">vælg topping</option>
+      </select>
+    </div>
+    <button type="submit">Læg i kurv</button>
+
+
+
+
+  </form>
+</div>
+
+
+</body>
+</html>

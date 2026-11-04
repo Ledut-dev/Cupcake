@@ -1,4 +1,4 @@
 package app.persistence;
 
-public class CartMapper {
+public class OrderMapper {
 }

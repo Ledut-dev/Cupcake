@@ -1,0 +1,34 @@
+body{
+    background-color: bisque;
+}
+
+
+#header{
+   background-image:url(Group2.svg);
+    /*background-size: cover;*/
+    width: 100vw;
+    height: 500px;
+    position: sticky;
+    top: -200px;
+    background-repeat: repeat-x;                   /* gentag kun sidelæns */
+    background-size: calc(100% / 5) auto;
+
+}
+
+#test{
+    height: 200vh;
+    width: 100vw;
+    background-color: bisque;
+}
+
+#grid-container-1{
+    display: grid;
+    height: 500px;
+
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+
+.grid-container-1-item{
+
+}
