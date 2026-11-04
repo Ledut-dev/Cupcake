@@ -1,7 +1,7 @@
 package app.controllers;
 
-import app.entities.Cake;
-import app.entities.Topping;
+import app.entities.CupcakeBottom;
+import app.entities.CupcakeTop;
 import app.services.OrderService;
 
 import java.util.List;
@@ -36,11 +36,11 @@ public OrderController(){
     }
 
     public void renderMenu (Context ctx){
-        List<Topping> toppings=orderService.allToppings();
-        List <Cake> cakes= orderService.allCakes();
+        List<CupcakeTop> cupcakeTops =orderService.allCakeTops();
+        List <CupcakeBottom> cupcakeBottoms = orderService.allCakeBottoms();
 
-        ctx.attribute("toppings", toppings);
-        ctx.attribute("cakes", cakes);
+        ctx.attribute("toppings", cupcakeTops);
+        ctx.attribute("cakes", cupcakeBottoms);
 
 
     }

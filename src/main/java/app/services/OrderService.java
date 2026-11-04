@@ -1,34 +1,30 @@
 package app.services;
 
-import app.entities.Cake;
-import app.entities.Topping;
-import app.persistence.CakeMapper;
+import app.entities.CupcakeBottom;
+import app.entities.CupcakeTop;
 import app.persistence.OrderMapper;
-import app.persistence.ToppingMapper;
 
 
 import java.util.List;
 
 public class OrderService {
-
-
-    private ToppingMapper toppingMapper;
-    private CakeMapper cakeMapper;
+   private ConnectionPool connectionPool;
+   private OrderMapper orderMapper;
 
 
     public OrderService (){
-        toppingMapper=new ToppingMapper();
-        cakeMapper = new CakeMapper();
+        this.connectionPool=connectionPool;
+        this.orderMapper=new OrderMapper(connectionPool);
     }
 
 
 
-    public List<Topping> allToppings(){
-        return toppingMapper.AllToppings();
+    public List<CupcakeTop> allCakeTops(){
+        return orderMapper.allCakeTops();
     }
 
-    public List<Cake>allCakes(){
-        return cakeMapper.AllCakes();
+    public List<CupcakeBottom> allCakeBottoms(){
+        return orderMapper.allCakeBottoms();
     }
 
 

@@ -19,14 +19,14 @@
 
     <div id="cake-option" class="grid-container-1-item">
       <select id="cake-options" name="cake">
-        <option th:each="Cake : ${cakes}"
+        <option th:each="Cake : ${cupcakeBottoms}"
                 th:text="${cake.type}+' '+${cake.price}">vælg kage</option>
       </select>
     </div>
 
     <div id="topping-option" class="grid-container-1-item">
       <select id="topping-options" name="topping">
-        <option th:each="Topping : ${toppings}"
+        <option th:each="Topping : ${cupcakeTops}"
                 th:text="${topping.type}+' '+${topping.price}">vælg topping</option>
       </select>
     </div>
