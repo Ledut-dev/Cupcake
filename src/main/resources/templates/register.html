@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+<form action="/register" method="post">
+    <div class="form-container">
+        <h1>Opret konto</h1>
+        <p>Udfyld venligst email og kodeord.</p>
+        <hr>
+
+        <label for="email"><b>Email</b></label>
+        <input type="text" placeholder="Indtast email" name="email" id="email" required>
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Indtast password" name="psw" id="psw" required>
+
+        <label for="psw-repeat"><b>Gentag password</b></label>
+        <input type="password" placeholder="Gentag password" name="psw-repeat" id="psw-repeat" required>
+        <hr>
+
+        <button type="submit" class="registerbtn">Opret</button>
+        <!-- Error display block-->
+        <span class="error-message" th:if="${error != null}" th:text="${error}">
+            Registration error
+        </span>
+    </div>
+</form>
+</body>
+</html>

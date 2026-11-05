@@ -67,7 +67,7 @@ public class OrderController {
 
         String cake = ctx.formParam("cake");
         String topping = ctx.formParam("topping");
-        int quantity = ctx.formParam("quantity");
+        int quantity = Integer.parseInt(ctx.formParam("quantity"));
 
         CupcakeBottom cupcakeBottom = orderService.getCupcakeBottomByFlavor(cake);
         CupcakeTop cupcakeTop = orderService.getCupcakeTopByFlavor(topping);
