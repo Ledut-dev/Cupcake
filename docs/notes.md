@@ -35,3 +35,6 @@ Navigationsdiagram
 
 Først ville vi bruge email som primær nøgle til users, men brugeren kunne måske ændre email i fremtiden, så vi skiftede 
 til en kunstig nøgle.
+
+Vi valgte at have mapping metoder relateret til CupcakeBottom og CupcakeTop i OrderMapperen, siden vi vurderede at
+ændring af menuen ikke var i scope.

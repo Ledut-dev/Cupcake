@@ -23,10 +23,9 @@ public class OrderController {
 
     public void setRoutes(JavalinConfig config) {
 
-       // config.routes.get("/cart", ctx -> renderCart(ctx));
-        config.routes.get("/menu.html", ctx -> renderMenu(ctx));
+        config.routes.get("/cart", ctx -> renderCart(ctx));
+        config.routes.get("/menu", ctx -> renderMenu(ctx));
     }
-
 
     public void renderMenu (Context ctx){
        // List<CupcakeTop> cupcakeTops =orderService.allCakeTops();
@@ -48,7 +47,7 @@ public class OrderController {
         ctx.sessionAttribute("cupcakeTops", cupcakeTops);
         ctx.sessionAttribute("cupcakeBottoms", cupcakeBottoms);
 
-        ctx.render("/menu.html");
+        ctx.render("menu");
     }
 
     public void addToCart(Context ctx){
@@ -78,6 +77,8 @@ public class OrderController {
         CupcakeBottom currentCupcakeBottom = null;
         CupcakeTop currentCupcakeTop=null;
 
+        CupcakeBottom cupcakeBottom = orderService.getCupcakeBottomByFlavor(cake);
+        CupcakeTop cupcakeTop = orderService.getCupcakeTopByFlavor(topping);
 
         for(CupcakeBottom b: cupcakeBottoms){
             if (bottom.equals(b.getFlavor())) {
@@ -95,10 +96,10 @@ public class OrderController {
 
         cart.addOrderline(orderline);
 
-        orderService.saveCart(cart);
-
-
         //orderSservice.saveOrder(cart); gemmer hele svineriet i DB
     }
 
+    private void renderCart(Context ctx) {
+        ctx.render("cart");
+    }
 }

@@ -27,4 +27,12 @@ public class Order {
     public void addOrderline (Orderline orderline){
         orderlines.add(orderline);
     }
+
+    public double getTotal() {
+        double total = 0;
+        for (Orderline orderline : orderlines) {
+            total += orderline.getTotalPrice();
+        }
+        return total;
+    }
 }
