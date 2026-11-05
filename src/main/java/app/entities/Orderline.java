@@ -15,7 +15,7 @@ public class Orderline {
         return cupcakeTop.getFlavor();
     }
 
-    public String getcupcakeBottom() {
+    public String getCupcakeBottom() {
         return cupcakeBottom.getFlavor();
     }
 
