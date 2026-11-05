@@ -8,6 +8,7 @@ import app.persistence.ConnectionPool;
 import app.services.UserService;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.Context;
+import org.jetbrains.annotations.NotNull;
 
 public class UserController {
 	private ConnectionPool connectionPool;
@@ -19,14 +20,20 @@ public class UserController {
 	}
 
 	public void setRoutes(JavalinConfig config) {
+        config.routes.get("/", ctx -> renderFrontpage(ctx));
 		config.routes.get("/login", ctx -> renderLoginForm(ctx));
-		config.routes.get("/registerForm", ctx -> renderRegisterForm(ctx));
-		config.routes.post("/register", ctx -> register(ctx));
         config.routes.get("/logout", ctx -> logout(ctx));
+        config.routes.get("/registerForm", ctx -> renderRegisterForm(ctx));
+
         config.routes.post("/login", ctx -> login(ctx));
+        config.routes.post("/register", ctx -> register(ctx));
     }
 
-	private void renderLoginForm(Context ctx) {
+    private void renderFrontpage(Context ctx) {
+        ctx.render("/frontpage");
+    }
+
+    private void renderLoginForm(Context ctx) {
 		ctx.render("/login");
 	}
 
@@ -46,11 +53,12 @@ public class UserController {
             if (user == null){
                 throw new IncorrectLoginInfoException("Forkert brugernavn/password");
             }
-            ctx.sessionAttribute("errorMessage", null);
+            ctx.attribute("errorMessage", null);
             ctx.sessionAttribute("loggedInUser", user);
             ctx.sessionAttribute("isUserAdmin", userService.isUserAdmin(user));
         } catch (IncorrectLoginInfoException e){
-            ctx.sessionAttribute("errorMessage", e.getMessage());
+            ctx.attribute("errorMessage", e.getMessage());
+            ctx.render("/login");
         }
         ctx.redirect("/");
     }
@@ -76,17 +84,15 @@ public class UserController {
 
     private void logout(Context ctx){
         ctx.sessionAttribute("loggedInUser", null);
-        ctx.render("/");
+        ctx.sessionAttribute("isUserAdmin", false);
+        ctx.redirect("/");
     }
 
     private void redirectAdmin(Context ctx){
-        try {
-            if (ctx.sessionAttribute("isUserAdmin")) {
+        Boolean isUserAdmin = ctx.sessionAttribute("isUserAdmin");
+        if (isUserAdmin != null && isUserAdmin) {
                 renderAdminSite(ctx);
             }
         }
-        catch (NullPointerException e){
-            return;
-        }
+
     }
-}

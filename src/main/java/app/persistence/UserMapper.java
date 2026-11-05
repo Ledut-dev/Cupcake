@@ -36,7 +36,7 @@ public class UserMapper {
 
     public User getUserByEmail(String email) throws DatabaseException {
         User user = null;
-        String query = "SELECT email, password, name FROM customers WHERE email = '?'";
+        String query = "SELECT email, password, name FROM customers WHERE email = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -55,7 +55,7 @@ public class UserMapper {
             throw new DatabaseException("Kunne ikke hente brugere: " + e.getMessage());
         }
 
-        query = "SELECT email, password, name FROM admins WHERE email = '?'";
+        query = "SELECT email, password, name FROM admins WHERE email = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -63,11 +63,6 @@ public class UserMapper {
 
             ResultSet rs = stmt.executeQuery();
 
-            //Check for if there even is any users associated with this email. NEEDS to be in the try-statement for the LAST query, since it the code only gets here if there were no users found in earlier tables.
-            //rs.isBeforeFirst returns false if it either already has read a row, OR if there are no rows in the ResultSet
-            if(!rs.isBeforeFirst()){
-                throw new DatabaseException("Ingen brugere med denne e-mail fundet");
-            }
             while (rs.next()) {
                 String password = rs.getString("password");
                 String name = rs.getString("name");
@@ -77,6 +72,10 @@ public class UserMapper {
         } catch (SQLException e) {
             throw new DatabaseException("Kunne ikke hente brugere: " + e.getMessage());
         }
+
+		if(user == null){
+			throw new DatabaseException("Ingen brugere med denne e-mail fundet");
+		}
 
         return user;
     }

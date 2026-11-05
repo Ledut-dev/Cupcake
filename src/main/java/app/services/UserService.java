@@ -1,5 +1,6 @@
 package app.services;
 
+import app.entities.Customer;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
@@ -19,7 +20,7 @@ public class UserService {
 	}
 
     public User createUser(String email, String password) {
-        User user = new User(email, password);
+        User user = new Customer(email, password);
         userMapper.createUser(user);
         return user;
     }
