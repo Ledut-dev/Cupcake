@@ -4,6 +4,7 @@ package app.services;
 import app.entities.CupcakeBottom;
 import app.entities.CupcakeTop;
 import app.entities.Order;
+import app.entities.Orderline;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
 
@@ -37,6 +38,9 @@ public class OrderService {
 
     public void saveCart(Order order) {
 
+        for (Orderline o:order.getOrderlines()){
+            OrderMapper.saveCart(o); //gem på bruger
+        }
 
     }
 }

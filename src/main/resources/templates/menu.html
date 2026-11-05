@@ -15,6 +15,24 @@
   <!--butik navn+slogan-->
   <!--basket knap-->
   <!--kundenavn-->
+  <div id="header-grid">
+
+  <div class="headerItem" style="grid-area: header-area-1"></div>
+  <div class="headerItem" style="grid-area: logo-area">
+    <img id="logomark" src="../public/svg/Copenhagen Cupcakes_title.svg" alt="Copenhagen Cupcakes">
+  </div>
+  <div class="headerItem" style="grid-area: header-area-3">
+  </div>
+    <div id="greeting" class="headerItem" style="grid-area: user-greeting">
+      <p th:text="'Hej, '+${session.user.getName()}">Hej, Lars</p>
+    </div>
+  <div class="headerItem" style="grid-area: header-area-4"></div>
+    <div class="headerItem" style="grid-area: slogan-area">
+      <img id="slogan" src="../public/svg/Artisan Cupcakes.svg" alt="Artisan Cupcakes">
+    </div>
+    <div class="headerItem" style="grid-area: header-area-6"></div>
+
+</div>
 </div>
 
 <div id="test">
@@ -27,21 +45,21 @@
         <select class="select-option" name="bottom">
           <option value="" disabled selected hidden>Vælg bund</option>
           <option th:each="bottom : ${session.cupcakeBottoms}"
-                  th:value="${bottom.type}"
+                  th:value="${bottom.flavor}"
                   th:data-price="${bottom.price}"
-                  th:text="${bottom.type}+' '+${bottom.price}"></option>
+                  th:text="${bottom.flavor}+' '+${bottom.price}"></option>
         </select>
       </label>
     </div>
 
     <div id="topping-option" class="grid-container-1-item">
       <label>
-        <select class="select-option" name="topping">
+        <select class="select-option" name="top">
           <option value="" disabled selected hidden>Vælg topping</option>
           <option th:each="top : ${session.cupcakeTops}"
-                  th:value="${top.type}"
+                  th:value="${top.flavor}"
                   th:data-price="${top.price}"
-                  th:text="${top.type}+' '+${top.price}"></option>
+                  th:text="${top.flavor}+' '+${top.price}"></option>
         </select>
       </label>
     </div>
@@ -53,7 +71,7 @@
 
     <div id="quantity" class="grid-container-1-item"  >
       <label>
-        <input type="number" required placeholder="Antal" min="1" max="50">
+        <input type="number" required placeholder="Antal" min="1" max="50" name="quantity">
       </label>
     </div>
 

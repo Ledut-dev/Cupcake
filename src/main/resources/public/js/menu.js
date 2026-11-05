@@ -1,6 +1,6 @@
 const priceText=document.querySelector("#priceText");
 const bottomSelect=document.querySelector("select[name='bottom']");
-const topSelect=document.querySelector("select[name='topping']");
+const topSelect=document.querySelector("select[name='top']");
 
 
 function updatePrice() {

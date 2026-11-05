@@ -1,10 +1,14 @@
 package app.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 	private String email;
 	private String name;
 	private String password;
 	private double balance;
+	private Order cart;
 
 	public User(String email, String password) {
 		this.email = email;
@@ -41,5 +45,13 @@ public class User {
 
 	public void setBalance(double balance) {
 		this.balance = balance;
+	}
+
+	public Order getCart() {
+		return cart;
+	}
+
+	public void setCart(Order cart) {
+		this.cart = cart;
 	}
 }

@@ -1,9 +1,6 @@
 package app.controllers;
 
-import app.entities.CupcakeBottom;
-import app.entities.CupcakeTop;
-import app.entities.Order;
-import app.entities.Orderline;
+import app.entities.*;
 import app.persistence.ConnectionPool;
 import app.services.OrderService;
 import io.javalin.config.JavalinConfig;
@@ -25,6 +22,8 @@ public class OrderController {
 
         config.routes.get("/cart", ctx -> renderCart(ctx));
         config.routes.get("/menu", ctx -> renderMenu(ctx));
+        config.routes.post("/addToCart", ctx -> addToCart(ctx));
+
     }
 
     public void renderMenu (Context ctx){
@@ -51,11 +50,8 @@ public class OrderController {
     }
 
     public void addToCart(Context ctx){
-        //lav orderline objekter
-        //add til ssessionattribute cart
-        //gem i databasen med status cart
 
-       /* User user = sessionAttribute("user");*/
+       User user = ctx.sessionAttribute("user");
 
         ArrayList<CupcakeBottom> cupcakeBottoms = ctx.sessionAttribute("cupcakeBottoms");
         ArrayList<CupcakeTop> cupcakeTops = ctx.sessionAttribute("cupcakeTops");
@@ -63,8 +59,8 @@ public class OrderController {
         if (ctx.sessionAttribute("cart")==null){ //sesssionAttributeCart, tjek om der findes en sessionattribute cart, hvis ikke oprettes en ny.
             if(ctx.sessionAttribute("user")==null){
             ctx.sessionAttribute("cart", new Order());
-        } else {
-               /* ctx.sessionAttribute("cart", new Order())*/
+            } else {
+               ctx.sessionAttribute("cart", user.getCart());
             }
         }
 
@@ -76,9 +72,6 @@ public class OrderController {
 
         CupcakeBottom currentCupcakeBottom = null;
         CupcakeTop currentCupcakeTop=null;
-
-        CupcakeBottom cupcakeBottom = orderService.getCupcakeBottomByFlavor(cake);
-        CupcakeTop cupcakeTop = orderService.getCupcakeTopByFlavor(topping);
 
         for(CupcakeBottom b: cupcakeBottoms){
             if (bottom.equals(b.getFlavor())) {
@@ -96,10 +89,10 @@ public class OrderController {
 
         cart.addOrderline(orderline);
 
-        //orderSservice.saveOrder(cart); gemmer hele svineriet i DB
+        ctx.render("menu");
     }
 
     private void renderCart(Context ctx) {
-        ctx.render("cart");
+        ctx.redirect("cart");
     }
 }

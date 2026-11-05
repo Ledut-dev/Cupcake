@@ -2,6 +2,7 @@ package app.persistence;
 
 import app.entities.CupcakeBottom;
 import app.entities.CupcakeTop;
+import app.entities.Orderline;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +20,11 @@ public class OrderMapper {
 
     public OrderMapper (ConnectionPool connectionPool){this.connectionPool=connectionPool;}
 
+    public static void saveCart(Orderline orderline) {
+
+        //save
+
+    }
 
 
     public List<CupcakeBottom> allCakeBottoms(){
