@@ -1,7 +1,15 @@
 package app.persistence;
 
+import app.entities.Admin;
+import app.entities.Customer;
 import app.entities.User;
 import java.sql.*;
+import app.exceptions.DatabaseException;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserMapper {
 	private ConnectionPool connectionPool;
@@ -25,6 +33,60 @@ public class UserMapper {
 		}
 		return false;
 	}
+
+	//Get user by email, first query for the customers table, afterward admins. Creates either a Customer or Admin object.
+    public User getUserByEmail(String email) throws DatabaseException {
+        User user = null;
+        String query = """
+        SELECT email, password, name
+        FROM customers
+        WHERE email = ?""";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, email);
+
+            ResultSet rs = stmt.executeQuery();
+
+
+            while (rs.next()) {
+                String password = rs.getString("password");
+                String name = rs.getString("name");
+                user = new Customer(email, password, name);
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException("Kunne ikke hente brugere: " + e.getMessage());
+        }
+
+		query = """
+				SELECT email, password, name
+				FROM admins
+				WHERE email = ?""";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, email);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String password = rs.getString("password");
+                String name = rs.getString("name");
+                user = new Admin(email, password, name);
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException("Kunne ikke hente brugere: " + e.getMessage());
+        }
+
+		//Throws a database exception regarding no entry/user with this email found.
+		if(user == null){
+			throw new DatabaseException("Ingen brugere med denne e-mail fundet");
+		}
+
+        return user;
+    }
 
 	public void createUser(User user) {
 		String query = "INSERT INTO customers (email, name, password, balance) VALUES (?, ?, ?, ?)";
