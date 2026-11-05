@@ -34,9 +34,13 @@ public class UserMapper {
 		return false;
 	}
 
+	//Get user by email, first query for the customers table, afterward admins. Creates either a Customer or Admin object.
     public User getUserByEmail(String email) throws DatabaseException {
         User user = null;
-        String query = "SELECT email, password, name FROM customers WHERE email = ?";
+        String query = """
+        SELECT email, password, name
+        FROM customers
+        WHERE email = ?""";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -55,7 +59,10 @@ public class UserMapper {
             throw new DatabaseException("Kunne ikke hente brugere: " + e.getMessage());
         }
 
-        query = "SELECT email, password, name FROM admins WHERE email = ?";
+		query = """
+				SELECT email, password, name
+				FROM admins
+				WHERE email = ?""";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -73,6 +80,7 @@ public class UserMapper {
             throw new DatabaseException("Kunne ikke hente brugere: " + e.getMessage());
         }
 
+		//Throws a database exception regarding no entry/user with this email found.
 		if(user == null){
 			throw new DatabaseException("Ingen brugere med denne e-mail fundet");
 		}

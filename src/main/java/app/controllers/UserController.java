@@ -53,12 +53,14 @@ public class UserController {
             if (user == null){
                 throw new IncorrectLoginInfoException("Forkert brugernavn/password");
             }
+
             ctx.attribute("errorMessage", null);
             ctx.sessionAttribute("loggedInUser", user);
             ctx.sessionAttribute("isUserAdmin", userService.isUserAdmin(user));
+
         } catch (IncorrectLoginInfoException e){
             ctx.attribute("errorMessage", e.getMessage());
-            ctx.render("/login");
+            renderLoginForm(ctx);
         }
         ctx.redirect("/");
     }
@@ -88,6 +90,7 @@ public class UserController {
         ctx.redirect("/");
     }
 
+    //Method that can generally be used to check for if a logged in user is an admin, and in that case, redirect them to the admin-page if they to try directly access "normal" pages.
     private void redirectAdmin(Context ctx){
         Boolean isUserAdmin = ctx.sessionAttribute("isUserAdmin");
         if (isUserAdmin != null && isUserAdmin) {

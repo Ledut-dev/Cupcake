@@ -28,8 +28,10 @@ public class UserService {
     public User login(String email, String password) {
 
         try {
+            //Grabs the user related to the entered email via the mapper, this is null if no user is found.
             User user = userMapper.getUserByEmail(email);
 
+            //If either the email (which shouldn't ever be "wrong) or the password doesn't match with the fetched user, the user is set to null which denies login.
             if (!user.getEmail().equalsIgnoreCase(email) || !user.getPassword().equals(password)) {
                 user = null;
             }
@@ -42,6 +44,7 @@ public class UserService {
         return null;
     }
 
+    //Check if the current User is of the "Admin" class, in which case it returns true. If the Users class is "Customer" it returns false.
     public boolean isUserAdmin(User user){
         boolean isAdmin = false;
 
