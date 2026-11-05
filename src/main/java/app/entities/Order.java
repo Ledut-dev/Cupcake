@@ -10,8 +10,8 @@ public class Order {
 
 
     public Order(int id, OrderStatus status){ //constructor to use in mapper method that returns a order
-        this.id=id;
-        this.status=status;
+        this.id = id;
+        this.status = status;
         orderlines = new ArrayList<>();
     }
 
@@ -19,12 +19,20 @@ public class Order {
         return orderlines;
     }
 
-    public Order(OrderStatus status){ //constructor to use when new user is logged in and cart is empty
+    public Order(){ //constructor to use when new user is logged in and cart is empty
         this.status=OrderStatus.CART;
         orderlines = new ArrayList<>();
     }
 
     public void addOrderline (Orderline orderline){
         orderlines.add(orderline);
+    }
+
+    public double getTotal() {
+        double total = 0;
+        for (Orderline orderline : orderlines) {
+            total += orderline.getTotalPrice();
+        }
+        return total;
     }
 }
