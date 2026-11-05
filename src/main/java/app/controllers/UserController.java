@@ -2,6 +2,7 @@ package app.controllers;
 
 import app.entities.User;
 import app.exceptions.EmailNotAvailableException;
+import app.exceptions.PasswordNotValidException;
 import app.persistence.ConnectionPool;
 import app.services.UserService;
 import io.javalin.config.JavalinConfig;
@@ -32,14 +33,17 @@ public class UserController {
 
 	private void register(Context ctx) {
 		try {
-			if (userService.checkIsEmailAvailable(ctx.formParam("email"))) {
-				User user = userService.createUser(ctx.formParam("email"), ctx.formParam("psw"));
-				ctx.sessionAttribute("user", user);
-				ctx.redirect("/menu");
-			} else {
+			if (!userService.checkIsEmailAvailable(ctx.formParam("email"))) {
 				throw new EmailNotAvailableException("Den valgte email er allerede i systemet.");
 			}
-		} catch (EmailNotAvailableException e) {
+			if (!userService.checkIsPasswordValid(ctx.formParam("psw"))) {
+				throw new PasswordNotValidException("Password skal være længere end 2 karakterer.");
+			}
+			User user = userService.createUser(ctx.formParam("email"), ctx.formParam("psw"));
+			ctx.sessionAttribute("user", user);
+			ctx.redirect("/menu");
+
+		} catch (EmailNotAvailableException | PasswordNotValidException e) {
 			System.out.println(e.getMessage());
 			ctx.attribute("error", e.getMessage());
 			ctx.render("/register");

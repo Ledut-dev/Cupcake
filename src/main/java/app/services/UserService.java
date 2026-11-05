@@ -22,4 +22,10 @@ public class UserService {
 		userMapper.createUser(user);
 		return user;
 	}
+
+	public boolean checkIsPasswordValid(String psw) {
+		if (psw.length()<3) return false; // Remember to update the error message in UserController when changing this.
+		// More checks can be added
+		return true;
+	}
 }
