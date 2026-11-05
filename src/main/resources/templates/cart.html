@@ -10,13 +10,13 @@
 <table class="orderlines-table">
     <tr th:each="orderline : ${session.order.orderlines}">
         <td th:text="${orderline.quantity}">Amount</td>
-        <td> x </td>
+        <td> x</td>
         <td th:text="${orderline.cupcakeBottom}">Bottom</td>
         <td>/</td>
         <td th:text="${orderline.cupcakeTop}">Topping</td>
-        <td> á </td>
+        <td> á</td>
         <td th:text="${orderline.individualPrice}">Price</td>
-        <td> kr./stk. - </td>
+        <td> kr./stk. -</td>
         <td th:text="${orderline.totalPrice}">TotalPrice</td>
         <td> kr.</td>
     </tr>

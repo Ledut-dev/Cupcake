@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/public/css/admin-style.css">
+    <title>Ordrehistorik</title>
+</head>
+<body>
+<table class="expandable-table" id="orderHistoryTable">
+    <thead>
+    <tr>
+        <th scope="col" style="width: 5%;"></th>
+        <th scope="col">Order ID</th>
+        <th scope="col">Email</th>
+        <th scope="col">Total</th>
+        <th scope="col">Bestillingsdato</th>
+        <th scope="col">Afhentningsdato</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="row-expandable">
+        <td><span class="expand-icon">+</span></td>
+        <td>#1</td>
+        <td>eksempel@mail.dk</td>
+        <td>100kr</td>
+        <td>05.11.2026</td>
+        <td>05.11.2026</td>
+    </tr>
+    <tr class="row-details">
+        <td colspan="6">
+            <div>
+                <strong>Ordredetaljer:</strong>
+                <ul>
+                    <li>Cupcake 1 (1) - 35kr</li>
+                    <li>Cupcake 2 (2) - 65kr</li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script src="/public/js/admin.js" defer></script>
+</body>
+</html>
