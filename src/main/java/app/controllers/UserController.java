@@ -73,7 +73,7 @@ public class UserController {
 			}
 			User user = userService.createUser(ctx.formParam("email"), ctx.formParam("psw"));
 			ctx.sessionAttribute("user", user);
-			ctx.redirect("/menu");
+			ctx.render("/menu");
         } catch (EmailNotAvailableException | PasswordNotValidException e) {
             System.out.println(e.getMessage());
             ctx.attribute("error", e.getMessage());
