@@ -5,6 +5,8 @@
     <title>Menu</title>
   <link rel="stylesheet" href="../public/css/colors.css">
   <link rel="stylesheet" href="../public/css/menu-style.css">
+
+  <script src="/js/menu.js" defer></script>
 </head>
 <body>
 
@@ -21,23 +23,41 @@
   <form id="grid-container-1" action="/addToCart" method="post">
 
     <div id="cake-option" class="grid-container-1-item">
-      <select class="select-option" name="cake">
-        <option th:each="cupcakeBottom : ${cupcakeBottoms}"
-                th:text="${cupcakeBottom.type}+' '+${cupcakeBottom.price}">vælg bund</option>
-      </select>
+      <label>
+        <select class="select-option" name="bottom">
+          <option value="" disabled selected hidden>Vælg bund</option>
+          <option th:each="bottom : ${session.cupcakeBottoms}"
+                  th:value="${bottom.type}"
+                  th:data-price="${bottom.price}"
+                  th:text="${bottom.type}+' '+${bottom.price}"></option>
+        </select>
+      </label>
     </div>
 
     <div id="topping-option" class="grid-container-1-item">
-      <select class="select-option" name="topping">
-        <option th:each="cupcakeTop : ${cupcakeTops}"
-                th:text="${cupcakeTop.type}+' '+${cupcakeTop.price}">vælg topping</option>
-      </select>
+      <label>
+        <select class="select-option" name="topping">
+          <option value="" disabled selected hidden>Vælg topping</option>
+          <option th:each="top : ${session.cupcakeTops}"
+                  th:value="${top.type}"
+                  th:data-price="${top.price}"
+                  th:text="${top.type}+' '+${top.price}"></option>
+        </select>
+      </label>
     </div>
 
-    <div id="line-price" class="grid-container-1-item" value="">
-      <label>Pris:</label>
-      <p th:text="${cupcakeBottom.price + cupcakeTop.price}">0</p>
+    <div id="line-price" class="grid-container-1-item" >
+      <label>styk pris:</label>
+      <p id="priceText">0</p>
     </div>
+
+    <div id="quantity" class="grid-container-1-item"  >
+      <label>
+        <input type="number" required placeholder="Antal" min="1" max="50">
+      </label>
+    </div>
+
+
     <button id="add-to-cart" class="grid-container-1-item" type="submit">Læg i kurv</button>
 
 

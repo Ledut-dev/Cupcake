@@ -24,16 +24,9 @@ public class OrderController {
     public void setRoutes(JavalinConfig config) {
 
        // config.routes.get("/cart", ctx -> renderCart(ctx));
-        config.routes.get("templates/menu", ctx -> renderMenu(ctx));
+        config.routes.get("/menu.html", ctx -> renderMenu(ctx));
     }
 
-
-
-    public void addToOrder (Context ctx){
-
-
-
-    }
 
     public void renderMenu (Context ctx){
        // List<CupcakeTop> cupcakeTops =orderService.allCakeTops();
@@ -52,10 +45,10 @@ public class OrderController {
 
 
 
-        ctx.attribute("cupcakeTops", cupcakeTops); //sessionattribute
-        ctx.attribute("cupcakeBottoms", cupcakeBottoms);
+        ctx.sessionAttribute("cupcakeTops", cupcakeTops);
+        ctx.sessionAttribute("cupcakeBottoms", cupcakeBottoms);
 
-        ctx.render("public/menu.html");
+        ctx.render("/menu.html");
     }
 
     public void addToCart(Context ctx){
@@ -63,14 +56,16 @@ public class OrderController {
         //add til ssessionattribute cart
         //gem i databasen med status cart
 
+        //sesssionAttributeCart, tjek om der findes en sessionattribute cart, hvis ikke oprettes en ny.
+
         Order cart = ctx.sessionAttribute("cart");
 
-        String cake = ctx.formParam("cake");
-        String topping = ctx.formParam("topping");
-        int quantity = ctx.formParam("quantity");
+        String bottom = ctx.formParam("bottom");
+        String top = ctx.formParam("top");
+        int quantity = Integer.parseInt(ctx.formParam("quantity"));
 
-        CupcakeBottom cupcakeBottom = orderService.getCupcakeBottomByFlavor(cake);
-        CupcakeTop cupcakeTop = orderService.getCupcakeTopByFlavor(topping);
+        CupcakeBottom cupcakeBottom = orderService.getCupcakeBottomByFlavor(bottom);
+        CupcakeTop cupcakeTop = orderService.getCupcakeTopByFlavor(top);
 
         Orderline orderline = new Orderline(cupcakeBottom, cupcakeTop, quantity);
 

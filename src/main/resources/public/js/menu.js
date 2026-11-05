@@ -1,4 +1,15 @@
-const linePrice=document.querySelector("#line-price");
-const inputOne=document.querySelector("#inputOne");
+const priceText=document.querySelector("#priceText");
+const bottomSelect=document.querySelector("select[name='bottom']");
+const topSelect=document.querySelector("select[name='topping']");
 
-inputOne.addEventListener("input", () => {testHilsen.textContent=("hej "+inputOne.value);});
+
+function updatePrice() {
+    const bottomPrice = Number(bottomSelect.selectedOptions[0].dataset.price);
+    const topPrice = Number(topSelect.selectedOptions[0].dataset.price);
+    priceText.textContent = bottomPrice + topPrice;
+    console.log(bottomPrice + topPrice);
+}
+
+bottomSelect.addEventListener("change", updatePrice);
+topSelect.addEventListener("change", updatePrice);
+updatePrice();
