@@ -8,7 +8,6 @@ import app.persistence.ConnectionPool;
 import app.services.UserService;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.Context;
-import org.jetbrains.annotations.NotNull;
 
 public class UserController {
 	private ConnectionPool connectionPool;
@@ -54,7 +53,6 @@ public class UserController {
                 throw new IncorrectLoginInfoException("Forkert brugernavn/password");
             }
 
-            ctx.attribute("errorMessage", null);
             ctx.sessionAttribute("loggedInUser", user);
             ctx.sessionAttribute("isUserAdmin", userService.isUserAdmin(user));
 
@@ -75,7 +73,7 @@ public class UserController {
 			}
 			User user = userService.createUser(ctx.formParam("email"), ctx.formParam("psw"));
 			ctx.sessionAttribute("user", user);
-			ctx.render("/menu");
+			ctx.redirect("/menu");
         } catch (EmailNotAvailableException | PasswordNotValidException e) {
             System.out.println(e.getMessage());
             ctx.attribute("error", e.getMessage());
