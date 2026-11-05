@@ -24,7 +24,14 @@ public class OrderService {
         return orderMapper.allCakeTops();
     }
 
-    public List<CupcakeBottom> allCakeBottoms(){
-        return orderMapper.allCakeBottoms();
+    public List<CupcakeBottom> allCakeBottoms(){return orderMapper.allCakeBottoms();}
+
+    public CupcakeBottom getCupcakeBottomByFlavor(String flavor){
+        return null;
     }
+
+    public CupcakeTop getCupcakeTopByFlavor(String flavor){
+        return null;
+    }
+
 }

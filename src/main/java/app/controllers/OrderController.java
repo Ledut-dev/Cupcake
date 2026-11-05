@@ -2,6 +2,8 @@ package app.controllers;
 
 import app.entities.CupcakeBottom;
 import app.entities.CupcakeTop;
+import app.entities.Order;
+import app.entities.Orderline;
 import app.persistence.ConnectionPool;
 import app.services.OrderService;
 import io.javalin.config.JavalinConfig;
@@ -22,23 +24,16 @@ public class OrderController {
     public void setRoutes(JavalinConfig config) {
 
        // config.routes.get("/cart", ctx -> renderCart(ctx));
-        config.routes.get("/menu", ctx -> renderMenu(ctx));
+        config.routes.get("templates/menu", ctx -> renderMenu(ctx));
     }
 
 
 
-    /*public void addToOrder (Context ctx){
-
-        String email = ctx.formParam("email");
-
-        String topping = ctx.formParam("topping");
-        String cake = ctx.formParam("cake");
-        String topping = ctx.formParam("topping");
+    public void addToOrder (Context ctx){
 
 
-        Orderline orderline = new Orderline();
 
-    }*/
+    }
 
     public void renderMenu (Context ctx){
        // List<CupcakeTop> cupcakeTops =orderService.allCakeTops();
@@ -63,10 +58,25 @@ public class OrderController {
         ctx.render("public/menu.html");
     }
 
-    public void addToCart(){
+    public void addToCart(Context ctx){
         //lav orderline objekter
         //add til ssessionattribute cart
         //gem i databasen med status cart
+
+        Order cart = ctx.sessionAttribute("cart");
+
+        String cake = ctx.formParam("cake");
+        String topping = ctx.formParam("topping");
+        int quantity = ctx.formParam("quantity");
+
+        CupcakeBottom cupcakeBottom = orderService.getCupcakeBottomByFlavor(cake);
+        CupcakeTop cupcakeTop = orderService.getCupcakeTopByFlavor(topping);
+
+        Orderline orderline = new Orderline(cupcakeBottom, cupcakeTop, quantity);
+
+        cart.addOrderline(orderline);
+
+        //orderSservice.saveOrder(cart); gemmer hele svineriet i DB
     }
 
 }
