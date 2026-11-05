@@ -13,10 +13,6 @@
 
         <label for="email"><b>Email</b></label>
         <input type="text" placeholder="Indtast email" name="email" id="email" required>
-        <!-- Error display block-->
-        <span class="error-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
-            Email error
-        </span>
 
         <label for="psw"><b>Password</b></label>
         <input type="password" placeholder="Indtast password" name="psw" id="psw" required>
@@ -26,6 +22,10 @@
         <hr>
 
         <button type="submit" class="registerbtn">Opret</button>
+        <!-- Error display block-->
+        <span class="error-message" th:if="${error != null}" th:text="${error}">
+            Registration error
+        </span>
     </div>
 </form>
 </body>

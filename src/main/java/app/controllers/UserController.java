@@ -41,6 +41,8 @@ public class UserController {
 			}
 		} catch (EmailNotAvailableException e) {
 			System.out.println(e.getMessage());
+			ctx.attribute("error", e.getMessage());
+			ctx.render("/register");
 		}
 
 	}
