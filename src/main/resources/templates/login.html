@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+</head>
+<body>
+
+<div class="login">
+  <form class="formula" method="POST" action="/register">
+
+    <label for="email">E-mail</label>
+    <input type="text" id="email" placeholder="Email" name="email" required>
+
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Password" name="password" required>
+
+    <button type="submit">login</button>
+  </form>
+  <div class="errorMessage" th:unless="${session.errorMessage == null}">
+    <p th:text="${session.errorMessage}">Fejlbesked</p>
+  </div>
+
+</div>
+
+</body>
+</html>
