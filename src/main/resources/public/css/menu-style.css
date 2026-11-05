@@ -1,0 +1,70 @@
+body{
+    background-color: var(--lightYellow);
+}
+p{
+    margin: 0;
+}
+
+
+#header{
+   background-image:url(../svg/Group2.svg);
+    /*background-size: cover;*/
+    width: 100vw;
+    height: 500px;
+    position: sticky;
+    top: -200px;
+    background-repeat: repeat-x;                   /* gentag kun sidelæns */
+    background-size: calc(100% / 5) auto;
+
+}
+#footer{
+    background-color: var(--lightBlue);
+    width: 100vw;
+    height: 200px;
+}
+
+#test{
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--lightYellow);
+}
+
+#grid-container-1{
+    background-color: var(--yellow);
+    display: grid;
+    width: 80vw;
+    aspect-ratio: 5/1;
+    justify-self: center;
+    align-content: center;
+
+
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+
+}
+
+
+.grid-container-1-item{
+    align-content: center;
+
+}
+
+#select-options{
+
+}
+#line-price{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#add-to-cart{
+    max-height: 10vh;
+    aspect-ratio: 3/1;
+    padding: 0;
+    border: 0;
+    align-self: center;
+}
+
+.select-option{
+    max-height: 10vh;
+    aspect-ratio: 3/1;
+}
