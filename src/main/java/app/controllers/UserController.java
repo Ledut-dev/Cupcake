@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.entities.User;
+import app.exceptions.EmailNotAvailableException;
 import app.persistence.ConnectionPool;
 import app.services.UserService;
 import io.javalin.config.JavalinConfig;
@@ -30,9 +31,17 @@ public class UserController {
 	}
 
 	private void register(Context ctx) {
-		User user = userService.createUser(ctx.formParam("email"), ctx.formParam("psw"));
-		ctx.sessionAttribute("user", user);
+		try {
+			if (userService.checkIsEmailAvailable(ctx.formParam("email"))) {
+				User user = userService.createUser(ctx.formParam("email"), ctx.formParam("psw"));
+				ctx.sessionAttribute("user", user);
+				ctx.redirect("/menu");
+			} else {
+				throw new EmailNotAvailableException("Den valgte email er allerede i systemet.");
+			}
+		} catch (EmailNotAvailableException e) {
+			System.out.println(e.getMessage());
+		}
 
-		ctx.redirect("/menu");
 	}
 }

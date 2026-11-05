@@ -13,6 +13,10 @@ public class UserService {
 		userMapper = new UserMapper(connectionPool);
 	}
 
+	public boolean checkIsEmailAvailable(String email) {
+		return userMapper.checkEmailIsAvailable(email);
+	}
+
 	public User createUser(String email, String password) {
 		User user = new User(email, password);
 		userMapper.createUser(user);

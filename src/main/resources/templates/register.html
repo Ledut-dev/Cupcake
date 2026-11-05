@@ -13,6 +13,10 @@
 
         <label for="email"><b>Email</b></label>
         <input type="text" placeholder="Indtast email" name="email" id="email" required>
+        <!-- Error display block-->
+        <span class="error-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+            Email error
+        </span>
 
         <label for="psw"><b>Password</b></label>
         <input type="password" placeholder="Indtast password" name="psw" id="psw" required>
