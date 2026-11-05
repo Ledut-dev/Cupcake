@@ -19,7 +19,7 @@ public class Order {
         return orderlines;
     }
 
-    public Order(OrderStatus status){ //constructor to use when new user is logged in and cart is empty
+    public Order(){ //constructor to use when items are added to cart, but there is no cart.
         this.status=OrderStatus.CART;
         orderlines = new ArrayList<>();
     }

@@ -3,6 +3,7 @@ package app.services;
 
 import app.entities.CupcakeBottom;
 import app.entities.CupcakeTop;
+import app.entities.Order;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
 
@@ -34,4 +35,8 @@ public class OrderService {
         return null;
     }
 
+    public void saveCart(Order order) {
+
+
+    }
 }

@@ -1,18 +1,18 @@
 package app.entities;
 
 public class CupcakeBottom {
-    private String type;
+    private String flavor;
     private double price;
 
 
     public CupcakeBottom(String type, double price){
-    this.type=type;
+    this.flavor =type;
     this.price=price;
     }
 
 
-    public String getType() {
-        return type;
+    public String getFlavor() {
+        return flavor;
     }
 
     public double getPrice() {

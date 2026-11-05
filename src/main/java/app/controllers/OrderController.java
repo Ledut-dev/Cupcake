@@ -56,7 +56,18 @@ public class OrderController {
         //add til ssessionattribute cart
         //gem i databasen med status cart
 
-        //sesssionAttributeCart, tjek om der findes en sessionattribute cart, hvis ikke oprettes en ny.
+       /* User user = sessionAttribute("user");*/
+
+        ArrayList<CupcakeBottom> cupcakeBottoms = ctx.sessionAttribute("cupcakeBottoms");
+        ArrayList<CupcakeTop> cupcakeTops = ctx.sessionAttribute("cupcakeTops");
+
+        if (ctx.sessionAttribute("cart")==null){ //sesssionAttributeCart, tjek om der findes en sessionattribute cart, hvis ikke oprettes en ny.
+            if(ctx.sessionAttribute("user")==null){
+            ctx.sessionAttribute("cart", new Order());
+        } else {
+               /* ctx.sessionAttribute("cart", new Order())*/
+            }
+        }
 
         Order cart = ctx.sessionAttribute("cart");
 
@@ -64,12 +75,28 @@ public class OrderController {
         String top = ctx.formParam("top");
         int quantity = Integer.parseInt(ctx.formParam("quantity"));
 
-        CupcakeBottom cupcakeBottom = orderService.getCupcakeBottomByFlavor(bottom);
-        CupcakeTop cupcakeTop = orderService.getCupcakeTopByFlavor(top);
+        CupcakeBottom currentCupcakeBottom = null;
+        CupcakeTop currentCupcakeTop=null;
 
-        Orderline orderline = new Orderline(cupcakeBottom, cupcakeTop, quantity);
+
+        for(CupcakeBottom b: cupcakeBottoms){
+            if (bottom.equals(b.getFlavor())) {
+                currentCupcakeBottom=b;
+            }
+            }
+        for(CupcakeTop t: cupcakeTops){
+            if (top.equals(t.getFlavor())) {
+                currentCupcakeTop=t;
+            }
+            }
+
+
+        Orderline orderline = new Orderline(currentCupcakeBottom, currentCupcakeTop, quantity);
 
         cart.addOrderline(orderline);
+
+        orderService.saveCart(cart);
+
 
         //orderSservice.saveOrder(cart); gemmer hele svineriet i DB
     }
