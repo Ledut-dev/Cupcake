@@ -35,4 +35,12 @@ public class Order {
         }
         return total;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getStatus() {
+        return String.valueOf(status);
+    }
 }

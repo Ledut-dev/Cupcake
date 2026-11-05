@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aktive Ordrer</title>
+</head>
+<body>
+<h4>Ordrer til godkendelse</h4>
+<table class="placed-orders-table">
+  <thead>
+  <tr>
+    <th scope="col">Order ID</th>
+    <th scope="col">Total</th>
+    <th scope="col">Status</th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="order : ${placedOrders}">
+    <td th:text="${order.id}">OrderID</td>
+    <td><span th:text="${order.total}">pris</span> kr.</td>
+    <td th:text="${order.status}">status</td>
+    <td>
+      <form th:action="@{/orders/{id}/status(id=${order.id})}" method="post">
+        <input type="hidden" name="status" value="APPROVED">
+        <button type="submit">Godkend ordre</button>
+      </form>
+    </td>
+    <td>
+      <form th:action="@{/orders/{id}/status(id=${order.id})}" method="post">
+        <input type="hidden" name="status" value="DENIED">
+        <button type="submit">Afvis ordre</button>
+      </form>
+    </td>
+  </tbody>
+</table>
+<h4>Godkendte ordrer</h4>
+<table class="approved-orders-table">
+
+</table>
+</body>
+</html>
