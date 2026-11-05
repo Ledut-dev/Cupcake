@@ -1,38 +1,33 @@
 package app.entities;
 
-import app.persistence.ConnectionPool;
-import app.services.OrderService;
-
 public class Orderline {
-    private String topping;
-    private String bottom;
-    private int individualPrice;
+    private CupcakeBottom cupcakeBottom;
+    private CupcakeTop cupcakeTop;
     private int quantity;
 
-    public Orderline(String topping, String bottom, int quantity) {
-        this.topping = topping;
-        this.bottom = bottom;
-        this.individualPrice = 25;
+    public Orderline(CupcakeBottom cupcakeBottom, CupcakeTop cupcakeTop, int quantity){
+        this.cupcakeBottom = cupcakeBottom;
+        this.cupcakeTop = cupcakeTop;
         this.quantity = quantity;
     }
 
-    public String getTopping() {
-        return topping;
+    public String getCupcakeTop() {
+        return cupcakeTop.getFlavor();
     }
 
-    public String getBottom() {
-        return bottom;
+    public String getCupcakeBottom() {
+        return cupcakeBottom.getFlavor();
     }
 
-    public int getIndividualPrice() {
-        return individualPrice;
+    public double getIndividualPrice() {
+        return cupcakeBottom.getPrice() + cupcakeTop.getPrice();
     }
 
     public int getQuantity() {
         return quantity;
     }
 
-    public int getTotalPrice() {
-        return individualPrice * quantity;
+    public double getTotalPrice() {
+        return getIndividualPrice() * quantity;
     }
 }

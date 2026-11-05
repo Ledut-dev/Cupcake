@@ -6,12 +6,22 @@ import app.persistence.ConnectionPool;
 import app.persistence.UserMapper;
 
 public class UserService {
-    private ConnectionPool connectionPool;
-    private UserMapper userMapper;
+	private ConnectionPool connectionPool;
+	private UserMapper userMapper;
 
-    public UserService(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
-        userMapper = new UserMapper(connectionPool);
+	public UserService(ConnectionPool connectionPool) {
+		this.connectionPool = connectionPool;
+		userMapper = new UserMapper(connectionPool);
+	}
+
+	public boolean checkIsEmailAvailable(String email) {
+		return userMapper.checkEmailIsAvailable(email);
+	}
+
+    public User createUser(String email, String password) {
+        User user = new User(email, password);
+        userMapper.createUser(user);
+        return user;
     }
 
     public User login(String email, String password) {
@@ -39,5 +49,13 @@ public class UserService {
         }
         return isAdmin;
     }
+
+	public boolean checkIsPasswordValid(String psw) {
+		if (psw.length()<3) return false; // Remember to update the error message in UserController when changing this.
+		// More checks can be added
+		return true;
+	}
+
+
 
 }

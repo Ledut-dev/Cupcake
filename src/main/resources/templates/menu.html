@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu</title>
+  <link rel="stylesheet" href="../public/css/colors.css">
+  <link rel="stylesheet" href="../public/css/menu-style.css">
+</head>
+<body>
+
+<div id="header">
+  <!--lav grid-->
+  <!--butik navn+slogan-->
+  <!--basket knap-->
+  <!--kundenavn-->
+</div>
+
+<div id="test">
+
+<div id="select-options">
+  <form id="grid-container-1" action="/addToCart" method="post">
+
+    <div id="cake-option" class="grid-container-1-item">
+      <select class="select-option" name="cake">
+        <option th:each="cupcakeBottom : ${cupcakeBottoms}"
+                th:text="${cupcakeBottom.type}+' '+${cupcakeBottom.price}">vælg bund</option>
+      </select>
+    </div>
+
+    <div id="topping-option" class="grid-container-1-item">
+      <select class="select-option" name="topping">
+        <option th:each="cupcakeTop : ${cupcakeTops}"
+                th:text="${cupcakeTop.type}+' '+${cupcakeTop.price}">vælg topping</option>
+      </select>
+    </div>
+
+    <div id="line-price" class="grid-container-1-item" value="">
+      <label>Pris:</label>
+      <p th:text="${cupcakeBottom.price + cupcakeTop.price}">0</p>
+    </div>
+    <button id="add-to-cart" class="grid-container-1-item" type="submit">Læg i kurv</button>
+
+
+
+
+  </form>
+</div>
+</div>
+
+<div id="footer"> </div>
+
+
+</body>
+</html>
