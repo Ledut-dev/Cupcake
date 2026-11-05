@@ -52,7 +52,7 @@ public class OrderController {
 
 
 
-        ctx.attribute("cupcakeTops", cupcakeTops);
+        ctx.attribute("cupcakeTops", cupcakeTops); //sessionattribute
         ctx.attribute("cupcakeBottoms", cupcakeBottoms);
 
         ctx.render("public/menu.html");
