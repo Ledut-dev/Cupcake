@@ -10,8 +10,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.String.valueOf;
-
 public class OrderMapper {
     ConnectionPool connectionPool;
     private static final Logger logger =
@@ -27,7 +25,7 @@ public class OrderMapper {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
              stm.setInt(1, order.getUser().getId());
-             stm.setString(2, valueOf(order.getStatus()));
+             stm.setString(2, String.valueOf(order.getStatus()));
              stm.setDate(3, (Date) order.getOrderDate()); //is this casting correct?
              stm.setDate(4, (Date) order.getPickupDate()); //is this casting correct?
 
@@ -65,7 +63,7 @@ public class OrderMapper {
 
         String query = """
                 SELECT flavor, price
-                FROM cupcake-bottoms""";
+                FROM cupcake_bottoms""";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
@@ -90,7 +88,7 @@ public class OrderMapper {
         List<CupcakeTop> allCupcakeTops = new ArrayList<>();
         String query = """
                 SELECT flavor, price
-                FROM cupcake-tops""";
+                FROM cupcake_tops""";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {

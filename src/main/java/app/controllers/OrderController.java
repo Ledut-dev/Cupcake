@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static app.entities.OrderStatus.PLACED;
+import app.entities.OrderStatus;
 
 public class OrderController {
     private ConnectionPool connectionPool;
@@ -29,7 +29,6 @@ public class OrderController {
         config.routes.post("/order", ctx -> order(ctx));
 
     }
-
 
     public void renderMenu (Context ctx){ //creates lists of all cupcaketops and bpttoms, savess the lists as sessionAttributes and renders /menu
        // List<CupcakeTop> cupcakeTops =orderService.allCakeTops();
@@ -104,7 +103,7 @@ public class OrderController {
 
         Order cart = sessionAttributeCart(ctx);
 
-        cart.setStatus(PLACED); //should be moved to where order is placed
+        cart.setStatus(OrderStatus.PLACED);
         orderService.saveOrder(cart);
 
         ctx.render("/success");

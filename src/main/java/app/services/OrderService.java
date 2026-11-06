@@ -6,10 +6,8 @@ import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static app.entities.OrderStatus.PLACED;
 
 public class OrderService {
    private ConnectionPool connectionPool;
@@ -56,10 +54,10 @@ public class OrderService {
             } catch (DatabaseException d){
                 d.getMessage();
             }
-        saveOrderline(orderId, order);
+        saveOrderlines(orderId, order);
     }
 
-    public void saveOrderline(int orderId, Order order){
+    public void saveOrderlines(int orderId, Order order){
 
 
         for (Orderline o: order.getOrderlines()) {
