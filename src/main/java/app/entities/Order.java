@@ -10,6 +10,7 @@ public class Order {
     private OrderStatus status;
     private Date orderDate;
     private Date pickupDate;
+    private User user;
 
 
     public Order(int id, OrderStatus status){ //constructor to use in mapper method that returns a order
@@ -64,6 +65,15 @@ public class Order {
         this.pickupDate = pickupDate;
     }
 
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
+    public int getId() {
+        return id;
+    }
 }

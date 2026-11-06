@@ -49,22 +49,22 @@ public class OrderService {
         return null;
     }
 
-    public void saveOrder(User user) {
+    public void saveOrder(Order order) {
         int orderId=0;
             try {
-                orderId = orderMapper.saveOrder(user);
+                orderId = orderMapper.saveOrder(order);
             } catch (DatabaseException d){
                 d.getMessage();
             }
-        saveOrderline(user, orderId);
+        saveOrderline(orderId, order);
     }
 
-    public void saveOrderline(User user, int id){
+    public void saveOrderline(int orderId, Order order){
 
 
-        for (Orderline o:user.getCart().getOrderlines()) {
+        for (Orderline o: order.getOrderlines()) {
             try{
-            orderMapper.saveOrderline(o, id); //gem på bruger
+            orderMapper.saveOrderline(o, orderId);
             }catch (DatabaseException d){
             d.getMessage();
             }

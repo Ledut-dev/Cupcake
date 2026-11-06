@@ -1,9 +1,6 @@
 package app.persistence;
 
-import app.entities.CupcakeBottom;
-import app.entities.CupcakeTop;
-import app.entities.Orderline;
-import app.entities.User;
+import app.entities.*;
 import app.exceptions.DatabaseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,17 +19,17 @@ public class OrderMapper {
 
     public OrderMapper (ConnectionPool connectionPool){this.connectionPool=connectionPool;}
 
-    public int saveOrder(User user) throws DatabaseException{
+    public int saveOrder(Order order) throws DatabaseException{
         int orderId = 0;
 
         String query="INSERT INTO orders (customer_id, status, order_date, pickup_date) VALUES(?, ?, ?, ?)";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
-             stm.setInt(1, user.getId());
-             stm.setString(2, valueOf(user.getCart().getStatus()));
-             stm.setDate(3, (Date) user.getCart().getOrderDate()); //is this casting correct?
-             stm.setDate(4, (Date) user.getCart().getPickupDate()); //is this casting correct?
+             stm.setInt(1, order.getUser().getId());
+             stm.setString(2, valueOf(order.getStatus()));
+             stm.setDate(3, (Date) order.getOrderDate()); //is this casting correct?
+             stm.setDate(4, (Date) order.getPickupDate()); //is this casting correct?
 
             try (ResultSet rs = stm.getGeneratedKeys()) {
                 if (rs.next()) {

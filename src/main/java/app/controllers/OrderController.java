@@ -56,20 +56,14 @@ public class OrderController {
 
     public void addToCart(Context ctx){ //gets sessionAttribute user, cupcaketops(list), cupcakebottoms(list), checks if there is a sessionAttribute cart. ggets the cupcake choice from form in html, creates an orderline and adds to car
 
-       User user = ctx.sessionAttribute("user");
+       User currentUser = getCurrentUser(ctx);
 
         ArrayList<CupcakeBottom> cupcakeBottoms = ctx.sessionAttribute("cupcakeBottoms");
         ArrayList<CupcakeTop> cupcakeTops = ctx.sessionAttribute("cupcakeTops");
 
-        if (ctx.sessionAttribute("cart")==null){ //sesssionAttributeCart, tjek om der findes en sessionattribute cart, hvis ikke oprettes en ny.
-            if(ctx.sessionAttribute("user")==null){
-            ctx.sessionAttribute("cart", new Order());
-            } else {
-               ctx.sessionAttribute("cart", user.getCart());
-            }
-        }
 
-        Order cart = ctx.sessionAttribute("cart");
+        Order cart=sessionAttributeCart(ctx);
+
 
         String bottom = ctx.formParam("bottom");
         String top = ctx.formParam("top");
@@ -102,19 +96,53 @@ public class OrderController {
     }
 
     private void order(Context ctx) {
-        User user=ctx.sessionAttribute("user");
+        User currentUser=getCurrentUser(ctx);
 
-        if(user==null){
+        if(currentUser==null){
             ctx.redirect("/login");
         }
 
-        Order cart = ctx.sessionAttribute("cart");
+        Order cart = sessionAttributeCart(ctx);
 
-        user.getCart().setStatus(PLACED); //should be moved to where order is placed
-        orderService.saveOrder(user);
+        cart.setStatus(PLACED); //should be moved to where order is placed
+        orderService.saveOrder(cart);
 
         ctx.render("/success");
 
+    }
+
+    public Order sessionAttributeCart(Context ctx){
+
+        User currentUser=getCurrentUser(ctx);
+        Order cart;
+
+        try{
+            cart=ctx.sessionAttribute("cart");
+            if(currentUser!=null){
+                cart.setUser(currentUser);
+                ctx.sessionAttribute( "cart", cart);
+                return cart;
+            }
+
+        }catch (NullPointerException n){
+           ctx.sessionAttribute("cart", cart=new Order());
+           return cart;
+        }
+        return cart;
+    }
+
+    public User getCurrentUser(Context ctx){
+
+        try{
+            User currentUser=ctx.sessionAttribute("currentUser");
+            return currentUser;
+        }catch (NullPointerException n){
+            return null;
+        }
+
 
     }
+
+
+
 }

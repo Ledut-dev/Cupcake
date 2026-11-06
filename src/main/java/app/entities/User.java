@@ -6,7 +6,6 @@ public abstract class User {
     private String name;
     private String password;
     private double balance;
-    private Order cart;
 
     public User(String email, String password, String name) {
         this.email = email;
@@ -49,14 +48,6 @@ public abstract class User {
 
 	public void setBalance(double balance) {
 		this.balance = balance;
-	}
-
-	public Order getCart() {
-		return cart;
-	}
-
-	public void setCart(Order cart) {
-		this.cart = cart;
 	}
 
     public int getId() {return id;}
