@@ -77,26 +77,10 @@ public class OrderController {
     }
 
     private void renderActiveOrders(Context ctx) {
-        List<Order> placedOrders = new ArrayList<>();
-        Order order1 = new Order();
-        Order order2 = new Order();
-        Order order3 = new Order();
-        CupcakeTop top1 = new CupcakeTop("Abrikos", 1);
-        CupcakeTop top2 = new CupcakeTop("Banan", 10);
-        CupcakeTop top3 = new CupcakeTop("Citron", 100);
-        CupcakeBottom bottom1 = new CupcakeBottom("Ananas", 2);
-        CupcakeBottom bottom2 = new CupcakeBottom("Blåbær", 20);
-        order1.addOrderline(new Orderline(bottom1, top1, 1));
-        order1.addOrderline(new Orderline(bottom2, top2, 1));
-        order1.addOrderline(new Orderline(bottom2, top1, 1));
-        order2.addOrderline(new Orderline(bottom2, top2, 10));
-        order2.addOrderline(new Orderline(bottom2, top2, 10));
-        order3.addOrderline(new Orderline(bottom1, top3, 100));
-        order3.addOrderline(new Orderline(bottom2, top3, 100));
-        placedOrders.add(order1);
-        placedOrders.add(order2);
-        placedOrders.add(order3);
+        List<Order> placedOrders = orderService.getPlacedOrders();
+        List<Order> approvedOrders = orderService.getApprovedOrders();
         ctx.attribute("placedOrders", placedOrders);
+        ctx.attribute("approvedOrders", approvedOrders);
         ctx.render("activeOrders");
     }
 }
