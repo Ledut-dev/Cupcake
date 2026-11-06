@@ -3,67 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <title>Aktive Ordrer</title>
+    <link rel="stylesheet" href="css/tables.css">
 </head>
 <body>
-<h4>Ordrer til godkendelse</h4>
-<table class="placed-orders-table">
-  <thead>
-  <tr>
-    <th scope="col">Order ID</th>
-    <th scope="col">Total</th>
-    <th scope="col">Size</th>
-    <th scope="col"></th>
-    <th scope="col"></th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="order : ${placedOrders}">
-    <td th:text="${order.id}">OrderID</td>
-    <td><span th:text="${order.total}">pris</span> kr.</td>
-    <td th:text="${order.size}">status</td>
-    <td>
-      <form th:action="@{/orders/{id}/status(id=${order.id})}" method="post">
-        <input type="hidden" name="status" value="APPROVED">
-        <button type="submit">Godkend ordre</button>
-      </form>
-    </td>
-    <td>
-      <form th:action="@{/orders/{id}/status(id=${order.id})}" method="post">
-        <input type="hidden" name="status" value="DENIED">
-        <button type="submit">Afvis ordre</button>
-      </form>
-    </td>
-  </tbody>
-</table>
-<h4>Godkendte ordrer</h4>
-<table class="approved-orders-table">
-  <thead>
-  <tr>
-    <th scope="col">Order ID</th>
-    <th scope="col">Total</th>
-    <th scope="col">Status</th>
-    <th scope="col"></th>
-    <th scope="col"></th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="order : ${approvedOrders}">
-    <td th:text="${order.id}">OrderID</td>
-    <td><span th:text="${order.total}">pris</span> kr.</td>
-    <td th:text="${order.size}">status</td>
-    <td>
-      <form th:action="@{/orders/{id}/status(id=${order.id})}" method="post">
-        <input type="hidden" name="status" value="APPROVED">
-        <button type="submit">Godkend ordre</button>
-      </form>
-    </td>
-    <td>
-      <form th:action="@{/orders/{id}/status(id=${order.id})}" method="post">
-        <input type="hidden" name="status" value="DENIED">
-        <button type="submit">Afvis ordre</button>
-      </form>
-    </td>
-  </tbody>
-</table>
+<div  class="expandable-table" id="placed-orders-table">
+  <h4>Ordrer til godkendelse</h4>
+  <table>
+    <thead>
+    <tr>
+      <th scope="col">Ordrenummer</th>
+      <th scope="col">Antal</th>
+      <th scope="col">Beløb</th>
+      <th scope="col">Oprettelse</th>
+      <th scope="col">Afhentning</th>
+      <th scope="col">Kundens navn</th>
+      <th scope="col">Kundens e-mail</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${placedOrders}">
+      <td th:text="${order.id}">OrderID</td>
+      <td th:text="${order.size}">antal</td>
+      <td><span th:text="${order.total}">pris</span> kr.</td>
+      <td th:text="${order.orderDate}">dato</td>
+      <td th:text="${order.pickupDate}">dato</td>
+      <td th:text="${order.customer.name}">navn</td>
+      <td th:text="${order.customer.email}">e-mail</td>
+      <td>
+        <form th:action="@{/orders/{id}/status(id=${order.id})}" method="post">
+          <input type="hidden" name="status" value="APPROVED">
+          <button type="submit">Godkend ordre</button>
+        </form>
+      </td>
+      <td>
+        <form th:action="@{/orders/{id}/status(id=${order.id})}" method="post">
+          <input type="hidden" name="status" value="DENIED">
+          <button type="submit">Afvis ordre</button>
+        </form>
+      </td>
+    </tbody>
+  </table>
+</div>
+<div  class="expandable-table" id="approved-orders-table">
+  <h4>Godkendte ordrer</h4>
+  <table>
+    <thead>
+    <tr>
+      <th scope="col">Ordrenummer</th>
+      <th scope="col">Antal</th>
+      <th scope="col">Beløb</th>
+      <th scope="col">Oprettet</th>
+      <th scope="col">Afhentning</th>
+      <th scope="col">Kundens navn</th>
+      <th scope="col">Kundens e-mail</th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${approvedOrders}">
+      <td th:text="${order.id}">OrderID</td>
+      <td th:text="${order.size}">antal</td>
+      <td><span th:text="${order.total}">pris</span> kr.</td>
+      <td th:text="${order.orderDate}">dato</td>
+      <td th:text="${order.pickupDate}">dato</td>
+      <td th:text="${order.customer.name}">navn</td>
+      <td th:text="${order.customer.email}">e-mail</td>
+      <td>
+        <form th:action="@{/orders/{id}/status(id=${order.id})}" method="post">
+          <input type="hidden" name="status" value="DENIED">
+          <button type="submit">Afvis ordre</button>
+        </form>
+      </td>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  function enableExpandableRows(tableId) {
+    const table = document.getElementById(tableId);
+    if (!table) return;
+
+    table.addEventListener('click', function(e) {
+      // Find the closest ancestor 'tr' that is expandable
+      const expandableRow = e.target.closest('tr.row-expandable');
+      if (!expandableRow) return;
+
+      // Find the very next TR element, which is the details row
+      const detailsRow = expandableRow.nextElementSibling;
+      if (detailsRow && detailsRow.classList.contains('row-details')) {
+        expandableRow.classList.toggle('open');
+        detailsRow.classList.toggle('visible');
+      }
+    });
+  }
+
+  enableExpandableRows('placed-orders-table');
+  enableExpandableRows('approved-orders-table');
+</script>
 </body>
 </html>

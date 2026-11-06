@@ -61,4 +61,16 @@ public class Order {
     public Customer getCustomer() {
         return customer;
     }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public LocalDate getOrderDate() {
+        return orderDate;
+    }
+
+    public LocalDate getPickupDate() {
+        return pickupDate;
+    }
 }

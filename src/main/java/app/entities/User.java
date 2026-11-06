@@ -1,6 +1,7 @@
 package app.entities;
 
 public abstract class User {
+    private int id;
     private String email;
     private String name;
     private String password;
@@ -15,6 +16,12 @@ public abstract class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public User(int id, String email, String name) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
     }
 
     public String getEmail() {

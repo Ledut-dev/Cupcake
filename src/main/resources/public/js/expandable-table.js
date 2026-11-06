@@ -17,3 +17,4 @@ function enableExpandableRows(tableId) {
 }
 
 enableExpandableRows('placed-orders-table');
+enableExpandableRows('approved-orders-table');
