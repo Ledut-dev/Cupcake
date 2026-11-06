@@ -3,6 +3,7 @@ package app.persistence;
 import app.entities.CupcakeBottom;
 import app.entities.CupcakeTop;
 import app.entities.Order;
+import app.entities.OrderStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

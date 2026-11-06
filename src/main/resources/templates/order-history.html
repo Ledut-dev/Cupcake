@@ -21,11 +21,11 @@
     <div th:each="order : ${orders}">
         <tr class="row-expandable">
             <td><span class="expand-icon">+</span></td>
-            <td th:text="${order.id}">Ordre ID</td>
-            <td th:text="${order.customer.email}">Email</td>
-            <td th:text="${order.getTotal()}">Totalpris</td>
-            <td th:text="${order.orderDate}">Bestillingsdato</td>
-            <td th:text="${order.pickupDate}">Afhentningsdato</td>
+            <td><span th:unless="${#strings.isEmpty(order.id)}" th:text="${order.id}">Ordre ID</span></td>
+            <td><span th:unless="${#strings.isEmpty(order.customer.email)}" th:text="${order.customer.email}">Email</span></td>
+            <td><span th:unless="${#strings.isEmpty(order.getTotal())}" th:text="${order.getTotal()}">Totalpris</span></td>
+            <td><span th:unless="${#strings.isEmpty(order.orderDate)}" th:text="${order.orderDate}">Bestillingsdato</span></td>
+            <td><span th:unless="${#strings.isEmpty(order.pickupDate)}" th:text="${order.pickupDate}">Afhentningsdato</span></td>
         </tr>
         <tr class="row-details">
             <td colspan="6">
@@ -33,7 +33,7 @@
                     <strong>Ordredetaljer:</strong>
                     <ul>
                         <li th:each="orderline : ${order.orderlines}"
-                            th:text="${orderline.cupcakeBottom.flavor} + ' + ' + ${orderline.cupcakeTop.flavor} +
+                            th:text="${orderline.cupcakeBottom != null} ?   ${orderline.cupcakeBottom.flavor} + ' + ' + ${orderline.cupcakeTop.flavor} +
                                      ' (' + ${orderline.quantity} + ') - ' + ${orderline.getTotalPrice()} + 'kr'">
                             Bundsmag + toppingsmag (antal) - pris
                         </li>

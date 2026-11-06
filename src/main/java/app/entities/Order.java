@@ -11,7 +11,41 @@ public class Order {
     private String orderDate;
     private String pickupDate;
 
+    // Constructors
+    public Order(int id, OrderStatus status){ //constructor to use in mapper method that returns a order
+        this.id = id;
+        this.status = status;
+        orderlines = new ArrayList<>();
+    }
+
+    public Order() { //constructor to use when new user is logged in and cart is empty
+        this.status=OrderStatus.CART;
+        orderlines = new ArrayList<>();
+    }
+
     // Getters/setters
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setOrderlines(List<Orderline> orderlines) {
+        this.orderlines = orderlines;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
     public User getCustomer() {
         return customer;
     }
@@ -38,18 +72,6 @@ public class Order {
 
     public List<Orderline> getOrderlines() {
         return orderlines;
-    }
-
-    // Constructors
-    public Order(int id, OrderStatus status){ //constructor to use in mapper method that returns a order
-        this.id = id;
-        this.status = status;
-        orderlines = new ArrayList<>();
-    }
-
-    public Order() { //constructor to use when new user is logged in and cart is empty
-        this.status=OrderStatus.CART;
-        orderlines = new ArrayList<>();
     }
 
     // Methods
