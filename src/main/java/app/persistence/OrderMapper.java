@@ -2,6 +2,7 @@ package app.persistence;
 
 import app.entities.CupcakeBottom;
 import app.entities.CupcakeTop;
+import app.entities.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,5 +70,11 @@ public class OrderMapper {
         }
 
         return allCupcakeTops;
+    }
+
+    public List<Order> getOrderHistory() {
+        List<Order> orderHistory = new ArrayList<>();
+        // Get orderHistory from database
+        return orderHistory;
     }
 }

@@ -7,23 +7,52 @@ public class Order {
     private int id;
     private List<Orderline> orderlines;
     private OrderStatus status;
+    private User customer;
+    private String orderDate;
+    private String pickupDate;
 
+    // Getters/setters
+    public User getCustomer() {
+        return customer;
+    }
 
-    public Order(int id, OrderStatus status){ //constructor to use in mapper method that returns a order
-        this.id = id;
-        this.status = status;
-        orderlines = new ArrayList<>();
+    public void setCustomer(User customer) {
+        this.customer = customer;
+    }
+
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public String getPickupDate() {
+        return pickupDate;
+    }
+
+    public void setPickupDate(String pickupDate) {
+        this.pickupDate = pickupDate;
     }
 
     public List<Orderline> getOrderlines() {
         return orderlines;
     }
 
-    public Order(){ //constructor to use when new user is logged in and cart is empty
+    // Constructors
+    public Order(int id, OrderStatus status){ //constructor to use in mapper method that returns a order
+        this.id = id;
+        this.status = status;
+        orderlines = new ArrayList<>();
+    }
+
+    public Order() { //constructor to use when new user is logged in and cart is empty
         this.status=OrderStatus.CART;
         orderlines = new ArrayList<>();
     }
 
+    // Methods
     public void addOrderline (Orderline orderline){
         orderlines.add(orderline);
     }

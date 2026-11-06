@@ -22,9 +22,20 @@ public class OrderController {
     }
 
     public void setRoutes(JavalinConfig config) {
-
+        // Customer gets
         config.routes.get("/cart", ctx -> renderCart(ctx));
         config.routes.get("/menu", ctx -> renderMenu(ctx));
+        // Customer posts
+
+        // Admin gets
+        config.routes.get("/order-history", ctx -> renderOrderHistory(ctx));
+        // Admin posts
+
+    }
+
+    private void renderOrderHistory(Context ctx) {
+        ctx.attribute("orders", orderService.getOrderHistory());
+        ctx.render("/order-history");
     }
 
     public void renderMenu (Context ctx){
