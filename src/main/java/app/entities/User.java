@@ -1,6 +1,7 @@
 package app.entities;
 
 public abstract class User {
+    private int id;
     private String email;
     private String name;
     private String password;
@@ -57,4 +58,6 @@ public abstract class User {
 	public void setCart(Order cart) {
 		this.cart = cart;
 	}
+
+    public int getId() {return id;}
 }

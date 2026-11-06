@@ -1,12 +1,15 @@
 package app.entities;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Order {
     private int id;
     private List<Orderline> orderlines;
     private OrderStatus status;
+    private Date orderDate;
+    private Date pickupDate;
 
 
     public Order(int id, OrderStatus status){ //constructor to use in mapper method that returns a order
@@ -35,4 +38,32 @@ public class Order {
         }
         return total;
     }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public Date getPickupDate() {
+        return pickupDate;
+    }
+
+    public void setPickupDate(Date pickupDate) {
+        this.pickupDate = pickupDate;
+    }
+
+
+
 }

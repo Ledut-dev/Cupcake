@@ -1,14 +1,15 @@
 package app.services;
 
 
-import app.entities.CupcakeBottom;
-import app.entities.CupcakeTop;
-import app.entities.Order;
-import app.entities.Orderline;
+import app.entities.*;
+import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static app.entities.OrderStatus.PLACED;
 
 public class OrderService {
    private ConnectionPool connectionPool;
@@ -23,10 +24,22 @@ public class OrderService {
 
 
     public List<CupcakeTop> allCakeTops(){
-        return orderMapper.allCakeTops();
+       List <CupcakeTop> allCakeTops=null;
+        try{
+            allCakeTops=orderMapper.allCakeTops();
+        }catch (DatabaseException d){
+           d.getMessage();
+       }return allCakeTops;
     }
 
-    public List<CupcakeBottom> allCakeBottoms(){return orderMapper.allCakeBottoms();}
+    public List<CupcakeBottom> allCakeBottoms(){
+        List<CupcakeBottom> allCakeBottoms=null;
+            try {
+                allCakeBottoms = orderMapper.allCakeBottoms();
+            } catch (DatabaseException d){
+                d.getMessage();
+            }return allCakeBottoms;
+        }
 
     public CupcakeBottom getCupcakeBottomByFlavor(String flavor){
         return null;
@@ -36,11 +49,28 @@ public class OrderService {
         return null;
     }
 
-    public void saveCart(Order order) {
-
-        for (Orderline o:order.getOrderlines()){
-            OrderMapper.saveCart(o); //gem på bruger
-        }
-
+    public void saveOrder(User user) {
+        int orderId=0;
+            try {
+                orderId = orderMapper.saveOrder(user);
+            } catch (DatabaseException d){
+                d.getMessage();
+            }
+        saveOrderline(user, orderId);
     }
+
+    public void saveOrderline(User user, int id){
+
+
+        for (Orderline o:user.getCart().getOrderlines()) {
+            try{
+            orderMapper.saveOrderline(o, id); //gem på bruger
+            }catch (DatabaseException d){
+            d.getMessage();
+            }
+        }
+    }
+
+
+
 }

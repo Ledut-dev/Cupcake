@@ -24,7 +24,7 @@
   <div class="headerItem" style="grid-area: header-area-3">
   </div>
     <div id="greeting" class="headerItem" style="grid-area: user-greeting">
-      <p th:text="'Hej, '+${session.user.getName()}">Hej, Lars</p>
+      <p>Hej, Lars</p> <!--th:text="'Hej, '+${session.user.getName()}"-->
     </div>
   <div class="headerItem" style="grid-area: header-area-4"></div>
     <div class="headerItem" style="grid-area: slogan-area">
@@ -79,13 +79,27 @@
     <button id="add-to-cart" class="grid-container-1-item" type="submit">Læg i kurv</button>
 
 
-
-
   </form>
 </div>
+
+    <div> <!--th:if="${${session.user.cart.isNotEmpty()}}"-->
+      <form action="/order" method="post">
+        <button id="order" type="submit" >Bestil</button>
+    </form>
+  </div>
+
 </div>
 
-<div id="footer"> </div>
+<div id="footer">
+  <p class="footerItem" style="grid-area: footer-1">Om os</p>
+  <p class="footerItem" style="grid-area: footer-2">Kontakt</p>
+  <p class="footerItem" style="grid-area: footer-3">Karriere</p>
+  <p class="footerItem" style="grid-area: footer-4">Økologi</p>
+  <p class="footerItem" style="grid-area: footer-5">CSR</p>
+  <p class="footerItem" style="grid-area: footer-6">Kage til din fest?</p>
+
+
+</div>
 
 
 </body>

@@ -81,7 +81,23 @@ p{
 #footer{
     background-color: var(--lightBlue);
     width: 100vw;
-    height: 200px;
+    aspect-ratio: 2170 / 300;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+
+    grid-gap: 10%;
+
+    grid-template-areas:
+    "footer-1 footer-2 footer-3"
+    "footer-4 footer-5 footer-6"
+    "footer-7 footer-8 footer-9";
+
+}
+
+.footerItem{
+
 }
 
 #test{

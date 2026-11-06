@@ -5,9 +5,12 @@ import app.persistence.ConnectionPool;
 import app.services.OrderService;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.Context;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static app.entities.OrderStatus.PLACED;
 
 public class OrderController {
     private ConnectionPool connectionPool;
@@ -23,10 +26,12 @@ public class OrderController {
         config.routes.get("/cart", ctx -> renderCart(ctx));
         config.routes.get("/menu", ctx -> renderMenu(ctx));
         config.routes.post("/addToCart", ctx -> addToCart(ctx));
+        config.routes.post("/order", ctx -> order(ctx));
 
     }
 
-    public void renderMenu (Context ctx){
+
+    public void renderMenu (Context ctx){ //creates lists of all cupcaketops and bpttoms, savess the lists as sessionAttributes and renders /menu
        // List<CupcakeTop> cupcakeTops =orderService.allCakeTops();
         //List <CupcakeBottom> cupcakeBottoms = orderService.allCakeBottoms();
 
@@ -49,7 +54,7 @@ public class OrderController {
         ctx.render("menu");
     }
 
-    public void addToCart(Context ctx){
+    public void addToCart(Context ctx){ //gets sessionAttribute user, cupcaketops(list), cupcakebottoms(list), checks if there is a sessionAttribute cart. ggets the cupcake choice from form in html, creates an orderline and adds to car
 
        User user = ctx.sessionAttribute("user");
 
@@ -94,5 +99,22 @@ public class OrderController {
 
     private void renderCart(Context ctx) {
         ctx.redirect("cart");
+    }
+
+    private void order(Context ctx) {
+        User user=ctx.sessionAttribute("user");
+
+        if(user==null){
+            ctx.redirect("/login");
+        }
+
+        Order cart = ctx.sessionAttribute("cart");
+
+        user.getCart().setStatus(PLACED); //should be moved to where order is placed
+        orderService.saveOrder(user);
+
+        ctx.render("/success");
+
+
     }
 }
