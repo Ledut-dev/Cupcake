@@ -1,5 +1,6 @@
 package app.entities;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,8 +9,8 @@ public class Order {
     private int id;
     private List<Orderline> orderlines;
     private OrderStatus status;
-    private Date orderDate;
-    private Date pickupDate;
+    private LocalDate orderDate;
+    private LocalDate pickupDate;
     private User user;
 
 
@@ -49,19 +50,19 @@ public class Order {
     }
 
 
-    public Date getOrderDate() {
+    public LocalDate getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
     }
 
-    public Date getPickupDate() {
+    public LocalDate getPickupDate() {
         return pickupDate;
     }
 
-    public void setPickupDate(Date pickupDate) {
+    public void setPickupDate(LocalDate pickupDate) {
         this.pickupDate = pickupDate;
     }
 

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.xml.crypto.Data;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +27,8 @@ public class OrderMapper {
              PreparedStatement stm = connection.prepareStatement(query)) {
              stm.setInt(1, order.getUser().getId());
              stm.setString(2, String.valueOf(order.getStatus()));
-             stm.setDate(3, (Date) order.getOrderDate()); //is this casting correct?
-             stm.setDate(4, (Date) order.getPickupDate()); //is this casting correct?
+             stm.setDate(3, Date.valueOf(order.getOrderDate())); //is this casting correct?
+             stm.setDate(4, Date.valueOf(order.getPickupDate())); //is this casting correct?
 
             try (ResultSet rs = stm.getGeneratedKeys()) {
                 if (rs.next()) {

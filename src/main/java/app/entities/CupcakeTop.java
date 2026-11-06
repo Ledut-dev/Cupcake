@@ -5,8 +5,8 @@ public class CupcakeTop {
     private double price;
 
 
-    public CupcakeTop (String type, double price){
-    this.flavor =type;
+    public CupcakeTop (String flavor, double price){
+    this.flavor =flavor;
     this.price=price;
     }
 

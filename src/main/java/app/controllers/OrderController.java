@@ -5,7 +5,6 @@ import app.persistence.ConnectionPool;
 import app.services.OrderService;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.Context;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +90,7 @@ public class OrderController {
     }
 
     private void renderCart(Context ctx) {
-        ctx.redirect("cart");
+        ctx.render("/cart");
     }
 
     private void order(Context ctx) {
@@ -106,6 +105,7 @@ public class OrderController {
         cart.setStatus(OrderStatus.PLACED);
         orderService.saveOrder(cart);
 
+        ctx.sessionAttribute("cart", null);
         ctx.render("/success");
 
     }
