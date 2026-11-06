@@ -1,6 +1,7 @@
 package app.entities;
 
 public abstract class User {
+    private int id;
     private String email;
     private String name;
     private String password;
@@ -48,4 +49,6 @@ public abstract class User {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
+
+    public int getId() {return id;}
 }

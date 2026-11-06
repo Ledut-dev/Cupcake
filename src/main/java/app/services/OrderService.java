@@ -1,12 +1,13 @@
 package app.services;
 
 
-import app.entities.CupcakeBottom;
-import app.entities.CupcakeTop;
+import app.entities.*;
+import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
 
 import java.util.List;
+
 
 public class OrderService {
    private ConnectionPool connectionPool;
@@ -21,10 +22,22 @@ public class OrderService {
 
 
     public List<CupcakeTop> allCakeTops(){
-        return orderMapper.allCakeTops();
+       List <CupcakeTop> allCakeTops=null;
+        try{
+            allCakeTops=orderMapper.allCakeTops();
+        }catch (DatabaseException d){
+           d.getMessage();
+       }return allCakeTops;
     }
 
-    public List<CupcakeBottom> allCakeBottoms(){return orderMapper.allCakeBottoms();}
+    public List<CupcakeBottom> allCakeBottoms(){
+        List<CupcakeBottom> allCakeBottoms=null;
+            try {
+                allCakeBottoms = orderMapper.allCakeBottoms();
+            } catch (DatabaseException d){
+                d.getMessage();
+            }return allCakeBottoms;
+        }
 
     public CupcakeBottom getCupcakeBottomByFlavor(String flavor){
         return null;
@@ -33,5 +46,29 @@ public class OrderService {
     public CupcakeTop getCupcakeTopByFlavor(String flavor){
         return null;
     }
+
+    public void saveOrder(Order order) {
+        int orderId=0;
+            try {
+                orderId = orderMapper.saveOrder(order);
+            } catch (DatabaseException d){
+                d.getMessage();
+            }
+        saveOrderlines(orderId, order);
+    }
+
+    public void saveOrderlines(int orderId, Order order){
+
+
+        for (Orderline o: order.getOrderlines()) {
+            try{
+            orderMapper.saveOrderline(o, orderId);
+            }catch (DatabaseException d){
+            d.getMessage();
+            }
+        }
+    }
+
+
 
 }

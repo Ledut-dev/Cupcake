@@ -6,8 +6,8 @@ public class CupcakeTop {
 
 
     public CupcakeTop (String flavor, double price){
-    this.flavor = flavor;
-    this.price = price;
+    this.flavor =flavor;
+    this.price=price;
     }
 
 

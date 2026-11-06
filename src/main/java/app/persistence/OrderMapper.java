@@ -1,14 +1,13 @@
 package app.persistence;
 
-import app.entities.CupcakeBottom;
-import app.entities.CupcakeTop;
+import app.entities.*;
+import app.exceptions.DatabaseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.xml.crypto.Data;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,15 +18,53 @@ public class OrderMapper {
 
     public OrderMapper (ConnectionPool connectionPool){this.connectionPool=connectionPool;}
 
+    public int saveOrder(Order order) throws DatabaseException{
+        int orderId = 0;
+
+        String query="INSERT INTO orders (customer_id, status, order_date, pickup_date) VALUES(?, ?, ?, ?)";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement stm = connection.prepareStatement(query)) {
+             stm.setInt(1, order.getUser().getId());
+             stm.setString(2, String.valueOf(order.getStatus()));
+             stm.setDate(3, Date.valueOf(order.getOrderDate())); //is this casting correct?
+             stm.setDate(4, Date.valueOf(order.getPickupDate())); //is this casting correct?
+
+            try (ResultSet rs = stm.getGeneratedKeys()) {
+                if (rs.next()) {
+                    orderId=rs.getInt("order_id");
+                } else throw new DatabaseException("argument kunne ikke oprettes");
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("kunne ikke gemme ordre");
+        }
+        return orderId;
+    }
+
+    public void saveOrderline (Orderline orderline, int orderId) throws DatabaseException {
+
+        String query="INSERT INTO orderlines (order_id, cupcake_topping, cupcake_bottom, quantity) VALUES(?, ?, ?, ?)";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement stm = connection.prepareStatement(query)) {
+            stm.setInt(1, orderId);
+            stm.setString(2, orderline.getCupcakeTop());
+            stm.setString(3,  orderline.getCupcakeBottom());
+            stm.setInt(4, orderline.getQuantity());
+
+        } catch (SQLException e) {
+            throw new DatabaseException("orderline kunne ikke gemmes");
+        }
+    }
 
 
-    public List<CupcakeBottom> allCakeBottoms(){
+    public List<CupcakeBottom> allCakeBottoms() throws DatabaseException{
 
         List<CupcakeBottom> allCupcakeBottoms = new ArrayList<>();
 
         String query = """
                 SELECT flavor, price
-                FROM cupcake-bottoms""";
+                FROM cupcake_bottoms""";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
@@ -40,19 +77,19 @@ public class OrderMapper {
                 }
             }
         } catch (SQLException e) {
-            //logger.error(e.getMessage());
-            //throw new DatabaseException("Fejl ved søgning efter hvilke brugere der er tilknyttet denne husholdning");
+            logger.error(e.getMessage());
+            throw new DatabaseException("Fejl ved søgning efter cupcakebunde");
         }
 
         return allCupcakeBottoms;
     }
 
-    public List<CupcakeTop> allCakeTops(){
+    public List<CupcakeTop> allCakeTops() throws DatabaseException{
 
         List<CupcakeTop> allCupcakeTops = new ArrayList<>();
         String query = """
                 SELECT flavor, price
-                FROM cupcake-tops""";
+                FROM cupcake_tops""";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
@@ -64,8 +101,8 @@ public class OrderMapper {
                 }
             }
         } catch (SQLException e) {
-            //logger.error(e.getMessage());
-            //throw new DatabaseException("Fejl ved søgning efter hvilke brugere der er tilknyttet denne husholdning");
+            logger.error(e.getMessage());
+            throw new DatabaseException("Fejl ved søgning efter cupcaketoppings");
         }
 
         return allCupcakeTops;
