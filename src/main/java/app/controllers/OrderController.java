@@ -1,14 +1,13 @@
 package app.controllers;
 
-import app.entities.CupcakeBottom;
-import app.entities.CupcakeTop;
-import app.entities.Order;
-import app.entities.Orderline;
+import app.entities.*;
+import app.exceptions.BalanceTooLowException;
 import app.persistence.ConnectionPool;
 import app.services.OrderService;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.Context;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +25,8 @@ public class OrderController {
         config.routes.get("/cart", ctx -> renderCart(ctx));
         config.routes.get("/menu", ctx -> renderMenu(ctx));
         // Customer posts
+        config.routes.post("/addToCart", ctx -> addToCart(ctx));
+        config.routes.post("/order", ctx -> order(ctx));
 
         // Admin gets
         config.routes.get("/order-history", ctx -> renderOrderHistory(ctx));
@@ -38,12 +39,12 @@ public class OrderController {
         ctx.render("/order-history");
     }
 
-    public void renderMenu (Context ctx){
-       // List<CupcakeTop> cupcakeTops =orderService.allCakeTops();
+    public void renderMenu(Context ctx) { //creates lists of all cupcaketops and bpttoms, savess the lists as sessionAttributes and renders /menu
+        // List<CupcakeTop> cupcakeTops =orderService.allCakeTops();
         //List <CupcakeBottom> cupcakeBottoms = orderService.allCakeBottoms();
 
-        List<CupcakeTop> cupcakeTops =new ArrayList<>();
-        List <CupcakeBottom> cupcakeBottoms = new ArrayList<>();
+        List<CupcakeTop> cupcakeTops = new ArrayList<>();
+        List<CupcakeBottom> cupcakeBottoms = new ArrayList<>();
 
         cupcakeTops.add(new CupcakeTop("Vanilla", 10));
         cupcakeTops.add(new CupcakeTop("Chocolate", 15));
@@ -54,35 +55,111 @@ public class OrderController {
         cupcakeBottoms.add(new CupcakeBottom("caramel", 20));
 
 
-
-        ctx.attribute("cupcakeTops", cupcakeTops); //sessionattribute
-        ctx.attribute("cupcakeBottoms", cupcakeBottoms);
+        ctx.sessionAttribute("cupcakeTops", cupcakeTops);
+        ctx.sessionAttribute("cupcakeBottoms", cupcakeBottoms);
 
         ctx.render("menu");
     }
 
-    public void addToCart(Context ctx){
-        //lav orderline objekter
-        //add til ssessionattribute cart
-        //gem i databasen med status cart
+    public void addToCart(Context ctx) { //gets sessionAttribute user, cupcaketops(list), cupcakebottoms(list), checks if there is a sessionAttribute cart. ggets the cupcake choice from form in html, creates an orderline and adds to car
 
-        Order cart = ctx.sessionAttribute("cart");
+        User currentUser = getCurrentUser(ctx);
 
-        String cupcakeBottomChoice = ctx.formParam("cupcakeBottom");
-        String cupcakeTopChoice = ctx.formParam("cupcakeTop");
+        ArrayList<CupcakeBottom> cupcakeBottoms = ctx.sessionAttribute("cupcakeBottoms");
+        ArrayList<CupcakeTop> cupcakeTops = ctx.sessionAttribute("cupcakeTops");
+
+        String bottom = ctx.formParam("bottom");
+        String top = ctx.formParam("top");
         int quantity = Integer.parseInt(ctx.formParam("quantity"));
 
-        CupcakeBottom cupcakeBottom = orderService.getCupcakeBottomByFlavor(cupcakeBottomChoice);
-        CupcakeTop cupcakeTop = orderService.getCupcakeTopByFlavor(cupcakeTopChoice);
+        CupcakeBottom currentCupcakeBottom = null;
+        CupcakeTop currentCupcakeTop = null;
 
-        Orderline orderline = new Orderline(cupcakeBottom, cupcakeTop, quantity);
+        for (CupcakeBottom b : cupcakeBottoms) {
+            if (bottom.equals(b.getFlavor())) {
+                currentCupcakeBottom = b;
+            }
+        }
+        for (CupcakeTop t : cupcakeTops) {
+            if (top.equals(t.getFlavor())) {
+                currentCupcakeTop = t;
+            }
+        }
 
+
+        Orderline orderline = new Orderline(currentCupcakeBottom, currentCupcakeTop, quantity);
+
+        Order cart = sessionAttributeCart(ctx);
         cart.addOrderline(orderline);
 
-        //orderSservice.saveOrder(cart); gemmer hele svineriet i DB
+        ctx.render("menu");
     }
 
     private void renderCart(Context ctx) {
-        ctx.render("cart");
+        ctx.render("/cart");
     }
+
+    private void order(Context ctx) {
+        User currentUser = getCurrentUser(ctx);
+
+        if (currentUser == null) {
+            ctx.redirect("/login");
+        }
+
+        Order cart = sessionAttributeCart(ctx);
+
+        // Check if account balance is big enough
+        // NullPointer if balance is Null
+        try {
+            if (currentUser.getBalance() < cart.getTotal()) {
+                throw new BalanceTooLowException("Ikke nok penge på konto");
+            }
+            // User pays, set order status and date and save order to db
+            currentUser.setBalance(currentUser.getBalance() - cart.getTotal());
+            cart.setStatus(OrderStatus.PLACED);
+            cart.setOrderDate(LocalDate.now());
+            orderService.saveOrder(cart);
+
+            ctx.sessionAttribute("cart", null);
+            ctx.render("/success");
+        } catch (NullPointerException | BalanceTooLowException e) {
+            ctx.attribute("error", e.getMessage());
+            ctx.render("/cart");
+        }
+    }
+
+    public Order sessionAttributeCart(Context ctx) {
+
+        User currentUser = getCurrentUser(ctx);
+        Order cart;
+
+        try {
+            cart = ctx.sessionAttribute("cart");
+            if (cart == null) throw new NullPointerException();
+            if (currentUser != null) {
+                cart.setUser(currentUser);
+                ctx.sessionAttribute("cart", cart);
+                return cart;
+            }
+        } catch (NullPointerException n) {
+            ctx.sessionAttribute("cart", new Order());
+            cart = ctx.sessionAttribute("cart");
+            return cart;
+        }
+        return null;
+    }
+
+    public User getCurrentUser(Context ctx) {
+
+        try {
+            User currentUser = ctx.sessionAttribute("currentUser");
+            return currentUser;
+        } catch (NullPointerException n) {
+            return null;
+        }
+
+
+    }
+
+
 }

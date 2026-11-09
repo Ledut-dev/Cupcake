@@ -3,24 +3,101 @@ body{
 }
 p{
     margin: 0;
+    font-family: libre bodoni, serif;
+    font-size: 2rem;
+    color: var(--brown);
 }
 
 
 #header{
    background-image:url(../svg/Group2.svg);
-    /*background-size: cover;*/
     width: 100vw;
-    height: 500px;
+    /*height: 500px;*/
+
+    aspect-ratio: 2170 / 500;
     position: sticky;
     top: -200px;
     background-repeat: repeat-x;                   /* gentag kun sidelæns */
     background-size: calc(100% / 5) auto;
 
+    outline: solid black 2px;
 }
+
+#header-grid{
+
+    display: grid;
+    width: 100%;
+    height: 100%;
+
+    grid-template-columns: 20vw 20vw 20vw 20vw 20vw;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+
+    grid-template-areas:
+    "header-area-1 logo-area logo-area logo-area header-area-3"
+    "header-area-1 logo-area logo-area logo-area header-area-3"
+    "header-area-1 logo-area logo-area logo-area header-area-3"
+    "header-area-1 logo-area logo-area logo-area user-greeting"
+    "header-area-4 slogan-area slogan-area slogan-area header-area-6"
+    "header-area-4 slogan-area slogan-area slogan-area header-area-6"
+
+;
+}
+
+.headerItem{
+    outline: dashed rebeccapurple;
+    min-width: 0;
+    min-height: 0;
+
+
+}
+
+#logomark{
+    display: block;
+    max-width: 80%;
+
+    object-fit: contain;
+    align-self: end;
+    justify-self: center;
+}
+.headerItem:has(#logomark) {
+    display: grid;
+    align-items: center;
+}
+
+#slogan{
+    display: block;
+    max-width: 40%;
+
+    object-fit: contain;
+    align-self: center;
+    justify-self: center;
+}
+
+#greeting{
+    display: flex;
+    align-items: end;
+}
+
 #footer{
     background-color: var(--lightBlue);
     width: 100vw;
-    height: 200px;
+    aspect-ratio: 2170 / 300;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+
+    grid-gap: 10%;
+
+    grid-template-areas:
+    "footer-1 footer-2 footer-3"
+    "footer-4 footer-5 footer-6"
+    "footer-7 footer-8 footer-9";
+
+}
+
+.footerItem{
+
 }
 
 #test{
@@ -38,12 +115,13 @@ p{
     align-content: center;
 
 
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 
 }
 
 
 .grid-container-1-item{
+    width: 100%;
     align-content: center;
 
 }

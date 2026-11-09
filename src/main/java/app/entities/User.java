@@ -1,10 +1,31 @@
 package app.entities;
 
 public abstract class User {
+    private int id;
     private String email;
     private String name;
     private String password;
     private double balance;
+
+    public User(int id, String email, String password, String name, double balance) {
+        this.id=id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.balance = balance;
+    }
+    public User(String email, String password, String name, double balance) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.balance = balance;
+    }
+    public User(int id, String email, String password, String name) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+    }
 
     public User(String email, String password, String name) {
         this.email = email;
@@ -12,10 +33,6 @@ public abstract class User {
         this.name = name;
     }
 
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 
     public String getEmail() {
         return this.email;
@@ -48,4 +65,8 @@ public abstract class User {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
+
+    public int getId() {return id;}
+
+    public void setId(int id) {this.id = id;}
 }

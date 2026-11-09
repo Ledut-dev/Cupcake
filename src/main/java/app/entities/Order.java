@@ -1,6 +1,8 @@
 package app.entities;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Order {
@@ -8,9 +10,7 @@ public class Order {
     private List<Orderline> orderlines;
     private OrderStatus status;
     private User customer;
-    private String orderDate;
-    private String pickupDate;
-
+    private LocalDate orderDate;
     // Constructors
     public Order(int id, OrderStatus status){ //constructor to use in mapper method that returns a order
         this.id = id;
@@ -18,7 +18,7 @@ public class Order {
         orderlines = new ArrayList<>();
     }
 
-    public Order() { //constructor to use when new user is logged in and cart is empty
+    public Order(){ //constructor to use when new user is logged in and cart is empty
         this.status=OrderStatus.CART;
         orderlines = new ArrayList<>();
     }
@@ -54,11 +54,11 @@ public class Order {
         this.customer = customer;
     }
 
-    public String getOrderDate() {
+    public LocalDate getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(String orderDate) {
+    public void setOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
     }
 
