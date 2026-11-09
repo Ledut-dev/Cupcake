@@ -4,7 +4,6 @@ public class CupcakeBottom {
     private String flavor;
     private double price;
 
-
     public CupcakeBottom(String flavor, double price){
     this.flavor =flavor;
     this.price=price;
@@ -13,7 +12,6 @@ public class CupcakeBottom {
     public CupcakeBottom(String flavor) {
         this.flavor = flavor;
     }
-
 
     public String getFlavor() {
         return flavor;

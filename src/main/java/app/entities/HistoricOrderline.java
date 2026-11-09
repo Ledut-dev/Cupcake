@@ -10,4 +10,8 @@ public class HistoricOrderline extends Orderline {
         this.cupcakeBottomPrice = cupcakeBottomPrice;
         this.cupcakeTopPrice = cupcakeTopPrice;
     }
+
+    @Override public double getTotalPrice() {
+        return (cupcakeBottomPrice + cupcakeTopPrice) * getQuantity();
+    }
 }

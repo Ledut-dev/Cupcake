@@ -124,7 +124,7 @@ public class OrderMapper {
             try (ResultSet rs = stm.executeQuery()) {
                 Order currentOrder = null;
                 while (rs.next()) {
-                    int orderId = rs.getInt("order_id");
+                    int orderId = rs.getInt("id");
                     if (currentOrder == null || currentOrder.getId() != orderId) {
                         LocalDate date = rs.getDate("order_date").toLocalDate();
                         currentOrder = new Order(

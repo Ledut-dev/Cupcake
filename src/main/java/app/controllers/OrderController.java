@@ -137,7 +137,7 @@ public class OrderController {
             cart = ctx.sessionAttribute("cart");
             if (cart == null) throw new NullPointerException();
             if (currentUser != null) {
-                cart.setUser(currentUser);
+                cart.setCustomer(currentUser);
                 ctx.sessionAttribute("cart", cart);
                 return cart;
             }
