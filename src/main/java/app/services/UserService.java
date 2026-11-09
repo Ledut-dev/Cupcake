@@ -20,7 +20,7 @@ public class UserService {
 	}
 
     public User createUser(String name, String email, String password) {
-        User user = new Customer(name, email, password);
+        User user = new Customer(name, email, password,0);
         try{
         userMapper.createUser(user);
         } catch (DatabaseException e) {

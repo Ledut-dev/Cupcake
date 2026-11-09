@@ -38,7 +38,7 @@ public class UserMapper {
     public User getUserByEmail(String email) throws DatabaseException {
         User user = null;
         String query = """
-        SELECT email, password, name, id, balance
+        SELECT email, password, name, customer_id, balance
         FROM customers
         WHERE email = ?""";
 
@@ -52,7 +52,7 @@ public class UserMapper {
             while (rs.next()) {
                 String password = rs.getString("password");
                 String name = rs.getString("name");
-				int id = rs.getInt("id");
+				int id = rs.getInt("customer_id");
 				double balance = rs.getDouble("balance");
                 user = new Customer(id, email, password, name, balance);
             }
@@ -62,7 +62,7 @@ public class UserMapper {
         }
 
 		query = """
-				SELECT email, password, name, id, balance
+				SELECT email, password, name, admin_id
 				FROM admins
 				WHERE email = ?""";
 
@@ -75,9 +75,8 @@ public class UserMapper {
             while (rs.next()) {
                 String password = rs.getString("password");
                 String name = rs.getString("name");
-				int id = rs.getInt("id");
-				double balance = rs.getDouble("balance");
-                user = new Admin(id, email, password, name, balance);
+				int id = rs.getInt("admin_id");
+                user = new Admin(id, email, password, name);
             }
 
         } catch (SQLException e) {
@@ -99,7 +98,7 @@ public class UserMapper {
 			stm.setString(1, user.getEmail());
 			stm.setString(2, user.getName());
 			stm.setString(3, user.getPassword());
-			stm.setDouble(4, 0);
+			stm.setDouble(4, user.getBalance());
 			int insertCount = stm.executeUpdate();
 			System.out.println("insertCount = " + insertCount);
 			try (ResultSet rs = stm.getGeneratedKeys()) {

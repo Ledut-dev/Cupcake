@@ -20,6 +20,18 @@ public abstract class User {
         this.name = name;
         this.balance = balance;
     }
+    public User(int id, String email, String password, String name) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+    }
+
+    public User(String email, String password, String name) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+    }
 
 
     public String getEmail() {
