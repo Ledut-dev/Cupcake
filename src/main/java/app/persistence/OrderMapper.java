@@ -111,7 +111,7 @@ public class OrderMapper {
         List<Order> orderHistory = new ArrayList<>();
         // Get orderHistory from database
         String query = """
-                SELECT o.order_id, o.status, o.order_date, c.customer_id, c.email, c.name, l.cupcake_bottom, 
+                SELECT o.id, o.status, o.order_date, c.customer_id, c.email, c.name, l.cupcake_bottom, 
                        l.cupcake_topping, l.quantity, l.cupcake_bottom_price AS bottom_price, 
                        l.cupcake_topping_price AS topping_price
                 FROM order_history o
