@@ -21,13 +21,12 @@ public class OrderMapper {
     public int saveOrder(Order order) throws DatabaseException{
         int orderId = 0;
 
-        String query="INSERT INTO orders (customer_id, status, order_date) VALUES(?, ?, ?)";
+        String query="INSERT INTO orders (customer_id, status) VALUES(?, ?, ?)";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
              stm.setInt(1, order.getUser().getId());
              stm.setString(2, String.valueOf(order.getStatus()));
-             stm.setDate(3, Date.valueOf(order.getOrderDate())); //is this casting correct?
 
             try (ResultSet rs = stm.getGeneratedKeys()) {
                 if (rs.next()) {
