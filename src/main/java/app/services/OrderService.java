@@ -43,4 +43,8 @@ public class OrderService {
         return orderMapper.getApprovedOrders();
     }
 
+    public void updateOrderStatus(int id, String status) {
+        orderMapper.updateOrderStatus(id, status);
+    }
+
 }

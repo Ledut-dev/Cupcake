@@ -26,6 +26,7 @@ public class OrderController {
         config.routes.get("/cart", ctx -> renderCart(ctx));
         config.routes.get("/menu", ctx -> renderMenu(ctx));
         config.routes.get("/active-orders", ctx -> renderActiveOrders(ctx));
+        config.routes.post("/orders/{id}/status", ctx -> updateOrderStatus(ctx));
     }
 
     public void renderMenu (Context ctx){
@@ -82,5 +83,12 @@ public class OrderController {
         ctx.attribute("placedOrders", placedOrders);
         ctx.attribute("approvedOrders", approvedOrders);
         ctx.render("activeOrders");
+    }
+
+    private void updateOrderStatus(Context ctx) {
+        String status = ctx.formParam("status");
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        orderService.updateOrderStatus(id, status);
+        ctx.redirect("/active-orders");
     }
 }

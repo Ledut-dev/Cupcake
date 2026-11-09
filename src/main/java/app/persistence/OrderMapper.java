@@ -71,6 +71,23 @@ public class OrderMapper {
         return allCupcakeTops;
     }
 
+    public void updateOrderStatus(int id, String status) {
+        String query = """
+                UPDATE orders
+                SET status = ?
+                WHERE order_id = ?;""";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement stm = connection.prepareStatement(query)) {
+            stm.setString(1, status);
+            stm.setInt(2, id);
+            stm.executeQuery();
+        } catch (SQLException e) {
+            //logger.error(e.getMessage());
+            //throw new DatabaseException("Fejl ved søgning efter aktive ordrer");
+        }
+    }
+
     public List<Order> getPlacedOrders()   { return getOrdersByStatus(OrderStatus.PLACED); }
     public List<Order> getApprovedOrders() { return getOrdersByStatus(OrderStatus.APPROVED); }
 
