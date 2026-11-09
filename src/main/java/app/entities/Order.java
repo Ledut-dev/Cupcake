@@ -62,6 +62,12 @@ public class Order {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    public void setOrderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public LocalDate getOrderDate() {

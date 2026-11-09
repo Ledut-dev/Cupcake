@@ -53,11 +53,11 @@ public class UserController {
                 throw new IncorrectLoginInfoException("Forkert brugernavn/password");
             }
 
-            ctx.sessionAttribute("loggedInUser", user);
+            ctx.sessionAttribute("currentUser", user);
             ctx.sessionAttribute("isUserAdmin", userService.isUserAdmin(user));
 
         } catch (IncorrectLoginInfoException e){
-            ctx.attribute("errorMessage", e.getMessage());
+            ctx.attribute("error", e.getMessage());
             renderLoginForm(ctx);
         }
         ctx.redirect("/");
@@ -71,7 +71,7 @@ public class UserController {
 			if (!userService.checkIsPasswordValid(ctx.formParam("psw"))) {
 				throw new PasswordNotValidException("Password skal være længere end 2 karakterer.");
 			}
-			User user = userService.createUser(ctx.formParam("email"), ctx.formParam("psw"));
+			User user = userService.createUser(ctx.formParam("name"), ctx.formParam("email"), ctx.formParam("psw"));
 			ctx.sessionAttribute("user", user);
 			ctx.redirect("/menu");
         } catch (EmailNotAvailableException | PasswordNotValidException e) {

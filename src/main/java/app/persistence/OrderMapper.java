@@ -27,7 +27,7 @@ public class OrderMapper {
     public int saveOrder(Order order) throws DatabaseException{
         int orderId = 0;
 
-        String query="INSERT INTO orders (customer_id, status, order_date, pickup_date) VALUES(?, ?, ?, ?)";
+        String query="INSERT INTO orders (customer_id, status) VALUES(?, ?, ?)";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
