@@ -15,21 +15,23 @@ public class OrderMapper {
     private static final Logger logger =
             LoggerFactory.getLogger(OrderMapper.class);
 
-    public OrderMapper (ConnectionPool connectionPool){this.connectionPool=connectionPool;}
+    public OrderMapper(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
 
-    public int saveOrder(Order order) throws DatabaseException{
+    public int saveOrder(Order order) throws DatabaseException {
         int orderId = 0;
 
-        String query="INSERT INTO orders (customer_id, status) VALUES(?, ?, ?)";
+        String query = "INSERT INTO orders (customer_id, status) VALUES(?, ?, ?)";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
-             stm.setInt(1, order.getUser().getId());
-             stm.setString(2, String.valueOf(order.getStatus()));
+            stm.setInt(1, order.getCustomer().getId());
+            stm.setString(2, String.valueOf(order.getStatus()));
 
             try (ResultSet rs = stm.getGeneratedKeys()) {
                 if (rs.next()) {
-                    orderId=rs.getInt("order_id");
+                    orderId = rs.getInt("order_id");
                 } else throw new DatabaseException("argument kunne ikke oprettes");
             }
         } catch (SQLException e) {
@@ -38,15 +40,15 @@ public class OrderMapper {
         return orderId;
     }
 
-    public void saveOrderline (Orderline orderline, int orderId) throws DatabaseException {
+    public void saveOrderline(Orderline orderline, int orderId) throws DatabaseException {
 
-        String query="INSERT INTO orderlines (order_id, cupcake_topping, cupcake_bottom, quantity) VALUES(?, ?, ?, ?)";
+        String query = "INSERT INTO orderlines (order_id, cupcake_topping, cupcake_bottom, quantity) VALUES(?, ?, ?, ?)";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
             stm.setInt(1, orderId);
             stm.setString(2, orderline.getCupcakeTop());
-            stm.setString(3,  orderline.getCupcakeBottom());
+            stm.setString(3, orderline.getCupcakeBottom());
             stm.setInt(4, orderline.getQuantity());
 
         } catch (SQLException e) {
@@ -55,7 +57,7 @@ public class OrderMapper {
     }
 
 
-    public List<CupcakeBottom> allCakeBottoms() throws DatabaseException{
+    public List<CupcakeBottom> allCakeBottoms() throws DatabaseException {
 
         List<CupcakeBottom> allCupcakeBottoms = new ArrayList<>();
 
@@ -81,7 +83,7 @@ public class OrderMapper {
         return allCupcakeBottoms;
     }
 
-    public List<CupcakeTop> allCakeTops() throws DatabaseException{
+    public List<CupcakeTop> allCakeTops() throws DatabaseException {
 
         List<CupcakeTop> allCupcakeTops = new ArrayList<>();
         String query = """
@@ -105,32 +107,47 @@ public class OrderMapper {
         return allCupcakeTops;
     }
 
-    public List<Order> getOrderHistory() {
+    public List<Order> getOrderHistory() throws DatabaseException {
         List<Order> orderHistory = new ArrayList<>();
         // Get orderHistory from database
         String query = """
-                SELECT * FROM order_history JOIN orderline_history ON order_history.id = orderline_history.order_id
+                SELECT o.order_id, o.status, o.order_date, c.customer_id, c.email, c.name, l.cupcake_bottom, 
+                       l.cupcake_topping, l.quantity, l.cupcake_bottom_price AS bottom_price, 
+                       l.cupcake_topping_price AS topping_price
+                FROM order_history o
+                JOIN orderline_history l ON o.id = l.order_id
+                JOIN customers c ON o.customer_id = c.customer_id
+                ORDER BY o.order_date DESC
                 """;
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
-            try (ResultSet rs = stm.executeQuery();) {
+            try (ResultSet rs = stm.executeQuery()) {
+                Order currentOrder = null;
                 while (rs.next()) {
-                    int orderId = rs.getInt("id");
-                    int customerId = rs.getInt("customer_id");
-                    String status = rs.getString("status");
-                    LocalDate date = rs.getDate("order_date").toLocalDate();
-                    String cupcakeTop = rs.getString("cupcake_topping");
-                    String cupcakeBottom = rs.getString("cupcake_bottom");
-                    double cupcakeTopPrice = rs.getDouble("cupcake_topping_price");
-                    double cupcakeBottomPrice = rs.getDouble("cupcake_bottom_price");
-                    int quantity = rs.getInt("quantity");
+                    int orderId = rs.getInt("order_id");
+                    if (currentOrder == null || currentOrder.getId() != orderId) {
+                        LocalDate date = rs.getDate("order_date").toLocalDate();
+                        currentOrder = new Order(
+                                orderId,
+                                OrderStatus.valueOf(rs.getString("status")),
+                                date);
+                        currentOrder.setCustomer(new Customer(
+                                rs.getInt("customer_id"),
+                                rs.getString("email"),
+                                rs.getString("name")));
+                        orderHistory.add(currentOrder);
+                    }
 
-                    // Opret orders...
+                    CupcakeBottom bottom = new CupcakeBottom(rs.getString("cupcake_bottom"));
+                    CupcakeTop top = new CupcakeTop(rs.getString("cupcake_topping"));
+                    currentOrder.addOrderline(new HistoricOrderline(bottom, top,
+                            rs.getInt("quantity"), rs.getDouble("bottom_price"),
+                            rs.getDouble("topping_price")));
                 }
             }
         } catch (SQLException e) {
-            //logger.error(e.getMessage());
-            //throw new DatabaseException("Fejl ved søgning efter hvilke brugere der er tilknyttet denne husholdning");
+            logger.error(e.getMessage());
+            throw new DatabaseException("Fejl ved søgning efter ordrehistorik");
         }
 
         return orderHistory;
