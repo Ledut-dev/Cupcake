@@ -57,14 +57,6 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public LocalDate getPickupDate() {
-        return pickupDate;
-    }
-
-    public void setPickupDate(LocalDate pickupDate) {
-        this.pickupDate = pickupDate;
-    }
-
     public User getUser() {
         return user;
     }
