@@ -69,6 +69,12 @@ public class OrderService {
     }
 
     public List<Order> getOrderHistory() {
-        return orderMapper.getOrderHistory();
+        List<Order> orderHistory = null;
+        try {
+            orderHistory = orderMapper.getOrderHistory();
+        } catch (DatabaseException e) {
+            e.getMessage();
+        }
+        return orderHistory;
     }
 }
