@@ -19,9 +19,13 @@ public class UserService {
 		return userMapper.checkEmailIsAvailable(email);
 	}
 
-    public User createUser(String email, String password) {
-        User user = new Customer(email, password);
+    public User createUser(String name, String email, String password) {
+        User user = new Customer(name, email, password);
+        try{
         userMapper.createUser(user);
+        } catch (DatabaseException e) {
+            e.getMessage();
+        }
         return user;
     }
 
