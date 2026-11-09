@@ -106,7 +106,8 @@ public class OrderController {
             if (currentUser.getBalance() < cart.getTotal()) {
                 throw new BalanceTooLowException("Ikke nok penge på konto");
             }
-            // Set order status and date and save order to db
+            // User pays, set order status and date and save order to db
+            currentUser.setBalance(currentUser.getBalance() - cart.getTotal());
             cart.setStatus(OrderStatus.PLACED);
             cart.setOrderDate(LocalDate.now());
             orderService.saveOrder(cart);
