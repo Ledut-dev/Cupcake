@@ -10,7 +10,6 @@ public class Order {
     private List<Orderline> orderlines;
     private OrderStatus status;
     private LocalDate orderDate;
-    private LocalDate pickupDate;
     private User user;
 
 
