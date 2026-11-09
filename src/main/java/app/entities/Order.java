@@ -10,7 +10,6 @@ public class Order {
     private List<Orderline> orderlines;
     private OrderStatus status;
     private LocalDate orderDate;
-    private LocalDate pickupDate;
 
 
     public Order(int id, OrderStatus status, LocalDate orderDate, LocalDate pickupDate){ //constructor to use in mapper method that returns a order
@@ -18,7 +17,6 @@ public class Order {
         this.status = status;
         orderlines = new ArrayList<>();
         this.orderDate = orderDate;
-        this.pickupDate = pickupDate;
     }
 
     public List<Orderline> getOrderlines() {
@@ -68,9 +66,5 @@ public class Order {
 
     public LocalDate getOrderDate() {
         return orderDate;
-    }
-
-    public LocalDate getPickupDate() {
-        return pickupDate;
     }
 }

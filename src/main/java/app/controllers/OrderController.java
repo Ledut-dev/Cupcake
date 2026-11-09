@@ -1,9 +1,6 @@
 package app.controllers;
 
-import app.entities.CupcakeBottom;
-import app.entities.CupcakeTop;
-import app.entities.Order;
-import app.entities.Orderline;
+import app.entities.*;
 import app.persistence.ConnectionPool;
 import app.services.OrderService;
 import io.javalin.config.JavalinConfig;
@@ -11,8 +8,6 @@ import io.javalin.http.Context;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import app.entities.OrderStatus;
 
 public class OrderController {
     private ConnectionPool connectionPool;

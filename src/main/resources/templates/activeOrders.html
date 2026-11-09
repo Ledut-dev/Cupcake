@@ -28,7 +28,6 @@
       <td th:text="${order.size}">antal</td>
       <td><span th:text="${order.total}">pris</span> kr.</td>
       <td th:text="${order.orderDate}">dato</td>
-      <td th:text="${order.pickupDate}">dato</td>
       <td th:text="${order.customer.name}">navn</td>
       <td th:text="${order.customer.email}">e-mail</td>
       <td>
@@ -54,8 +53,7 @@
       <th scope="col">Ordrenummer</th>
       <th scope="col">Antal</th>
       <th scope="col">Beløb</th>
-      <th scope="col">Oprettet</th>
-      <th scope="col">Afhentning</th>
+      <th scope="col">Dato</th>
       <th scope="col">Kundens navn</th>
       <th scope="col">Kundens e-mail</th>
       <th scope="col"></th>
@@ -67,7 +65,6 @@
       <td th:text="${order.size}">antal</td>
       <td><span th:text="${order.total}">pris</span> kr.</td>
       <td th:text="${order.orderDate}">dato</td>
-      <td th:text="${order.pickupDate}">dato</td>
       <td th:text="${order.customer.name}">navn</td>
       <td th:text="${order.customer.email}">e-mail</td>
       <td>
@@ -79,28 +76,5 @@
     </tbody>
   </table>
 </div>
-
-<script>
-  function enableExpandableRows(tableId) {
-    const table = document.getElementById(tableId);
-    if (!table) return;
-
-    table.addEventListener('click', function(e) {
-      // Find the closest ancestor 'tr' that is expandable
-      const expandableRow = e.target.closest('tr.row-expandable');
-      if (!expandableRow) return;
-
-      // Find the very next TR element, which is the details row
-      const detailsRow = expandableRow.nextElementSibling;
-      if (detailsRow && detailsRow.classList.contains('row-details')) {
-        expandableRow.classList.toggle('open');
-        detailsRow.classList.toggle('visible');
-      }
-    });
-  }
-
-  enableExpandableRows('placed-orders-table');
-  enableExpandableRows('approved-orders-table');
-</script>
 </body>
 </html>

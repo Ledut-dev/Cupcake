@@ -31,10 +31,9 @@ public class OrderMapper {
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
-             stm.setInt(1, order.getUser().getId());
+             stm.setInt(1, order.getCustomer().getId());
              stm.setString(2, String.valueOf(order.getStatus()));
-             stm.setDate(3, Date.valueOf(order.getOrderDate())); //is this casting correct?
-             stm.setDate(4, Date.valueOf(order.getPickupDate())); //is this casting correct?
+             stm.setDate(3, Date.valueOf(order.getOrderDate()));
 
             try (ResultSet rs = stm.getGeneratedKeys()) {
                 if (rs.next()) {
@@ -138,7 +137,7 @@ public class OrderMapper {
         List<Order> orders = new ArrayList<>();
         String query = """
             SELECT o.order_id, o.status, o.order_date, o.pickup_date,
-                   c.costumer_id, c."e-mail" AS email, c.name,
+                   c.costumer_id, c.email, c.name,
                    l.quantity,
                    t.top_flavor, t.price AS top_price,
                    b.bottom_flavor, b.price AS bottom_price
