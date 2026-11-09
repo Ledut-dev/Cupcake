@@ -7,16 +7,18 @@ public abstract class User {
     private String password;
     private double balance;
 
-    public User(int id, String email, String password, String name) {
+    public User(int id, String email, String password, String name, double balance) {
         this.id=id;
         this.email = email;
         this.password = password;
         this.name = name;
+        this.balance = balance;
     }
-    public User(String email, String password, String name) {
+    public User(String email, String password, String name, double balance) {
         this.email = email;
         this.password = password;
         this.name = name;
+        this.balance = balance;
     }
 
 

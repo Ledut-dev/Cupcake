@@ -38,7 +38,7 @@ public class UserMapper {
     public User getUserByEmail(String email) throws DatabaseException {
         User user = null;
         String query = """
-        SELECT email, password, name, id
+        SELECT email, password, name, id, balance
         FROM customers
         WHERE email = ?""";
 
@@ -53,7 +53,8 @@ public class UserMapper {
                 String password = rs.getString("password");
                 String name = rs.getString("name");
 				int id = rs.getInt("id");
-                user = new Customer(id, email, password, name);
+				double balance = rs.getDouble("balance");
+                user = new Customer(id, email, password, name, balance);
             }
 
         } catch (SQLException e) {
@@ -61,7 +62,7 @@ public class UserMapper {
         }
 
 		query = """
-				SELECT email, password, name, id
+				SELECT email, password, name, id, balance
 				FROM admins
 				WHERE email = ?""";
 
@@ -75,7 +76,8 @@ public class UserMapper {
                 String password = rs.getString("password");
                 String name = rs.getString("name");
 				int id = rs.getInt("id");
-                user = new Admin(id, email, password, name);
+				double balance = rs.getDouble("balance");
+                user = new Admin(id, email, password, name, balance);
             }
 
         } catch (SQLException e) {
@@ -95,15 +97,14 @@ public class UserMapper {
 		try (Connection connection = connectionPool.getConnection();
 		PreparedStatement stm = connection.prepareStatement(query)) {
 			stm.setString(1, user.getEmail());
-			stm.setString(2, user.getName()); // 12 denotes the sql datatype defined in java.sql.Types, in this case VARCHAR - name required now
+			stm.setString(2, user.getName());
 			stm.setString(3, user.getPassword());
-			stm.setDouble(4, 0.00); // 8 denotes the sql datatype defined in java.sql.Types, in this case DOUBLE
+			stm.setDouble(4, 0);
 			int insertCount = stm.executeUpdate();
 			System.out.println("insertCount = " + insertCount);
 			try (ResultSet rs = stm.getGeneratedKeys()) {
 				if (rs.next()) {
 					user.setId(rs.getInt("user_id"));
-					user.setBalance(rs.getDouble("balance"));
 				} else throw new DatabaseException("argument kunne ikke oprettes");
 			}
 		} catch (SQLException e) {
