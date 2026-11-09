@@ -14,18 +14,16 @@
         <th scope="col">Email</th>
         <th scope="col">Totalpris</th>
         <th scope="col">Bestillingsdato</th>
-        <th scope="col">Afhentningsdato</th>
     </tr>
     </thead>
     <tbody>
     <div th:each="order : ${orders}">
         <tr class="row-expandable">
             <td><span class="expand-icon">+</span></td>
-            <td><span th:unless="${#strings.isEmpty(order.id)}" th:text="${order.id}">Ordre ID</span></td>
-            <td><span th:unless="${#strings.isEmpty(order.customer.email)}" th:text="${order.customer.email}">Email</span></td>
-            <td><span th:unless="${#strings.isEmpty(order.getTotal())}" th:text="${order.getTotal()}">Totalpris</span></td>
-            <td><span th:unless="${#strings.isEmpty(order.orderDate)}" th:text="${order.orderDate}">Bestillingsdato</span></td>
-            <td><span th:unless="${#strings.isEmpty(order.pickupDate)}" th:text="${order.pickupDate}">Afhentningsdato</span></td>
+            <td><span th:if="${order.id != null}" th:text="${order.id}">Ordre ID</span></td>
+            <td><span th:if="${order.customer.email != null}" th:text="${order.customer.email}">Email</span></td>
+            <td><span th:if="${order.getTotal() != null}" th:text="${order.getTotal()}">Totalpris</span></td>
+            <td><span th:if="${order.orderDate != null}" th:text="${order.orderDate}">Bestillingsdato</span></td>
         </tr>
         <tr class="row-details">
             <td colspan="6">
@@ -33,8 +31,10 @@
                     <strong>Ordredetaljer:</strong>
                     <ul>
                         <li th:each="orderline : ${order.orderlines}"
-                            th:text="${orderline.cupcakeBottom != null} ?   ${orderline.cupcakeBottom.flavor} + ' + ' + ${orderline.cupcakeTop.flavor} +
-                                     ' (' + ${orderline.quantity} + ') - ' + ${orderline.getTotalPrice()} + 'kr'">
+                            th:text="${orderline.cupcakeBottom != null && orderline.cupcakeTop != null &&
+                            orderline.quantity != null && orderline.getTotalPrice() != null} ?
+                            ${orderline.cupcakeBottom.flavor} + ' + ' + ${orderline.cupcakeTop.flavor} + ' (' +
+                            ${orderline.quantity} + ') - ' + ${orderline.getTotalPrice()} + 'kr'">
                             Bundsmag + toppingsmag (antal) - pris
                         </li>
                     </ul>
