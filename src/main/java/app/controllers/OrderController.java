@@ -59,10 +59,6 @@ public class OrderController {
         ArrayList<CupcakeBottom> cupcakeBottoms = ctx.sessionAttribute("cupcakeBottoms");
         ArrayList<CupcakeTop> cupcakeTops = ctx.sessionAttribute("cupcakeTops");
 
-
-        Order cart=sessionAttributeCart(ctx);
-
-
         String bottom = ctx.formParam("bottom");
         String top = ctx.formParam("top");
         int quantity = Integer.parseInt(ctx.formParam("quantity"));
@@ -84,6 +80,7 @@ public class OrderController {
 
         Orderline orderline = new Orderline(currentCupcakeBottom, currentCupcakeTop, quantity);
 
+        Order cart=sessionAttributeCart(ctx);
         cart.addOrderline(orderline);
 
         ctx.render("menu");
@@ -116,18 +113,19 @@ public class OrderController {
         Order cart;
 
         try{
-            cart=ctx.sessionAttribute("cart");
+            cart = ctx.sessionAttribute("cart");
+            if (cart == null) throw new NullPointerException();
             if(currentUser!=null){
                 cart.setUser(currentUser);
                 ctx.sessionAttribute( "cart", cart);
                 return cart;
             }
-
-        }catch (NullPointerException n){
-           ctx.sessionAttribute("cart", cart=new Order());
+        } catch (NullPointerException n){
+           ctx.sessionAttribute("cart", new Order());
+           cart = ctx.sessionAttribute("cart");
            return cart;
         }
-        return cart;
+        return null;
     }
 
     public User getCurrentUser(Context ctx){
