@@ -2,29 +2,30 @@ package app.entities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Order {
     private int id;
+    private Customer customer;
     private List<Orderline> orderlines;
     private OrderStatus status;
     private LocalDate orderDate;
     private LocalDate pickupDate;
-    private User user;
 
 
-    public Order(int id, OrderStatus status){ //constructor to use in mapper method that returns a order
-        this.id=id;
-        this.status=status;
+    public Order(int id, OrderStatus status, LocalDate orderDate, LocalDate pickupDate){ //constructor to use in mapper method that returns a order
+        this.id = id;
+        this.status = status;
         orderlines = new ArrayList<>();
+        this.orderDate = orderDate;
+        this.pickupDate = pickupDate;
     }
 
     public List<Orderline> getOrderlines() {
         return orderlines;
     }
 
-    public Order(){ //constructor to use when items are added to cart, but there is no cart.
+    public Order(){ //constructor to use when new user is logged in and cart is empty
         this.status=OrderStatus.CART;
         orderlines = new ArrayList<>();
     }
@@ -41,40 +42,35 @@ public class Order {
         return total;
     }
 
-    public OrderStatus getStatus() {
-        return status;
+    public int getId() {
+        return id;
     }
 
-    public void setStatus(OrderStatus status) {
-        this.status = status;
+    public String getStatus() {
+        return String.valueOf(status);
     }
 
+    public int getSize() {
+        int size = 0;
+        for (Orderline orderline : orderlines) {
+            size += orderline.getQuantity();
+        }
+        return size;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
     public LocalDate getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(LocalDate orderDate) {
-        this.orderDate = orderDate;
-    }
-
     public LocalDate getPickupDate() {
         return pickupDate;
-    }
-
-    public void setPickupDate(LocalDate pickupDate) {
-        this.pickupDate = pickupDate;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public int getId() {
-        return id;
     }
 }

@@ -1,6 +1,9 @@
 package app.controllers;
 
-import app.entities.*;
+import app.entities.CupcakeBottom;
+import app.entities.CupcakeTop;
+import app.entities.Order;
+import app.entities.Orderline;
 import app.persistence.ConnectionPool;
 import app.services.OrderService;
 import io.javalin.config.JavalinConfig;
@@ -26,7 +29,8 @@ public class OrderController {
         config.routes.get("/menu", ctx -> renderMenu(ctx));
         config.routes.post("/addToCart", ctx -> addToCart(ctx));
         config.routes.post("/order", ctx -> order(ctx));
-
+        config.routes.get("/active-orders", ctx -> renderActiveOrders(ctx));
+        config.routes.post("/orders/{id}/status", ctx -> updateOrderStatus(ctx));
     }
 
     public void renderMenu (Context ctx){ //creates lists of all cupcaketops and bpttoms, savess the lists as sessionAttributes and renders /menu
@@ -142,4 +146,19 @@ public class OrderController {
 
 
 
+
+    private void renderActiveOrders(Context ctx) {
+        List<Order> placedOrders = orderService.getPlacedOrders();
+        List<Order> approvedOrders = orderService.getApprovedOrders();
+        ctx.attribute("placedOrders", placedOrders);
+        ctx.attribute("approvedOrders", approvedOrders);
+        ctx.render("activeOrders");
+    }
+
+    private void updateOrderStatus(Context ctx) {
+        String status = ctx.formParam("status");
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        orderService.updateOrderStatus(id, status);
+        ctx.redirect("/active-orders");
+    }
 }
