@@ -38,7 +38,7 @@ public class UserMapper {
     public User getUserByEmail(String email) throws DatabaseException {
         User user = null;
         String query = """
-        SELECT email, password, name
+        SELECT email, password, name, customer_id, balance
         FROM customers
         WHERE email = ?""";
 
@@ -52,7 +52,9 @@ public class UserMapper {
             while (rs.next()) {
                 String password = rs.getString("password");
                 String name = rs.getString("name");
-                user = new Customer(email, password, name);
+				int id = rs.getInt("customer_id");
+				double balance = rs.getDouble("balance");
+                user = new Customer(id, email, password, name, balance);
             }
 
         } catch (SQLException e) {
@@ -60,7 +62,7 @@ public class UserMapper {
         }
 
 		query = """
-				SELECT email, password, name
+				SELECT email, password, name, admin_id
 				FROM admins
 				WHERE email = ?""";
 
@@ -73,7 +75,8 @@ public class UserMapper {
             while (rs.next()) {
                 String password = rs.getString("password");
                 String name = rs.getString("name");
-                user = new Admin(email, password, name);
+				int id = rs.getInt("admin_id");
+                user = new Admin(id, email, password, name);
             }
 
         } catch (SQLException e) {
@@ -88,18 +91,24 @@ public class UserMapper {
         return user;
     }
 
-	public void createUser(User user) {
-		String query = "INSERT INTO customers (email, name, password, balance) VALUES (?, ?, ?, ?)";
+	public User createUser(User user) throws DatabaseException {
+	String query = "INSERT INTO customers (email, name, password, balance) VALUES (?, ?, ?, ?)";
 		try (Connection connection = connectionPool.getConnection();
 		PreparedStatement stm = connection.prepareStatement(query)) {
 			stm.setString(1, user.getEmail());
-			stm.setNull(2, 12); // 12 denotes the sql datatype defined in java.sql.Types, in this case VARCHAR
+			stm.setString(2, user.getName());
 			stm.setString(3, user.getPassword());
-			stm.setNull(4, 8); // 8 denotes the sql datatype defined in java.sql.Types, in this case DOUBLE
+			stm.setDouble(4, user.getBalance());
 			int insertCount = stm.executeUpdate();
 			System.out.println("insertCount = " + insertCount);
+			try (ResultSet rs = stm.getGeneratedKeys()) {
+				if (rs.next()) {
+					user.setId(rs.getInt("user_id"));
+				} else throw new DatabaseException("argument kunne ikke oprettes");
+			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
+		return user;
 	}
 }

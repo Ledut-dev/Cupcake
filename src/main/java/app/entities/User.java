@@ -7,16 +7,32 @@ public abstract class User {
     private String password;
     private double balance;
 
+    public User(int id, String email, String password, String name, double balance) {
+        this.id=id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.balance = balance;
+    }
+    public User(String email, String password, String name, double balance) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.balance = balance;
+    }
+    public User(int id, String email, String password, String name) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+    }
+
     public User(String email, String password, String name) {
         this.email = email;
         this.password = password;
         this.name = name;
     }
 
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 
     public String getEmail() {
         return this.email;
@@ -51,4 +67,6 @@ public abstract class User {
 	}
 
     public int getId() {return id;}
+
+    public void setId(int id) {this.id = id;}
 }
