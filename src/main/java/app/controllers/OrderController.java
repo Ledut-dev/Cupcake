@@ -115,7 +115,7 @@ public class OrderController {
             ctx.sessionAttribute("cart", null);
             ctx.render("/success");
         } catch (NullPointerException | BalanceTooLowException e) {
-            ctx.attribute("errorMessage", e.getMessage());
+            ctx.attribute("error", e.getMessage());
             ctx.render("/cart");
         }
     }
