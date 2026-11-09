@@ -10,7 +10,6 @@ public class Order {
     private List<Orderline> orderlines;
     private OrderStatus status;
     private LocalDate orderDate;
-    private LocalDate pickupDate;
     private User user;
 
 
@@ -56,14 +55,6 @@ public class Order {
 
     public void setOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
-    }
-
-    public LocalDate getPickupDate() {
-        return pickupDate;
-    }
-
-    public void setPickupDate(LocalDate pickupDate) {
-        this.pickupDate = pickupDate;
     }
 
     public User getUser() {

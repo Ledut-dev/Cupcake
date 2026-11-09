@@ -3,100 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <title>Menu</title>
-  <link rel="stylesheet" href="../public/css/colors.css">
-  <link rel="stylesheet" href="../public/css/menu-style.css">
+    <link rel="stylesheet" href="../public/css/colors.css">
+    <link rel="stylesheet" href="../public/css/menu-style.css">
 
-  <script src="/js/menu.js" defer></script>
+    <script src="/js/menu.js" defer></script>
 </head>
 <body>
 
 <div id="header">
-  <!--lav grid-->
-  <!--butik navn+slogan-->
-  <!--basket knap-->
-  <!--kundenavn-->
-  <div id="header-grid">
+    <!--lav grid-->
+    <!--butik navn+slogan-->
+    <!--basket knap-->
+    <!--kundenavn-->
+    <div id="header-grid">
 
-  <div class="headerItem" style="grid-area: header-area-1"></div>
-  <div class="headerItem" style="grid-area: logo-area">
-    <img id="logomark" src="../public/svg/Copenhagen Cupcakes_title.svg" alt="Copenhagen Cupcakes">
-  </div>
-  <div class="headerItem" style="grid-area: header-area-3">
-  </div>
-    <div id="greeting" class="headerItem" style="grid-area: user-greeting">
-      <p>Hej, Lars</p> <!--th:text="'Hej, '+${session.user.getName()}"-->
-    </div>
-  <div class="headerItem" style="grid-area: header-area-4"></div>
-    <div class="headerItem" style="grid-area: slogan-area">
-      <img id="slogan" src="../public/svg/Artisan Cupcakes.svg" alt="Artisan Cupcakes">
-    </div>
-    <div class="headerItem" style="grid-area: header-area-6"></div>
+        <div class="headerItem" style="grid-area: header-area-1"></div>
+        <div class="headerItem" style="grid-area: logo-area">
+            <img id="logomark" src="../public/svg/Copenhagen Cupcakes_title.svg" alt="Copenhagen Cupcakes">
+        </div>
+        <div class="headerItem" style="grid-area: header-area-3">
+        </div>
+        <div id="greeting" class="headerItem" style="grid-area: user-greeting">
+            <p>Hej, Lars</p> <!--th:text="'Hej, '+${session.user.getName()}"-->
+        </div>
+        <div class="headerItem" style="grid-area: header-area-4"></div>
+        <div class="headerItem" style="grid-area: slogan-area">
+            <img id="slogan" src="../public/svg/Artisan Cupcakes.svg" alt="Artisan Cupcakes">
+        </div>
+        <div class="headerItem" style="grid-area: header-area-6"></div>
 
-</div>
+    </div>
 </div>
 
 <div id="test">
 
-<div id="select-options">
-  <form id="grid-container-1" action="/addToCart" method="post">
+    <div id="select-options">
+        <form id="grid-container-1" action="/addToCart" method="post">
 
-    <div id="cake-option" class="grid-container-1-item">
-      <label>
-        <select class="select-option" name="bottom">
-          <option value="" disabled selected hidden>Vælg bund</option>
-          <option th:each="bottom : ${session.cupcakeBottoms}"
-                  th:value="${bottom.flavor}"
-                  th:data-price="${bottom.price}"
-                  th:text="${bottom.flavor}+' '+${bottom.price}"></option>
-        </select>
-      </label>
+            <div id="cake-option" class="grid-container-1-item">
+                <label>
+                    <select class="select-option" name="bottom">
+                        <option value="" disabled selected hidden>Vælg bund</option>
+                        <option th:each="bottom : ${session.cupcakeBottoms}"
+                                th:value="${bottom.flavor}"
+                                th:data-price="${bottom.price}"
+                                th:text="${bottom.flavor}+' '+${bottom.price}"></option>
+                    </select>
+                </label>
+            </div>
+
+            <div id="topping-option" class="grid-container-1-item">
+                <label>
+                    <select class="select-option" name="top">
+                        <option value="" disabled selected hidden>Vælg topping</option>
+                        <option th:each="top : ${session.cupcakeTops}"
+                                th:value="${top.flavor}"
+                                th:data-price="${top.price}"
+                                th:text="${top.flavor}+' '+${top.price}"></option>
+                    </select>
+                </label>
+            </div>
+
+            <div id="line-price" class="grid-container-1-item">
+                <label>styk pris:</label>
+                <p id="priceText">0</p>
+            </div>
+
+            <div id="quantity" class="grid-container-1-item">
+                <label>
+                    <input type="number" required placeholder="Antal" min="1" max="50" name="quantity">
+                </label>
+            </div>
+
+
+            <button id="add-to-cart" class="grid-container-1-item" type="submit">Læg i kurv</button>
+
+
+        </form>
     </div>
-
-    <div id="topping-option" class="grid-container-1-item">
-      <label>
-        <select class="select-option" name="top">
-          <option value="" disabled selected hidden>Vælg topping</option>
-          <option th:each="top : ${session.cupcakeTops}"
-                  th:value="${top.flavor}"
-                  th:data-price="${top.price}"
-                  th:text="${top.flavor}+' '+${top.price}"></option>
-        </select>
-      </label>
-    </div>
-
-    <div id="line-price" class="grid-container-1-item" >
-      <label>styk pris:</label>
-      <p id="priceText">0</p>
-    </div>
-
-    <div id="quantity" class="grid-container-1-item"  >
-      <label>
-        <input type="number" required placeholder="Antal" min="1" max="50" name="quantity">
-      </label>
-    </div>
-
-
-    <button id="add-to-cart" class="grid-container-1-item" type="submit">Læg i kurv</button>
-
-
-  </form>
-</div>
-
-    <div> <!--th:if="${${session.user.cart.isNotEmpty()}}"-->
-      <form action="/order" method="post">
-        <button id="order" type="submit" >Bestil</button>
-    </form>
-  </div>
-
 </div>
 
 <div id="footer">
-  <p class="footerItem" style="grid-area: footer-1">Om os</p>
-  <p class="footerItem" style="grid-area: footer-2">Kontakt</p>
-  <p class="footerItem" style="grid-area: footer-3">Karriere</p>
-  <p class="footerItem" style="grid-area: footer-4">Økologi</p>
-  <p class="footerItem" style="grid-area: footer-5">CSR</p>
-  <p class="footerItem" style="grid-area: footer-6">Kage til din fest?</p>
+    <p class="footerItem" style="grid-area: footer-1">Om os</p>
+    <p class="footerItem" style="grid-area: footer-2">Kontakt</p>
+    <p class="footerItem" style="grid-area: footer-3">Karriere</p>
+    <p class="footerItem" style="grid-area: footer-4">Økologi</p>
+    <p class="footerItem" style="grid-area: footer-5">CSR</p>
+    <p class="footerItem" style="grid-area: footer-6">Kage til din fest?</p>
 
 
 </div>

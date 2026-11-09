@@ -53,11 +53,11 @@ public class UserController {
                 throw new IncorrectLoginInfoException("Forkert brugernavn/password");
             }
 
-            ctx.sessionAttribute("loggedInUser", user);
+            ctx.sessionAttribute("currentUser", user);
             ctx.sessionAttribute("isUserAdmin", userService.isUserAdmin(user));
 
         } catch (IncorrectLoginInfoException e){
-            ctx.attribute("errorMessage", e.getMessage());
+            ctx.attribute("error", e.getMessage());
             renderLoginForm(ctx);
         }
         ctx.redirect("/");

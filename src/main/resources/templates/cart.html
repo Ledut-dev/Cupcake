@@ -8,15 +8,15 @@
 
 <!-- Hver ordrelinje gives som en række i en tabel, så det er lettere at strukturere -->
 <table class="orderlines-table">
-    <tr th:each="orderline : ${session.order.orderlines}">
+    <tr th:each="orderline : ${session.cart.orderlines}">
         <td th:text="${orderline.quantity}">Amount</td>
-        <td> x </td>
+        <td> x</td>
         <td th:text="${orderline.cupcakeBottom}">Bottom</td>
         <td>/</td>
         <td th:text="${orderline.cupcakeTop}">Topping</td>
-        <td> á </td>
+        <td> á</td>
         <td th:text="${orderline.individualPrice}">Price</td>
-        <td> kr./stk. - </td>
+        <td> kr./stk. -</td>
         <td th:text="${orderline.totalPrice}">TotalPrice</td>
         <td> kr.</td>
     </tr>
@@ -24,8 +24,15 @@
 
 <div class="totalContainer">
     <p>Total: </p>
-    <p th:text="${session.order.total}">Total</p>
+    <p th:text="${session.cart.total}">Total</p>
     <p> kr.</p>
 </div>
+<div> <!-- Only show if cart is not empty? -->
+    <form action="/order" method="post">
+        <button id="order" type="submit">Bestil</button>
+    </form>
+</div>
+
+<span class="error-message" th:if="${error != null}" th:text="${error}"> Order error </span>
 </body>
 </html>
