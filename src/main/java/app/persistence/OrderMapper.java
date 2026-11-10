@@ -176,15 +176,15 @@ public class OrderMapper {
         List<Order> orders = new ArrayList<>();
         String query = """
             SELECT o.order_id, o.status, o.order_date,
-                   c.costumer_id, c.email, c.name,
+                   c.customer_id, c.email, c.name,
                    l.quantity,
-                   t.top_flavor, t.price AS top_price,
-                   b.bottom_flavor, b.price AS bottom_price
+                   t.flavor AS top_flavor, t.price AS top_price,
+                   b.flavor AS bottom_flavor, b.price AS bottom_price
             FROM orders o
-            JOIN customers c ON o.customer_id = c.costumer_id
+            JOIN customers c ON o.customer_id = c.customer_id
             JOIN orderlines l ON o.order_id = l.order_id
-            JOIN cupcake_tops t ON l.cupcake_top = t.top_flavor
-            JOIN cupcake_bottoms b ON l.cupcake_bottom = b.bottom_flavor
+            JOIN cupcake_tops t ON l.cupcake_topping = t.flavor
+            JOIN cupcake_bottoms b ON l.cupcake_bottom = b.flavor
             WHERE o.status = ?
             ORDER BY o.order_id
             """;
@@ -206,7 +206,7 @@ public class OrderMapper {
                                 OrderStatus.valueOf(rs.getString("status")),
                                 orderDate);
                                 currentOrder.setCustomer(new Customer(
-                                rs.getInt("costumer_id"),
+                                rs.getInt("customer_id"),
                                 rs.getString("email"),
                                 rs.getString("name")));
                         orders.add(currentOrder);

@@ -29,7 +29,7 @@ public class OrderController {
 
         // Admin gets
         config.routes.get("/order-history", ctx -> renderOrderHistory(ctx));
-        config.routes.get("/active-orders", ctx -> renderActiveOrders(ctx));
+        config.routes.get("/admin", ctx -> renderAdminFrontPage(ctx));
 
         // Admin posts
         config.routes.post("/orders/{id}/status", ctx -> updateOrderStatus(ctx));
@@ -162,12 +162,12 @@ public class OrderController {
         ctx.render("/order-history");
     }
 
-    private void renderActiveOrders(Context ctx) {
+    private void renderAdminFrontPage(Context ctx) {
         List<Order> placedOrders = orderService.getPlacedOrders();
         List<Order> approvedOrders = orderService.getApprovedOrders();
         ctx.attribute("placedOrders", placedOrders);
         ctx.attribute("approvedOrders", approvedOrders);
-        ctx.render("activeOrders");
+        ctx.render("admin");
     }
 
     private void updateOrderStatus(Context ctx) {
