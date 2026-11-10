@@ -1,8 +1,16 @@
-.expandable-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+body {
+    display: flex;
 }
+
+h4 {
+    justify-self: center;
+}
+
+ .expandable-table {
+     width: 100%;
+     border-collapse: collapse;
+     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+ }
 .expandable-table thead th {
     padding: 12px;
     background-color: #f2f2f2;

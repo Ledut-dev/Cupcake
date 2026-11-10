@@ -30,6 +30,7 @@
                 <div>
                     <strong>Ordredetaljer:</strong>
                     <ul>
+                        <!-- orderline.cupcakeBottom and top's getters return the flavor directly -->
                         <li th:each="orderline : ${order.orderlines}"
                             th:text="${orderline.cupcakeBottom != null && orderline.cupcakeTop != null &&
                             orderline.quantity != null && orderline.getTotalPrice() != null} ?
@@ -45,6 +46,6 @@
     </tbody>
 </table>
 
-<script src="js/admin.js" defer></script>
+<script src="js/expandable-table.js" defer></script>
 </body>
 </html>
