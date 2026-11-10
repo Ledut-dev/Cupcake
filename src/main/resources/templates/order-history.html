@@ -33,7 +33,7 @@
                         <li th:each="orderline : ${order.orderlines}"
                             th:text="${orderline.cupcakeBottom != null && orderline.cupcakeTop != null &&
                             orderline.quantity != null && orderline.getTotalPrice() != null} ?
-                            ${orderline.cupcakeBottom.flavor} + ' + ' + ${orderline.cupcakeTop.flavor} + ' (' +
+                            ${orderline.cupcakeBottom} + ' + ' + ${orderline.cupcakeTop} + ' (' +
                             ${orderline.quantity} + ') - ' + ${orderline.getTotalPrice()} + 'kr'">
                             Bundsmag + toppingsmag (antal) - pris
                         </li>
