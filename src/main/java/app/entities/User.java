@@ -34,6 +34,12 @@ public abstract class User {
     }
 
 
+    public User(int id, String email, String name) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+    }
+
     public String getEmail() {
         return this.email;
     }

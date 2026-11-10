@@ -1,7 +1,7 @@
 package app.controllers;
-
 import app.entities.*;
 import app.exceptions.BalanceTooLowException;
+
 import app.persistence.ConnectionPool;
 import app.services.OrderService;
 import io.javalin.config.JavalinConfig;
@@ -10,8 +10,6 @@ import io.javalin.http.Context;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import app.entities.OrderStatus;
 
 public class OrderController {
     private ConnectionPool connectionPool;
@@ -28,7 +26,8 @@ public class OrderController {
         config.routes.get("/menu", ctx -> renderMenu(ctx));
         config.routes.post("/addToCart", ctx -> addToCart(ctx));
         config.routes.post("/order", ctx -> order(ctx));
-
+        config.routes.get("/active-orders", ctx -> renderActiveOrders(ctx));
+        config.routes.post("/orders/{id}/status", ctx -> updateOrderStatus(ctx));
     }
 
     public void renderMenu(Context ctx) { //creates lists of all cupcaketops and bpttoms, savess the lists as sessionAttributes and renders /menu
@@ -153,5 +152,18 @@ public class OrderController {
 
     }
 
+    private void renderActiveOrders(Context ctx) {
+        List<Order> placedOrders = orderService.getPlacedOrders();
+        List<Order> approvedOrders = orderService.getApprovedOrders();
+        ctx.attribute("placedOrders", placedOrders);
+        ctx.attribute("approvedOrders", approvedOrders);
+        ctx.render("activeOrders");
+    }
 
+    private void updateOrderStatus(Context ctx) {
+        String status = ctx.formParam("status");
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        orderService.updateOrderStatus(id, status);
+        ctx.redirect("/active-orders");
+    }
 }

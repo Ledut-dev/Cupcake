@@ -19,8 +19,6 @@ public class OrderService {
         this.orderMapper=new OrderMapper(connectionPool);
     }
 
-
-
     public List<CupcakeTop> allCakeTops(){
        List <CupcakeTop> allCakeTops=null;
         try{
@@ -68,6 +66,16 @@ public class OrderService {
         }
     }
 
+    public List<Order> getPlacedOrders() {
+        return orderMapper.getPlacedOrders();
+    }
 
+    public List<Order> getApprovedOrders() {
+        return orderMapper.getApprovedOrders();
+    }
+
+    public void updateOrderStatus(int id, String status) {
+        orderMapper.updateOrderStatus(id, status);
+    }
 
 }
