@@ -6,14 +6,14 @@
 </head>
 <body>
 
-<div th:if="${session.loggedInUser == null}">
+<div th:if="${session.currentUser == null}">
 <form method="GET" action="/login">
     <button class="button" type="submit">Login</button>
 </form>
 </div>
 
-<div th:if="${session.loggedInUser != null}">
-    <p th:text="${'Welcome ' + session.loggedInUser.name}">Welcome message</p>
+<div th:if="${session.currentUser != null}">
+    <p th:text="${'Welcome ' + session.currentUser.name}">Welcome message</p>
 
     <form method="GET" action="/logout">
         <button class="button" type="submit">Logout</button>
