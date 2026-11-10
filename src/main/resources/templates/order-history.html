@@ -32,9 +32,9 @@
                     <ul>
                         <!-- orderline.cupcakeBottom and top's getters return the flavor directly -->
                         <li th:each="orderline : ${order.orderlines}"
-                            th:text="${orderline.cupcakeBottom != null && orderline.cupcakeTop != null &&
+                            th:text="${orderline.cupcakeBottom.flavor != null && orderline.cupcakeTop.flavor != null &&
                             orderline.quantity != null && orderline.getTotalPrice() != null} ?
-                            ${orderline.cupcakeBottom} + ' + ' + ${orderline.cupcakeTop} + ' (' +
+                            ${orderline.cupcakeBottom.flavor} + ' + ' + ${orderline.cupcakeTop.flavor} + ' (' +
                             ${orderline.quantity} + ') - ' + ${orderline.getTotalPrice()} + 'kr'">
                             Bundsmag + toppingsmag (antal) - pris
                         </li>
