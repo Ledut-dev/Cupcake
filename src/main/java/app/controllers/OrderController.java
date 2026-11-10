@@ -3,6 +3,7 @@ import app.entities.*;
 import app.exceptions.BalanceTooLowException;
 import app.persistence.ConnectionPool;
 import app.services.OrderService;
+import app.util.StringCapitalizer;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.Context;
 
@@ -44,11 +45,11 @@ public class OrderController {
 
         cupcakeTops.add(new CupcakeTop("Vanilla", 10));
         cupcakeTops.add(new CupcakeTop("Chocolate", 15));
-        cupcakeTops.add(new CupcakeTop("banana", 20));
+        cupcakeTops.add(new CupcakeTop("Banana", 20));
 
-        cupcakeBottoms.add(new CupcakeBottom("plain", 10));
-        cupcakeBottoms.add(new CupcakeBottom("red", 15));
-        cupcakeBottoms.add(new CupcakeBottom("caramel", 20));
+        cupcakeBottoms.add(new CupcakeBottom("Plain", 10));
+        cupcakeBottoms.add(new CupcakeBottom("Red", 15));
+        cupcakeBottoms.add(new CupcakeBottom("Caramel", 20));
 
 
         ctx.sessionAttribute("cupcakeTops", cupcakeTops);
@@ -88,6 +89,9 @@ public class OrderController {
         Order cart = sessionAttributeCart(ctx);
         cart.addOrderline(orderline);
 
+        String message = orderline + " tilføjet til kurv";
+        StringCapitalizer sc = new StringCapitalizer();
+        ctx.attribute("message", sc.capitalizeFirstOnly(message));
         ctx.render("menu");
     }
 
