@@ -1,5 +1,4 @@
 package app.controllers;
-
 import app.entities.*;
 import app.exceptions.BalanceTooLowException;
 import app.persistence.ConnectionPool;
@@ -30,13 +29,10 @@ public class OrderController {
 
         // Admin gets
         config.routes.get("/order-history", ctx -> renderOrderHistory(ctx));
+        config.routes.get("/active-orders", ctx -> renderActiveOrders(ctx));
+
         // Admin posts
-
-    }
-
-    private void renderOrderHistory(Context ctx) {
-        ctx.attribute("orders", orderService.getOrderHistory());
-        ctx.render("/order-history");
+        config.routes.post("/orders/{id}/status", ctx -> updateOrderStatus(ctx));
     }
 
     public void renderMenu(Context ctx) { //creates lists of all cupcaketops and bpttoms, savess the lists as sessionAttributes and renders /menu
@@ -161,5 +157,23 @@ public class OrderController {
 
     }
 
+    private void renderOrderHistory(Context ctx) {
+        ctx.attribute("orders", orderService.getOrderHistory());
+        ctx.render("/order-history");
+    }
 
+    private void renderActiveOrders(Context ctx) {
+        List<Order> placedOrders = orderService.getPlacedOrders();
+        List<Order> approvedOrders = orderService.getApprovedOrders();
+        ctx.attribute("placedOrders", placedOrders);
+        ctx.attribute("approvedOrders", approvedOrders);
+        ctx.render("activeOrders");
+    }
+
+    private void updateOrderStatus(Context ctx) {
+        String status = ctx.formParam("status");
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        orderService.updateOrderStatus(id, status);
+        ctx.redirect("/active-orders");
+    }
 }

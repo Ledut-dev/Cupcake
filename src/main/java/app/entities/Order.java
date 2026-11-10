@@ -6,57 +6,50 @@ import java.util.List;
 
 public class Order {
     private int id;
+    private Customer customer;
     private List<Orderline> orderlines;
     private OrderStatus status;
-    private User customer;
     private LocalDate orderDate;
+
     // Constructors
-    public Order(int id, OrderStatus status){ //constructor to use in mapper method that returns a order
-        this.id = id;
-        this.status = status;
-        orderlines = new ArrayList<>();
-    }
-
-    public Order() { //constructor to use when new user is logged in and cart is empty
-        this.status=OrderStatus.CART;
-        orderlines = new ArrayList<>();
-    }
-
-    public Order(int id, OrderStatus status, LocalDate orderDate){ //constructor to use in mapper method that returns a orderExpand commentComment on line R16
+    public Order(int id, OrderStatus status, LocalDate orderDate){ //constructor to use in mapper method that returns a order
         this.id = id;
         this.status = status;
         orderlines = new ArrayList<>();
         this.orderDate = orderDate;
     }
 
-    // Getters/setters
-
-
-    public int getId() {
-        return id;
+    public Order(){ //constructor to use when new user is logged in and cart is empty
+        this.status=OrderStatus.CART;
+        orderlines = new ArrayList<>();
     }
 
-    public void setId(int id) {
-        this.id = id;
+    // Getters/setters
+    public List<Orderline> getOrderlines() {
+        return orderlines;
     }
 
     public void setOrderlines(List<Orderline> orderlines) {
         this.orderlines = orderlines;
     }
 
-    public OrderStatus getStatus() {
-        return status;
+    public int getId() {
+        return id;
+    }
+
+    public String getStatus() {
+        return String.valueOf(status);
     }
 
     public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
-    public User getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
 
-    public void setCustomer(User customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
@@ -66,10 +59,6 @@ public class Order {
 
     public void setOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
-    }
-
-    public List<Orderline> getOrderlines() {
-        return orderlines;
     }
 
     // Methods
@@ -83,5 +72,16 @@ public class Order {
             total += orderline.getTotalPrice();
         }
         return total;
+    }
+
+    public int getSize() {
+        int size = 0;
+        for (Orderline orderline : orderlines) {
+            size += orderline.getQuantity();
+        }
+        return size;
+    }
+
+    public void setUser(User currentUser) {
     }
 }

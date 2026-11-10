@@ -11,5 +11,4 @@ public class Customer extends User{
     public Customer(int id, String email, String name) {
         super(id, email, name);
     }
-
 }
