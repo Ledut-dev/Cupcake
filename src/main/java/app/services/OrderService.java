@@ -78,4 +78,18 @@ public class OrderService {
         orderMapper.updateOrderStatus(id, status);
     }
 
+    public void completeOrder(Order order){
+        try {
+            orderMapper.saveToOrderHistory(order);
+
+            for (Orderline ol : order.getOrderlines()){
+                orderMapper.saveToOrderlineHistory(ol, order.getId());
+            }
+
+            orderMapper.removeOrder(order);
+
+        } catch (DatabaseException e) {
+            e.getMessage();
+        }
+    }
 }

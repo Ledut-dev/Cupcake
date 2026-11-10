@@ -49,8 +49,8 @@ public class OrderMapper {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
             stm.setInt(1, orderId);
-            stm.setString(2, orderline.getCupcakeTop());
-            stm.setString(3,  orderline.getCupcakeBottom());
+            stm.setString(2, orderline.getCupcakeTop().getFlavor());
+            stm.setString(3,  orderline.getCupcakeBottom().getFlavor());
             stm.setInt(4, orderline.getQuantity());
 
         } catch (SQLException e) {
@@ -179,5 +179,60 @@ public class OrderMapper {
             //throw new DatabaseException("Fejl ved søgning efter aktive ordrer");
         }
         return orders;
+    }
+
+    public void saveToOrderHistory(Order order) throws DatabaseException {
+        String query = """
+                INSERT INTO order_history (customer_id, status)
+                VALUES (?, ?)
+                """;
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement stm = connection.prepareStatement(query)) {
+            stm.setInt(1, order.getCustomer().getId());
+            stm.setString(2, order.getStatus());
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            throw new DatabaseException("Ordre kunne ikke gemmes");
+        }
+
+    }
+
+    public void saveToOrderlineHistory(Orderline orderline, int orderId) throws DatabaseException {
+        String query = """
+                INSERT INTO orderline_history (order_id, cupcake_topping, cupcake_bottom, cupcake_topping_price, cupcake_bottom_price, quantity)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """;
+
+            try (Connection connection = connectionPool.getConnection();
+                 PreparedStatement stm = connection.prepareStatement(query)) {
+                stm.setInt(1, orderId);
+                stm.setString(2, orderline.getCupcakeTop().getFlavor());
+                stm.setString(3, orderline.getCupcakeBottom().getFlavor());
+                stm.setDouble(4, orderline.getCupcakeTop().getPrice());
+                stm.setDouble(5, orderline.getCupcakeBottom().getPrice());
+                stm.setInt(6, orderline.getQuantity());
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                logger.error(e.getMessage());
+                throw new DatabaseException("Ordreline kunne ikke gemmes");
+            }
+        }
+
+    public void removeOrder(Order order) throws DatabaseException {
+    String query = """
+            DELETE FROM orders
+            WHERE order_id = ?
+            """;
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement stm = connection.prepareStatement(query)) {
+            stm.setInt(1, order.getId());
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            throw new DatabaseException("Ordre kunne ikke slettes");
+        }
     }
 }
