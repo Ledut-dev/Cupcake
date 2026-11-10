@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/admin-style.css"/>
+    <title>Ordrehistorik</title>
+</head>
+<body>
+<table class="expandable-table" id="orderHistoryTable">
+    <thead>
+    <tr>
+        <th scope="col" style="width: 5%;"></th>
+        <th scope="col">Ordre ID</th>
+        <th scope="col">Email</th>
+        <th scope="col">Totalpris</th>
+        <th scope="col">Bestillingsdato</th>
+    </tr>
+    </thead>
+    <tbody>
+    <div th:each="order : ${orders}">
+        <tr class="row-expandable">
+            <td><span class="expand-icon">+</span></td>
+            <td><span th:if="${order.id != null}" th:text="${order.id}">Ordre ID</span></td>
+            <td><span th:if="${order.customer.email != null}" th:text="${order.customer.email}">Email</span></td>
+            <td><span th:if="${order.getTotal() != null}" th:text="${order.getTotal()}">Totalpris</span></td>
+            <td><span th:if="${order.orderDate != null}" th:text="${order.orderDate}">Bestillingsdato</span></td>
+        </tr>
+        <tr class="row-details">
+            <td colspan="6">
+                <div>
+                    <strong>Ordredetaljer:</strong>
+                    <ul>
+                        <!-- orderline.cupcakeBottom and top's getters return the flavor directly -->
+                        <li th:each="orderline : ${order.orderlines}"
+                            th:text="${orderline.cupcakeBottom != null && orderline.cupcakeTop != null &&
+                            orderline.quantity != null && orderline.getTotalPrice() != null} ?
+                            ${orderline.cupcakeBottom} + ' + ' + ${orderline.cupcakeTop} + ' (' +
+                            ${orderline.quantity} + ') - ' + ${orderline.getTotalPrice()} + 'kr'">
+                            Bundsmag + toppingsmag (antal) - pris
+                        </li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    </div>
+    </tbody>
+</table>
+
+<script src="js/expandable-table.js" defer></script>
+</body>
+</html>
