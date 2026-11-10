@@ -13,7 +13,7 @@
 </div>
 
 <div id="greeting" class="headerItem" style="grid-area: user-greeting" th:if="${session.currentUser != null}">
-    <p th:text="${'Welcome ' + session.currentUser.name}">Welcome message</p>
+    <p th:text="${'Velkommen ' + session.currentUser.name}">Welcome message</p>
 
     <a href="/logout">Log ud</a>
 

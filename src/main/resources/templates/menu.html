@@ -21,7 +21,9 @@
         <div class="headerItem" style="grid-area: logo-area">
             <img id="logomark" src="../public/svg/Copenhagen Cupcakes_title.svg" alt="Copenhagen Cupcakes">
         </div>
+
         <a href="/">Tilbage til forsiden</a>
+
         <div class="headerItem" style="grid-area: header-area-3">
         </div>
         <div class="headerItem" th:if="${session.currentUser == null}">
@@ -31,7 +33,7 @@
         </div>
 
         <div id="greeting" class="headerItem" style="grid-area: user-greeting" th:if="${session.currentUser != null}">
-            <p th:text="${'Welcome ' + session.currentUser.name}">Welcome message</p>
+            <p th:text="${'Velkommen ' + session.currentUser.name}">Welcome message</p>
 
             <a href="/logout">Log ud</a>
 
