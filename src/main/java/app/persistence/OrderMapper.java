@@ -46,8 +46,6 @@ public class OrderMapper {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
             stm.setInt(1, orderId);
-            stm.setString(2, orderline.getCupcakeTop());
-            stm.setString(3, orderline.getCupcakeBottom());
             stm.setString(2, orderline.getCupcakeTop().getFlavor());
             stm.setString(3,  orderline.getCupcakeBottom().getFlavor());
             stm.setInt(4, orderline.getQuantity());
