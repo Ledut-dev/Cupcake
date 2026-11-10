@@ -1,3 +1,4 @@
+// Enables expandable/collapsible rows for a table.
 function enableExpandableRows(tableId) {
     const table = document.getElementById(tableId);
     if (!table) return;
@@ -9,12 +10,14 @@ function enableExpandableRows(tableId) {
 
         // Find the very next TR element, which is the details row
         const detailsRow = expandableRow.nextElementSibling;
-        if (detailsRow && detailsRow.classList.contains('order-details')) {
+        if (detailsRow && detailsRow.classList.contains('row-details')) {
             expandableRow.classList.toggle('open');
             detailsRow.classList.toggle('visible');
         }
     });
 }
 
+// Initialize the functionality
+enableExpandableRows('orderHistoryTable');
 enableExpandableRows('placed-orders-table');
 enableExpandableRows('approved-orders-table');

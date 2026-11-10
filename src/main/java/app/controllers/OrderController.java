@@ -1,7 +1,6 @@
 package app.controllers;
 import app.entities.*;
 import app.exceptions.BalanceTooLowException;
-
 import app.persistence.ConnectionPool;
 import app.services.OrderService;
 import io.javalin.config.JavalinConfig;
@@ -21,12 +20,18 @@ public class OrderController {
     }
 
     public void setRoutes(JavalinConfig config) {
-
+        // Customer gets
         config.routes.get("/cart", ctx -> renderCart(ctx));
         config.routes.get("/menu", ctx -> renderMenu(ctx));
+        // Customer posts
         config.routes.post("/addToCart", ctx -> addToCart(ctx));
         config.routes.post("/order", ctx -> order(ctx));
-        config.routes.get("/active-orders", ctx -> renderActiveOrders(ctx));
+
+        // Admin gets
+        config.routes.get("/order-history", ctx -> renderOrderHistory(ctx));
+        config.routes.get("/admin", ctx -> renderAdminFrontPage(ctx));
+
+        // Admin posts
         config.routes.post("/orders/{id}/status", ctx -> updateOrderStatus(ctx));
     }
 
@@ -128,7 +133,7 @@ public class OrderController {
             cart = ctx.sessionAttribute("cart");
             if (cart == null) throw new NullPointerException();
             if (currentUser != null) {
-                cart.setUser(currentUser);
+                cart.setCustomer((Customer) currentUser);
                 ctx.sessionAttribute("cart", cart);
                 return cart;
             }
@@ -152,12 +157,17 @@ public class OrderController {
 
     }
 
-    private void renderActiveOrders(Context ctx) {
+    private void renderOrderHistory(Context ctx) {
+        ctx.attribute("orders", orderService.getOrderHistory());
+        ctx.render("/order-history");
+    }
+
+    private void renderAdminFrontPage(Context ctx) {
         List<Order> placedOrders = orderService.getPlacedOrders();
         List<Order> approvedOrders = orderService.getApprovedOrders();
         ctx.attribute("placedOrders", placedOrders);
         ctx.attribute("approvedOrders", approvedOrders);
-        ctx.render("activeOrders");
+        ctx.render("admin");
     }
 
     private void updateOrderStatus(Context ctx) {
