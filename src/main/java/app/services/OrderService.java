@@ -91,11 +91,12 @@ public class OrderService {
     }
 
     public void completeOrder(Order order){
+        order.setStatus(OrderStatus.COMPLETED);
         try {
-            orderMapper.saveToOrderHistory(order);
+            int historicOrderId = orderMapper.saveToOrderHistory(order);
 
             for (Orderline ol : order.getOrderlines()){
-                orderMapper.saveToOrderlineHistory(ol, order.getId());
+                orderMapper.saveToOrderlineHistory(ol, historicOrderId);
             }
 
             orderMapper.removeOrder(order);

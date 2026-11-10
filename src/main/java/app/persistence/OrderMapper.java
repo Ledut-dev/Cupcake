@@ -226,22 +226,30 @@ public class OrderMapper {
         return orders;
     }
 
-    public void saveToOrderHistory(Order order) throws DatabaseException {
+    public int saveToOrderHistory(Order order) throws DatabaseException {
+        int orderId;
         String query = """
-                INSERT INTO order_history (customer_id, status)
-                VALUES (?, ?)
+                INSERT INTO order_history (customer_id, status, order_date)
+                VALUES (?, ?, ?)
                 """;
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
             stm.setInt(1, order.getCustomer().getId());
             stm.setString(2, order.getStatus());
+            stm.setDate(3, Date.valueOf(order.getOrderDate()));
             stm.executeUpdate();
+
+            try (ResultSet rs = stm.getGeneratedKeys()) {
+                if (rs.next()) {
+                    orderId=rs.getInt("id");
+                } else throw new DatabaseException("argument kunne ikke oprettes");
+            }
         } catch (SQLException e) {
             logger.error(e.getMessage());
             throw new DatabaseException("Ordre kunne ikke gemmes");
         }
-
+        return orderId;
     }
 
     public void saveToOrderlineHistory(Orderline orderline, int orderId) throws DatabaseException {
