@@ -12,7 +12,7 @@ public class Order {
     private LocalDate orderDate;
 
 
-    public Order(int id, OrderStatus status, LocalDate orderDate, LocalDate pickupDate){ //constructor to use in mapper method that returns a order
+    public Order(int id, OrderStatus status, LocalDate orderDate){ //constructor to use in mapper method that returns a order
         this.id = id;
         this.status = status;
         orderlines = new ArrayList<>();
@@ -62,15 +62,13 @@ public class Order {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    public void setOrderDate(LocalDate orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public User getUser() {
-        return user;
     }
 
     public LocalDate getOrderDate() {
         return orderDate;
+    }
+
+    public void setOrderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
     }
 }

@@ -2,18 +2,15 @@ package app.persistence;
 
 import app.entities.*;
 import app.exceptions.DatabaseException;
-import app.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
 import java.time.LocalDate;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,13 +24,12 @@ public class OrderMapper {
     public int saveOrder(Order order) throws DatabaseException{
         int orderId = 0;
 
-        String query="INSERT INTO orders (customer_id, status) VALUES(?, ?, ?)";
+        String query="INSERT INTO orders (customer_id, status) VALUES(?, ?)";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
              stm.setInt(1, order.getCustomer().getId());
              stm.setString(2, String.valueOf(order.getStatus()));
-             stm.setDate(3, Date.valueOf(order.getOrderDate()));
 
             try (ResultSet rs = stm.getGeneratedKeys()) {
                 if (rs.next()) {
@@ -136,7 +132,7 @@ public class OrderMapper {
     private List<Order> getOrdersByStatus(OrderStatus status) {
         List<Order> orders = new ArrayList<>();
         String query = """
-            SELECT o.order_id, o.status, o.order_date, o.pickup_date,
+            SELECT o.order_id, o.status, o.order_date,
                    c.costumer_id, c.email, c.name,
                    l.quantity,
                    t.top_flavor, t.price AS top_price,
@@ -161,13 +157,11 @@ public class OrderMapper {
 
                     if (currentOrder == null || currentOrder.getId() != orderId) {
                         LocalDate orderDate = rs.getDate("order_date").toLocalDate();
-                        LocalDate pickupDate = rs.getDate("pickup_date").toLocalDate();
 
                         currentOrder = new Order(
                                 orderId,
                                 OrderStatus.valueOf(rs.getString("status")),
-                                orderDate,
-                                pickupDate);
+                                orderDate);
                                 currentOrder.setCustomer(new Customer(
                                 rs.getInt("costumer_id"),
                                 rs.getString("email"),

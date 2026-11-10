@@ -3,9 +3,6 @@ package app.services;
 
 import app.entities.*;
 import app.exceptions.DatabaseException;
-import app.entities.CupcakeBottom;
-import app.entities.CupcakeTop;
-import app.entities.Order;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
 
@@ -21,8 +18,6 @@ public class OrderService {
         this.connectionPool=connectionPool;
         this.orderMapper=new OrderMapper(connectionPool);
     }
-
-
 
     public List<CupcakeTop> allCakeTops(){
        List <CupcakeTop> allCakeTops=null;
@@ -70,8 +65,6 @@ public class OrderService {
             }
         }
     }
-
-
 
     public List<Order> getPlacedOrders() {
         return orderMapper.getPlacedOrders();
