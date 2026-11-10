@@ -90,4 +90,19 @@ public class OrderService {
         orderMapper.updateOrderStatus(id, status);
     }
 
+    public void completeOrder(Order order){
+        order.setStatus(OrderStatus.COMPLETED);
+        try {
+            int historicOrderId = orderMapper.saveToOrderHistory(order);
+
+            for (Orderline ol : order.getOrderlines()){
+                orderMapper.saveToOrderlineHistory(ol, historicOrderId);
+            }
+
+            orderMapper.removeOrder(order);
+
+        } catch (DatabaseException e) {
+            e.getMessage();
+        }
+    }
 }
