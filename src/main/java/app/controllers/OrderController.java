@@ -178,7 +178,7 @@ public class OrderController {
         String status = ctx.formParam("status");
         int id = Integer.parseInt(ctx.pathParam("id"));
         orderService.updateOrderStatus(id, status);
-        ctx.redirect("/active-orders");
+        ctx.redirect("/admin");
     }
 
     private void redirectCustomer(Context ctx){
