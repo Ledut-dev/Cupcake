@@ -5,7 +5,6 @@
     <title>Login</title>
 </head>
 <body>
-<a href="/registerForm">Opret Bruger</a>
 
 <div class="login">
   <form class="formula" method="POST" action="/login">
@@ -22,6 +21,8 @@
   <div class="errorMessage" th:if="${errorMessage != null}">
     <p th:text="${errorMessage}">Fejlbesked</p>
   </div>
+
+  <a href="/registerForm">Opret Bruger</a>
 
 </div>
 
