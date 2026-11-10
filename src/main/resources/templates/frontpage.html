@@ -2,26 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Copenhagen Cupcakes</title>
 </head>
 <body>
 
-<div th:if="${session.loggedInUser == null}">
+<div th:if="${session.currentUser == null}">
 <form method="GET" action="/login">
     <button class="button" type="submit">Login</button>
 </form>
 </div>
 
-<div th:if="${session.loggedInUser != null}">
-    <p th:text="${'Welcome ' + session.loggedInUser.name}">Welcome message</p>
+<div th:if="${session.currentUser != null}">
+    <p th:text="${'Velkommen ' + session.currentUser.name}">Welcome message</p>
 
-    <form method="GET" action="/logout">
-        <button class="button" type="submit">Logout</button>
-    </form>
+    <a href="/logout">Log ud</a>
 
 </div>
 
-<a href="/menu">gå til menu</a>
+<a href="/menu">Gå til menu</a>
+
+<a href="/cart">Se din kurv</a>
 
 </body>
 </html>

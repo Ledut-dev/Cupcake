@@ -83,7 +83,7 @@ public class UserController {
 	}
 
     private void logout(Context ctx){
-        ctx.sessionAttribute("loggedInUser", null);
+        ctx.sessionAttribute("currentUser", null);
         ctx.sessionAttribute("isUserAdmin", false);
         ctx.redirect("/");
     }
