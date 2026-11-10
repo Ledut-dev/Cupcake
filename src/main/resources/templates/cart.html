@@ -20,7 +20,7 @@
 </div>
 
 <!-- Hver ordrelinje gives som en række i en tabel, så det er lettere at strukturere -->
-<table class="orderlines-table">
+<table th:if="${session.cart != null}" class="orderlines-table">
     <tr th:each="orderline : ${session.cart.orderlines}">
         <td th:text="${orderline.quantity}">Amount</td>
         <td> x</td>
@@ -35,7 +35,7 @@
     </tr>
 </table>
 
-<div class="totalContainer">
+<div th:if="${session.cart != null}" class="totalContainer">
     <p>Total: </p>
     <p th:text="${session.cart.total}">Total</p>
     <p> kr.</p>
