@@ -2,32 +2,19 @@
 'https://plantuml.com/class-diagram
 !pragma layout smetana
 
-class CupcakeTop{
--String flavor
--double price
+abstract class User{
+-int id
+-String email
+-String name
+-String password
+-double balance
 }
 
-class CupcakeBottom{
--String flavor
--double price
+class Admin extends User{
 }
 
-class Orderline{
-- CupcakeBottom cupcakeBottom
-- CupcakeTop cupcakeTop
-- int quantity
-
-+ double getIndividualPrice()
-+ double getTotalPrice()
+class Customer extends User{
 }
-
-class HistoricOrderline extends Orderline{
-- double cupcakeBottomPrice
-- double cupcakeTopPrice
-
-+ double getTotalPrice()
-}
-
 
 class Order {
  - int id
@@ -41,24 +28,42 @@ class Order {
  + double getSize()
 }
 
+class Orderline{
+- CupcakeBottom cupcakeBottom
+- CupcakeTop cupcakeTop
+- int quantity
+
++ double getIndividualPrice()
++ double getTotalPrice()
+}
+
+class CupcakeTop{
+-String flavor
+-double price
+}
+
+class CupcakeBottom{
+-String flavor
+-double price
+}
+
+class HistoricOrderline extends Orderline{
+- double cupcakeBottomPrice
+- double cupcakeTopPrice
+
++ double getTotalPrice()
+}
+
+class StringCapitalizer {
++ String capitalizeFirstOnly(string)
+}
+
 Enum OrderStatus{
 CART
 PLACED
 APPROVED
 COMPLETED
 DENIED
-}
-
-class OrderService{
--OrderMapper orderMapper
-
-+ void saveOrder(order)
-+ void saveOrderlines(orderId, order)
-+ List<Order> getOrderHistory()
-+ List<Order> getPlacedOrders()
-+ List<Order> getApprovedOrders()
-+ void updateOrderStatus(id, status)
-+ void completeOrder(order)
 }
 
 class OrderController{
@@ -79,6 +84,18 @@ class OrderController{
 - void redirectAdmin(ctx)
 }
 
+class OrderService{
+-OrderMapper orderMapper
+
++ void saveOrder(order)
++ void saveOrderlines(orderId, order)
++ List<Order> getOrderHistory()
++ List<Order> getPlacedOrders()
++ List<Order> getApprovedOrders()
++ void updateOrderStatus(id, status)
++ void completeOrder(order)
+}
+
 class OrderMapper {
 -ConnectionPool connectionPool
 - Logger logger
@@ -95,20 +112,6 @@ class OrderMapper {
 + int saveToOrderHistory(order)
 + void saveToOrderlineHistory(orderline, orderId)
 + void removeOrder(order)
-}
-
-abstract class User{
--int id
--String email
--String name
--String password
--double balance
-}
-
-class Customer extends User{
-}
-
-class Admin extends User{
 }
 
 class UserController{
@@ -144,17 +147,14 @@ class UserMapper{
 + User createUser(user)
 }
 
-class StringCapitalizer {
-+ String capitalizeFirstOnly(string)
-}
-
-
 Order *-- Orderline
+OrderStatus <-- Order
 Orderline *-- CupcakeBottom
 Orderline *-- CupcakeTop
 Customer "1"-- "0..*"Order
 OrderService --> OrderMapper
 OrderController --> OrderService
+StringCapitalizer <-- OrderController
 UserService --> UserMapper
 UserController --> UserService
 
