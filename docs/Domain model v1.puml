@@ -1,0 +1,18 @@
+@startuml
+'https://plantuml.com/class-diagram
+!pragma layout smetana
+
+object Admin
+
+object Customer
+
+object Order
+
+object Cupcake
+
+
+Customer "1" --- "0..*"Order
+Order "0..*" --- "1..*" Cupcake
+
+
+@enduml
