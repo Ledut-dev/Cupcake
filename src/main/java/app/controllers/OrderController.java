@@ -41,21 +41,9 @@ public class OrderController {
     }
 
     public void renderMenu(Context ctx) { //creates lists of all cupcaketops and bpttoms, savess the lists as sessionAttributes and renders /menu
-        // List<CupcakeTop> cupcakeTops =orderService.allCakeTops();
-        //List <CupcakeBottom> cupcakeBottoms = orderService.allCakeBottoms();
         redirectAdmin(ctx);
-
-        List<CupcakeTop> cupcakeTops = new ArrayList<>();
-        List<CupcakeBottom> cupcakeBottoms = new ArrayList<>();
-
-        cupcakeTops.add(new CupcakeTop("Vanilla", 10));
-        cupcakeTops.add(new CupcakeTop("Chocolate", 15));
-        cupcakeTops.add(new CupcakeTop("Banana", 20));
-
-        cupcakeBottoms.add(new CupcakeBottom("Plain", 10));
-        cupcakeBottoms.add(new CupcakeBottom("Red", 15));
-        cupcakeBottoms.add(new CupcakeBottom("Caramel", 20));
-
+        List<CupcakeTop> cupcakeTops =orderService.allCakeTops();
+        List <CupcakeBottom> cupcakeBottoms = orderService.allCakeBottoms();
 
         ctx.sessionAttribute("cupcakeTops", cupcakeTops);
         ctx.sessionAttribute("cupcakeBottoms", cupcakeBottoms);
@@ -63,7 +51,7 @@ public class OrderController {
         ctx.render("menu");
     }
 
-    public void addToCart(Context ctx) { //gets sessionAttribute user, cupcaketops(list), cupcakebottoms(list), checks if there is a sessionAttribute cart. ggets the cupcake choice from form in html, creates an orderline and adds to car
+    private void addToCart(Context ctx) { //gets sessionAttribute user, cupcaketops(list), cupcakebottoms(list), checks if there is a sessionAttribute cart. ggets the cupcake choice from form in html, creates an orderline and adds to car
 
         User currentUser = getCurrentUser(ctx);
 
@@ -91,7 +79,7 @@ public class OrderController {
 
         Orderline orderline = new Orderline(currentCupcakeBottom, currentCupcakeTop, quantity);
 
-        Order cart = sessionAttributeCart(ctx);
+        Order cart = checkCartAttribute(ctx);
         cart.addOrderline(orderline);
 
         String message = orderline + " tilføjet til kurv";
@@ -112,7 +100,7 @@ public class OrderController {
             ctx.redirect("/login");
         }
 
-        Order cart = sessionAttributeCart(ctx);
+        Order cart = checkCartAttribute(ctx);
 
         // Check if account balance is big enough
         // NullPointer if balance is Null
@@ -134,7 +122,7 @@ public class OrderController {
         }
     }
 
-    public Order sessionAttributeCart(Context ctx) {
+    private Order checkCartAttribute(Context ctx) {
 
         User currentUser = getCurrentUser(ctx);
         Order cart;
@@ -155,7 +143,7 @@ public class OrderController {
         return null;
     }
 
-    public User getCurrentUser(Context ctx) {
+    private User getCurrentUser(Context ctx) {
 
         try {
             User currentUser = ctx.sessionAttribute("currentUser");
