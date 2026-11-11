@@ -11,12 +11,12 @@ public class Orderline {
         this.quantity = quantity;
     }
 
-    public String getCupcakeTop() {
-        return cupcakeTop.getFlavor();
+    public CupcakeTop getCupcakeTop() {
+        return cupcakeTop;
     }
 
-    public String getCupcakeBottom() {
-        return cupcakeBottom.getFlavor();
+    public CupcakeBottom getCupcakeBottom() {
+        return cupcakeBottom;
     }
 
     public double getIndividualPrice() {
@@ -29,5 +29,10 @@ public class Orderline {
 
     public double getTotalPrice() {
         return getIndividualPrice() * quantity;
+    }
+
+    @Override
+    public String toString() {
+        return cupcakeBottom.getFlavor() + " " + cupcakeTop.getFlavor() + " cupcake (" + quantity + " styk)";
     }
 }

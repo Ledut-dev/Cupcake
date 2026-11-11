@@ -4,6 +4,7 @@ import app.exceptions.BalanceTooLowException;
 
 import app.persistence.ConnectionPool;
 import app.services.OrderService;
+import app.util.StringCapitalizer;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.Context;
 
@@ -21,29 +22,39 @@ public class OrderController {
     }
 
     public void setRoutes(JavalinConfig config) {
-
+        // Customer gets
         config.routes.get("/cart", ctx -> renderCart(ctx));
         config.routes.get("/menu", ctx -> renderMenu(ctx));
+        // Customer posts
         config.routes.post("/addToCart", ctx -> addToCart(ctx));
         config.routes.post("/order", ctx -> order(ctx));
         config.routes.get("/active-orders", ctx -> renderActiveOrders(ctx));
+        config.routes.post("/orders/{id}/status", ctx -> updateOrderStatus(ctx));
+        config.routes.post("/order", ctx -> placeOrder(ctx));
+
+        // Admin gets
+        config.routes.get("/order-history", ctx -> renderOrderHistory(ctx));
+        config.routes.get("/admin", ctx -> renderAdminFrontPage(ctx));
+
+        // Admin posts
         config.routes.post("/orders/{id}/status", ctx -> updateOrderStatus(ctx));
     }
 
     public void renderMenu(Context ctx) { //creates lists of all cupcaketops and bpttoms, savess the lists as sessionAttributes and renders /menu
         // List<CupcakeTop> cupcakeTops =orderService.allCakeTops();
         //List <CupcakeBottom> cupcakeBottoms = orderService.allCakeBottoms();
+        redirectAdmin(ctx);
 
         List<CupcakeTop> cupcakeTops = new ArrayList<>();
         List<CupcakeBottom> cupcakeBottoms = new ArrayList<>();
 
         cupcakeTops.add(new CupcakeTop("Vanilla", 10));
         cupcakeTops.add(new CupcakeTop("Chocolate", 15));
-        cupcakeTops.add(new CupcakeTop("banana", 20));
+        cupcakeTops.add(new CupcakeTop("Banana", 20));
 
-        cupcakeBottoms.add(new CupcakeBottom("plain", 10));
-        cupcakeBottoms.add(new CupcakeBottom("red", 15));
-        cupcakeBottoms.add(new CupcakeBottom("caramel", 20));
+        cupcakeBottoms.add(new CupcakeBottom("Plain", 10));
+        cupcakeBottoms.add(new CupcakeBottom("Red", 15));
+        cupcakeBottoms.add(new CupcakeBottom("Caramel", 20));
 
 
         ctx.sessionAttribute("cupcakeTops", cupcakeTops);
@@ -83,14 +94,18 @@ public class OrderController {
         Order cart = sessionAttributeCart(ctx);
         cart.addOrderline(orderline);
 
+        String message = orderline + " tilføjet til kurv";
+        StringCapitalizer sc = new StringCapitalizer();
+        ctx.attribute("message", sc.capitalizeFirstOnly(message));
         ctx.render("menu");
     }
 
     private void renderCart(Context ctx) {
+        redirectAdmin(ctx);
         ctx.render("/cart");
     }
 
-    private void order(Context ctx) {
+    private void placeOrder(Context ctx) {
         User currentUser = getCurrentUser(ctx);
 
         if (currentUser == null) {
@@ -128,7 +143,7 @@ public class OrderController {
             cart = ctx.sessionAttribute("cart");
             if (cart == null) throw new NullPointerException();
             if (currentUser != null) {
-                cart.setUser(currentUser);
+                cart.setCustomer((Customer) currentUser);
                 ctx.sessionAttribute("cart", cart);
                 return cart;
             }
@@ -159,11 +174,45 @@ public class OrderController {
         ctx.attribute("approvedOrders", approvedOrders);
         ctx.render("activeOrders");
     }
+    private void renderOrderHistory(Context ctx) {
+        redirectCustomer(ctx);
+        ctx.attribute("orders", orderService.getOrderHistory());
+        ctx.render("/order-history");
+    }
+
+    private void renderAdminFrontPage(Context ctx) {
+        redirectCustomer(ctx);
+        List<Order> placedOrders = orderService.getPlacedOrders();
+        List<Order> approvedOrders = orderService.getApprovedOrders();
+        ctx.attribute("placedOrders", placedOrders);
+        ctx.attribute("approvedOrders", approvedOrders);
+        ctx.render("admin");
+    }
 
     private void updateOrderStatus(Context ctx) {
         String status = ctx.formParam("status");
         int id = Integer.parseInt(ctx.pathParam("id"));
         orderService.updateOrderStatus(id, status);
         ctx.redirect("/active-orders");
+    }
+    private void updateOrderStatus(Context ctx) {
+        String status = ctx.formParam("status");
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        orderService.updateOrderStatus(id, status);
+        ctx.redirect("/admin");
+    }
+
+    private void redirectCustomer(Context ctx){
+        Boolean isUserAdmin = ctx.sessionAttribute("isUserAdmin");
+        if (isUserAdmin == null || !isUserAdmin) {
+            ctx.redirect("/");
+        }
+    }
+
+    private void redirectAdmin(Context ctx) {
+        Boolean isUserAdmin = ctx.sessionAttribute("isUserAdmin");
+        if (isUserAdmin != null && isUserAdmin) {
+            ctx.redirect("/admin");
+        }
     }
 }

@@ -10,6 +10,10 @@ public class CupcakeTop {
     this.price=price;
     }
 
+    public CupcakeTop(String flavor) {
+        this.flavor = flavor;
+    }
+
 
     public String getFlavor() {
         return flavor;

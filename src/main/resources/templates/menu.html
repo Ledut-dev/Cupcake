@@ -21,11 +21,25 @@
         <div class="headerItem" style="grid-area: logo-area">
             <img id="logomark" src="../public/svg/Copenhagen Cupcakes_title.svg" alt="Copenhagen Cupcakes">
         </div>
+
+        <a href="/">Tilbage til forsiden</a>
+
         <div class="headerItem" style="grid-area: header-area-3">
         </div>
-        <div id="greeting" class="headerItem" style="grid-area: user-greeting">
-            <p>Hej, Lars</p> <!--th:text="'Hej, '+${session.user.getName()}"-->
+        <div class="headerItem" th:if="${session.currentUser == null}">
+            <form method="GET" action="/login">
+                <button class="button" type="submit">Login</button>
+            </form>
         </div>
+
+        <div id="greeting" class="headerItem" style="grid-area: user-greeting" th:if="${session.currentUser != null}">
+            <p th:text="${'Velkommen ' + session.currentUser.name}">Welcome message</p>
+
+            <a href="/logout">Log ud</a>
+
+        </div>
+
+
         <div class="headerItem" style="grid-area: header-area-4"></div>
         <div class="headerItem" style="grid-area: slogan-area">
             <img id="slogan" src="../public/svg/Artisan Cupcakes.svg" alt="Artisan Cupcakes">
@@ -75,13 +89,15 @@
                 </label>
             </div>
 
-
             <button id="add-to-cart" class="grid-container-1-item" type="submit">Læg i kurv</button>
-
-
         </form>
     </div>
+    <div class="message" th:if="${message != null}">
+        <span th:text="${message}">Tilføjet til kurv</span>
+    </div>
 </div>
+
+<a href="/cart">Se kurv</a>
 
 <div id="footer">
     <p class="footerItem" style="grid-area: footer-1">Om os</p>

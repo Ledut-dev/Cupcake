@@ -29,6 +29,7 @@ public class UserController {
     }
 
     private void renderFrontpage(Context ctx) {
+        redirectAdmin(ctx);
         ctx.render("/frontpage");
     }
 
@@ -36,10 +37,8 @@ public class UserController {
 		ctx.render("/login");
 	}
 
-    private void renderAdminSite(Context ctx){
-        ctx.render("/admin");
-    }
 	private void renderRegisterForm(Context ctx) {
+        redirectAdmin(ctx);
 		ctx.render("/register");
 	}
 
@@ -55,12 +54,13 @@ public class UserController {
 
             ctx.sessionAttribute("currentUser", user);
             ctx.sessionAttribute("isUserAdmin", userService.isUserAdmin(user));
-
+            redirectAdmin(ctx);
+            ctx.redirect("/");
         } catch (IncorrectLoginInfoException e){
             ctx.attribute("error", e.getMessage());
             renderLoginForm(ctx);
         }
-        ctx.redirect("/");
+
     }
 
 	private void register(Context ctx) {
@@ -83,17 +83,17 @@ public class UserController {
 	}
 
     private void logout(Context ctx){
-        ctx.sessionAttribute("loggedInUser", null);
+        ctx.sessionAttribute("currentUser", null);
         ctx.sessionAttribute("isUserAdmin", false);
         ctx.redirect("/");
     }
 
     //Method that can generally be used to check for if a logged in user is an admin, and in that case, redirect them to the admin-page if they to try directly access "normal" pages.
-    private void redirectAdmin(Context ctx){
+    private void redirectAdmin(Context ctx) {
         Boolean isUserAdmin = ctx.sessionAttribute("isUserAdmin");
         if (isUserAdmin != null && isUserAdmin) {
-                renderAdminSite(ctx);
-            }
+            ctx.redirect("/admin");
         }
+    }
 
     }
