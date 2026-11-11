@@ -14,6 +14,7 @@
         <th scope="col">Email</th>
         <th scope="col">Totalpris</th>
         <th scope="col">Bestillingsdato</th>
+        <th scope="col">Ordrestatus</th>
     </tr>
     </thead>
     <tbody>
@@ -24,6 +25,7 @@
             <td><span th:if="${order.customer.email != null}" th:text="${order.customer.email}">Email</span></td>
             <td><span th:if="${order.getTotal() != null}" th:text="${order.getTotal()}">Totalpris</span></td>
             <td><span th:if="${order.orderDate != null}" th:text="${order.orderDate}">Bestillingsdato</span></td>
+            <td><span th:if="${order.orderDate != null}" th:text="${order.status}">Ordrestatus</span></td>
         </tr>
         <tr class="row-details">
             <td colspan="6">

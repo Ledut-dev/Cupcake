@@ -2,17 +2,9 @@ package app.persistence;
 
 import app.entities.*;
 import app.exceptions.DatabaseException;
-import app.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.xml.crypto.Data;
 import java.sql.*;
-import java.time.LocalDate;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,22 +14,23 @@ public class OrderMapper {
     private static final Logger logger =
             LoggerFactory.getLogger(OrderMapper.class);
 
-    public OrderMapper (ConnectionPool connectionPool){this.connectionPool=connectionPool;}
+    public OrderMapper(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
 
-    public int saveOrder(Order order) throws DatabaseException{
+    public int saveOrder(Order order) throws DatabaseException {
         int orderId = 0;
 
-        String query="INSERT INTO orders (customer_id, status) VALUES(?, ?, ?)";
+        String query="INSERT INTO orders (customer_id, status) VALUES(?, ?)";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
              stm.setInt(1, order.getCustomer().getId());
              stm.setString(2, String.valueOf(order.getStatus()));
-             stm.setDate(3, Date.valueOf(order.getOrderDate()));
 
             try (ResultSet rs = stm.getGeneratedKeys()) {
                 if (rs.next()) {
-                    orderId=rs.getInt("order_id");
+                    orderId = rs.getInt("order_id");
                 } else throw new DatabaseException("argument kunne ikke oprettes");
             }
         } catch (SQLException e) {
@@ -46,15 +39,15 @@ public class OrderMapper {
         return orderId;
     }
 
-    public void saveOrderline (Orderline orderline, int orderId) throws DatabaseException {
+    public void saveOrderline(Orderline orderline, int orderId) throws DatabaseException {
 
-        String query="INSERT INTO orderlines (order_id, cupcake_topping, cupcake_bottom, quantity) VALUES(?, ?, ?, ?)";
+        String query = "INSERT INTO orderlines (order_id, cupcake_topping, cupcake_bottom, quantity) VALUES(?, ?, ?, ?)";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
             stm.setInt(1, orderId);
-            stm.setString(2, orderline.getCupcakeTop());
-            stm.setString(3,  orderline.getCupcakeBottom());
+            stm.setString(2, orderline.getCupcakeTop().getFlavor());
+            stm.setString(3,  orderline.getCupcakeBottom().getFlavor());
             stm.setInt(4, orderline.getQuantity());
 
         } catch (SQLException e) {
@@ -63,7 +56,7 @@ public class OrderMapper {
     }
 
 
-    public List<CupcakeBottom> allCakeBottoms() throws DatabaseException{
+    public List<CupcakeBottom> allCakeBottoms() throws DatabaseException {
 
         List<CupcakeBottom> allCupcakeBottoms = new ArrayList<>();
 
@@ -89,7 +82,7 @@ public class OrderMapper {
         return allCupcakeBottoms;
     }
 
-    public List<CupcakeTop> allCakeTops() throws DatabaseException{
+    public List<CupcakeTop> allCakeTops() throws DatabaseException {
 
         List<CupcakeTop> allCupcakeTops = new ArrayList<>();
         String query = """
@@ -111,6 +104,52 @@ public class OrderMapper {
         }
 
         return allCupcakeTops;
+    }
+
+    public List<Order> getOrderHistory() throws DatabaseException {
+        List<Order> orderHistory = new ArrayList<>();
+        // Get orderHistory from database
+        String query = """
+                SELECT o.id, o.status, o.order_date, c.customer_id, c.email, c.name, l.cupcake_bottom, 
+                       l.cupcake_topping, l.quantity, l.cupcake_bottom_price AS bottom_price, 
+                       l.cupcake_topping_price AS topping_price
+                FROM order_history o
+                JOIN orderline_history l ON o.id = l.order_id
+                JOIN customers c ON o.customer_id = c.customer_id
+                ORDER BY o.order_date DESC
+                """;
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement stm = connection.prepareStatement(query)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                Order currentOrder = null;
+                while (rs.next()) {
+                    int orderId = rs.getInt("id");
+                    if (currentOrder == null || currentOrder.getId() != orderId) {
+                        LocalDate date = rs.getDate("order_date").toLocalDate();
+                        currentOrder = new Order(
+                                orderId,
+                                OrderStatus.valueOf(rs.getString("status")),
+                                date);
+                        currentOrder.setCustomer(new Customer(
+                                rs.getInt("customer_id"),
+                                rs.getString("email"),
+                                rs.getString("name")));
+                        orderHistory.add(currentOrder);
+                    }
+
+                    CupcakeBottom bottom = new CupcakeBottom(rs.getString("cupcake_bottom"));
+                    CupcakeTop top = new CupcakeTop(rs.getString("cupcake_topping"));
+                    currentOrder.addOrderline(new HistoricOrderline(bottom, top,
+                            rs.getInt("quantity"), rs.getDouble("bottom_price"),
+                            rs.getDouble("topping_price")));
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            throw new DatabaseException("Fejl ved søgning efter ordrehistorik");
+        }
+
+        return orderHistory;
     }
 
     public void updateOrderStatus(int id, String status) {
@@ -136,16 +175,16 @@ public class OrderMapper {
     private List<Order> getOrdersByStatus(OrderStatus status) {
         List<Order> orders = new ArrayList<>();
         String query = """
-            SELECT o.order_id, o.status, o.order_date, o.pickup_date,
-                   c.costumer_id, c.email, c.name,
+            SELECT o.order_id, o.status, o.order_date,
+                   c.customer_id, c.email, c.name,
                    l.quantity,
-                   t.top_flavor, t.price AS top_price,
-                   b.bottom_flavor, b.price AS bottom_price
+                   t.flavor AS top_flavor, t.price AS top_price,
+                   b.flavor AS bottom_flavor, b.price AS bottom_price
             FROM orders o
-            JOIN customers c ON o.customer_id = c.costumer_id
+            JOIN customers c ON o.customer_id = c.customer_id
             JOIN orderlines l ON o.order_id = l.order_id
-            JOIN cupcake_tops t ON l.cupcake_top = t.top_flavor
-            JOIN cupcake_bottoms b ON l.cupcake_bottom = b.bottom_flavor
+            JOIN cupcake_tops t ON l.cupcake_topping = t.flavor
+            JOIN cupcake_bottoms b ON l.cupcake_bottom = b.flavor
             WHERE o.status = ?
             ORDER BY o.order_id
             """;
@@ -161,15 +200,13 @@ public class OrderMapper {
 
                     if (currentOrder == null || currentOrder.getId() != orderId) {
                         LocalDate orderDate = rs.getDate("order_date").toLocalDate();
-                        LocalDate pickupDate = rs.getDate("pickup_date").toLocalDate();
 
                         currentOrder = new Order(
                                 orderId,
                                 OrderStatus.valueOf(rs.getString("status")),
-                                orderDate,
-                                pickupDate);
+                                orderDate);
                                 currentOrder.setCustomer(new Customer(
-                                rs.getInt("costumer_id"),
+                                rs.getInt("customer_id"),
                                 rs.getString("email"),
                                 rs.getString("name")));
                         orders.add(currentOrder);
@@ -186,4 +223,117 @@ public class OrderMapper {
         }
         return orders;
     }
+
+    public int saveToOrderHistory(Order order) throws DatabaseException {
+        int orderId;
+        String query = """
+                INSERT INTO order_history (customer_id, status, order_date)
+                VALUES (?, ?, ?)
+                """;
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            stm.setInt(1, order.getCustomer().getId());
+            stm.setString(2, order.getStatus());
+            stm.setDate(3, Date.valueOf(order.getOrderDate()));
+            stm.executeUpdate();
+            try (ResultSet rs = stm.getGeneratedKeys()) {
+                if (rs.next()) {
+                    orderId=rs.getInt("id");
+                } else throw new DatabaseException("argument kunne ikke oprettes");
+            }
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            throw new DatabaseException("Ordre kunne ikke gemmes");
+        }
+        return orderId;
+    }
+
+    public void saveToOrderlineHistory(Orderline orderline, int orderId) throws DatabaseException {
+        String query = """
+                INSERT INTO orderline_history (order_id, cupcake_topping, cupcake_bottom, cupcake_topping_price, cupcake_bottom_price, quantity)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """;
+
+            try (Connection connection = connectionPool.getConnection();
+                 PreparedStatement stm = connection.prepareStatement(query)) {
+                stm.setInt(1, orderId);
+                stm.setString(2, orderline.getCupcakeTop().getFlavor());
+                stm.setString(3, orderline.getCupcakeBottom().getFlavor());
+                stm.setDouble(4, orderline.getCupcakeTop().getPrice());
+                stm.setDouble(5, orderline.getCupcakeBottom().getPrice());
+                stm.setInt(6, orderline.getQuantity());
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                logger.error(e.getMessage());
+                throw new DatabaseException("Ordreline kunne ikke gemmes");
+            }
+        }
+
+    public void removeOrder(Order order) throws DatabaseException {
+    String query = """
+            DELETE FROM orders
+            WHERE order_id = ?
+            """;
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement stm = connection.prepareStatement(query)) {
+            stm.setInt(1, order.getId());
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            throw new DatabaseException("Ordre kunne ikke slettes");
+        }
+    }
+
+    public Order getOrderById(int id) throws DatabaseException {
+        Order currentOrder = null;
+        String query = """
+        SELECT o.status, o.order_date, o.customer_id, l.quantity, c.customer_id, c.email, c.name,
+                t.flavor AS top_flavor, t.price AS top_price,
+                b.flavor AS bottom_flavor, b.price AS bottom_price
+        FROM orders o
+        JOIN orderlines l ON o.order_id = l.order_id
+            JOIN customers c ON o.customer_id = c.customer_id
+        JOIN cupcake_tops t ON l.cupcake_topping = t.flavor
+        JOIN cupcake_bottoms b ON l.cupcake_bottom = b.flavor
+        WHERE o.order_id = ?
+        """;
+
+    try (Connection connection = connectionPool.getConnection();
+         PreparedStatement stm = connection.prepareStatement(query)) {
+        stm.setInt(1, id);
+
+        try (ResultSet rs = stm.executeQuery();) {
+            while (rs.next()) {
+                int customerId = rs.getInt("customer_id");
+                String customerEmail = rs.getString("email");
+                String customerName = rs.getString("name");
+
+                Customer customer = new Customer(customerId, customerEmail, customerName);
+
+                OrderStatus status = OrderStatus.valueOf(rs.getString("status"));
+                LocalDate orderDate = rs.getDate("order_date").toLocalDate();
+
+                if (currentOrder == null){
+                    currentOrder = new Order(id, status, orderDate, customer);
+                }
+
+                String topFlavor = rs.getString("top_flavor");
+                double topPrice = rs.getDouble("top_price");
+                String bottomFlavor = rs.getString("bottom_flavor");
+                double bottomPrice = rs.getDouble("bottom_price");
+                int quantity = rs.getInt("quantity");
+                currentOrder.addOrderline(new Orderline(new CupcakeBottom(bottomFlavor, bottomPrice), new CupcakeTop(topFlavor, topPrice), quantity));
+
+            }
+        }
+
+    } catch (SQLException e) {
+        logger.error(e.getMessage());
+        throw new DatabaseException("Ordre kunne ikke hentes");
+    }
+    return currentOrder;
+}
 }

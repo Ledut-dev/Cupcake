@@ -71,8 +71,8 @@
                 <td th:text="${order.customer.email}">e-mail</td>
                 <td>
                     <form th:action="@{/orders/{id}/status(id=${order.id})}" method="post">
-                        <input type="hidden" name="status" value="DENIED">
-                        <button type="submit">Afvis ordre</button>
+                        <input type="hidden" name="status" value="COMPLETED">
+                        <button type="submit">Færdiggør ordre</button>
                     </form>
                 </td>
             </tbody>
@@ -80,7 +80,8 @@
     </div>
 
 </div>
-<a href="/order-history">Ordrehistorik</a>
+<a href="/order-history">Ordrehistorik</a>&nbsp
+<a href="/logout">Log ud</a>
 
 <script src="js/expandable-table.js" defer></script>
 </body>
