@@ -41,18 +41,6 @@ public class OrderController {
         List<CupcakeTop> cupcakeTops =orderService.allCakeTops();
         List <CupcakeBottom> cupcakeBottoms = orderService.allCakeBottoms();
 
-//        List<CupcakeTop> cupcakeTops = new ArrayList<>();
-//        List<CupcakeBottom> cupcakeBottoms = new ArrayList<>();
-
-//        cupcakeTops.add(new CupcakeTop("Vanilla", 10));
-//        cupcakeTops.add(new CupcakeTop("Chocolate", 15));
-//        cupcakeTops.add(new CupcakeTop("Banana", 20));
-//
-//        cupcakeBottoms.add(new CupcakeBottom("Plain", 10));
-//        cupcakeBottoms.add(new CupcakeBottom("Red", 15));
-//        cupcakeBottoms.add(new CupcakeBottom("Caramel", 20));
-
-
         ctx.sessionAttribute("cupcakeTops", cupcakeTops);
         ctx.sessionAttribute("cupcakeBottoms", cupcakeBottoms);
 

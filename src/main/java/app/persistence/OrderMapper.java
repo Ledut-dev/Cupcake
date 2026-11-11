@@ -232,21 +232,22 @@ public class OrderMapper {
                 """;
 
         try (Connection connection = connectionPool.getConnection();
-             PreparedStatement stm = connection.prepareStatement(query)) {
+             PreparedStatement stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stm.setInt(1, order.getCustomer().getId());
             stm.setString(2, order.getStatus());
             stm.setDate(3, Date.valueOf(order.getOrderDate()));
             stm.executeUpdate();
-
             try (ResultSet rs = stm.getGeneratedKeys()) {
                 if (rs.next()) {
                     orderId=rs.getInt("id");
                 } else throw new DatabaseException("argument kunne ikke oprettes");
             }
+
         } catch (SQLException e) {
             logger.error(e.getMessage());
             throw new DatabaseException("Ordre kunne ikke gemmes");
         }
+        System.out.println("returning now");
         return orderId;
     }
 
@@ -255,6 +256,7 @@ public class OrderMapper {
                 INSERT INTO orderline_history (order_id, cupcake_topping, cupcake_bottom, cupcake_topping_price, cupcake_bottom_price, quantity)
                 VALUES (?, ?, ?, ?, ?, ?)
                 """;
+        System.out.println("Save to Orderline");
 
             try (Connection connection = connectionPool.getConnection();
                  PreparedStatement stm = connection.prepareStatement(query)) {
@@ -269,6 +271,7 @@ public class OrderMapper {
                 logger.error(e.getMessage());
                 throw new DatabaseException("Ordreline kunne ikke gemmes");
             }
+        System.out.println("after try");
         }
 
     public void removeOrder(Order order) throws DatabaseException {
@@ -286,4 +289,54 @@ public class OrderMapper {
             throw new DatabaseException("Ordre kunne ikke slettes");
         }
     }
+
+    public Order getOrderById(int id) throws DatabaseException {
+        Order currentOrder = null;
+        String query = """
+        SELECT o.status, o.order_date, o.customer_id, l.quantity, c.customer_id, c.email, c.name,
+                t.flavor AS top_flavor, t.price AS top_price,
+                b.flavor AS bottom_flavor, b.price AS bottom_price
+        FROM orders o
+        JOIN orderlines l ON o.order_id = l.order_id
+            JOIN customers c ON o.customer_id = c.customer_id
+        JOIN cupcake_tops t ON l.cupcake_topping = t.flavor
+        JOIN cupcake_bottoms b ON l.cupcake_bottom = b.flavor
+        WHERE o.order_id = ?
+        """;
+
+    try (Connection connection = connectionPool.getConnection();
+         PreparedStatement stm = connection.prepareStatement(query)) {
+        stm.setInt(1, id);
+
+        try (ResultSet rs = stm.executeQuery();) {
+            while (rs.next()) {
+                int customerId = rs.getInt("customer_id");
+                String customerEmail = rs.getString("email");
+                String customerName = rs.getString("name");
+
+                Customer customer = new Customer(customerId, customerEmail, customerName);
+
+                OrderStatus status = OrderStatus.valueOf(rs.getString("status"));
+                LocalDate orderDate = rs.getDate("order_date").toLocalDate();
+
+                if (currentOrder == null){
+                    currentOrder = new Order(id, status, orderDate, customer);
+                }
+
+                String topFlavor = rs.getString("top_flavor");
+                double topPrice = rs.getDouble("top_price");
+                String bottomFlavor = rs.getString("bottom_flavor");
+                double bottomPrice = rs.getDouble("bottom_price");
+                int quantity = rs.getInt("quantity");
+                currentOrder.addOrderline(new Orderline(new CupcakeBottom(bottomFlavor, bottomPrice), new CupcakeTop(topFlavor, topPrice), quantity));
+
+            }
+        }
+
+    } catch (SQLException e) {
+        logger.error(e.getMessage());
+        throw new DatabaseException("Ordre kunne ikke hentes");
+    }
+    return currentOrder;
+}
 }

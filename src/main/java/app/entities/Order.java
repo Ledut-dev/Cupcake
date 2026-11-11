@@ -19,6 +19,15 @@ public class Order {
         this.orderDate = orderDate;
     }
 
+    // Constructors
+    public Order(int id, OrderStatus status, LocalDate orderDate, Customer customer){ //constructor to use in mapper method that returns a order
+        this.id = id;
+        this.status = status;
+        orderlines = new ArrayList<>();
+        this.orderDate = orderDate;
+        this.customer = customer;
+    }
+
     public Order(){ //constructor to use when new user is logged in and cart is empty
         this.status=OrderStatus.CART;
         orderlines = new ArrayList<>();

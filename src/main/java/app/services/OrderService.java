@@ -88,21 +88,29 @@ public class OrderService {
 
     public void updateOrderStatus(int id, String status) {
         orderMapper.updateOrderStatus(id, status);
+        if (status.equalsIgnoreCase("completed")){
+            try{
+                completeOrder(orderMapper.getOrderById(id));
+            } catch (DatabaseException e) {
+                e.getMessage();
+            }
+        }
     }
 
     public void completeOrder(Order order){
-        order.setStatus(OrderStatus.COMPLETED);
+
         try {
             int historicOrderId = orderMapper.saveToOrderHistory(order);
-
+            System.out.println(historicOrderId + "Order saved to history");
             for (Orderline ol : order.getOrderlines()){
+                System.out.println("in forloop");
                 orderMapper.saveToOrderlineHistory(ol, historicOrderId);
             }
 
             orderMapper.removeOrder(order);
 
         } catch (DatabaseException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
     }
 }
