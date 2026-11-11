@@ -81,7 +81,4 @@ public class Order {
         }
         return size;
     }
-
-    public void setUser(User currentUser) {
-    }
 }

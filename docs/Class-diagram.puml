@@ -13,20 +13,35 @@ class CupcakeBottom{
 }
 
 class Orderline{
-- CupcakeBottom cupcakeBottom;
-- CupcakeTop cupcakeTop;
-- int amount;
+- CupcakeBottom cupcakeBottom
+- CupcakeTop cupcakeTop
+- int quantity
+
++ double getIndividualPrice()
++ double getTotalPrice()
 }
 
+class HistoricOrderline extends Orderline{
+- double cupcakeBottomPrice
+- double cupcakeTopPrice
+
++ double getTotalPrice()
+}
 
 
 class Order {
- - int id;
- - List<Orderline> items;
- - Enum status;
+ - int id
+ - Customer customer
+ - List<Orderline> orderlines
+ - OrderStatus status
+ - LocalDate orderDate
+
+ + void addOrderline(orderline)
+ + double getTotal()
+ + double getSize()
 }
 
-Enum status{
+Enum OrderStatus{
 CART
 PLACED
 APPROVED
@@ -37,27 +52,57 @@ DENIED
 class OrderService{
 -OrderMapper orderMapper
 
-+calculateLineTotal()
-+calculateOrderTotal()
++ void saveOrder(order)
++ void saveOrderlines(orderId, order)
++ List<Order> getOrderHistory()
++ List<Order> getPlacedOrders()
++ List<Order> getApprovedOrders()
++ void updateOrderStatus(id, status)
++ void completeOrder(order)
 }
 
 class OrderController{
--OrderService orderService
+- ConnectionPool connectionPool
+- OrderService orderService
+
++ void setRoutes(config)
+- void renderMenu(ctx)
+- void addToCart(ctx)
+- void renderCart(ctx)
+- void placeOrder(ctx)
+- void checkCartAttribute(ctx)
+- void getCurrentUser(ctx)
+- void renderOrderHistory(ctx)
+- void renderAdminFrontPage(ctx)
+- void updateOrderStatus(ctx)
+- void redirectCustomer(ctx)
+- void redirectAdmin(ctx)
 }
 
 class OrderMapper {
 -ConnectionPool connectionPool
+- Logger logger
 
-+List <Cake> allCakes()
-+List <Topping>allToppings()
-
-+void saveOrder()
++ int saveOrder(order)
++ void saveOrderline(orderline, orderId)
++ List<CupcakeBottom> allCakeBottoms()
++ List<CupcakeTop> allCakeTops()
++ List<Order> getOrderHistory()
++ void updateOrderStatus(id, status)
++ List<Order> getPlacedOrders()
++ List<Order> getApprovedOrders()
+- List<Order> getOrdersByStatus(status)
++ int saveToOrderHistory(order)
++ void saveToOrderlineHistory(orderline, orderId)
++ void removeOrder(order)
 }
 
 abstract class User{
--String email;
--String name;
--String password;
+-int id
+-String email
+-String name
+-String password
+-double balance
 }
 
 class Customer extends User{
@@ -67,24 +112,40 @@ class Admin extends User{
 }
 
 class UserController{
+- ConnectionPool connectionPool
 - UserService userService
+
++ void setRoutes(config)
+- void renderFrontpage(ctx)
+- void renderLoginForm(ctx)
+- void renderRegisterForm(ctx)
+- void login(ctx)
+- void register(ctx)
+- void logout(ctx)
+- void redirectAdmin(ctx)
 }
 
 class UserService{
+- ConnectionPool connectionPool
 - UserMapper userMapper
-+createUser()
-+login()
-+logout()
+
++ boolean checkIsEmailAvailable(email)
++ User createUser(name, email, password)
++ User login(email, password)
++ boolean isUserAdmin(user)
++ boolean checkIsPasswordValid(password)
 }
 
 class UserMapper{
 -ConnectionPool connectionPool
 
-+ User createUser()
-+ User updateUser()
-+ User getUserByEmail()
-+ List <User> allUsers ()
++ boolean checkEmailIsAvailable(email)
++ User getUserByEmail(email)
++ User createUser(user)
+}
 
+class StringCapitalizer {
++ String capitalizeFirstOnly(string)
 }
 
 
