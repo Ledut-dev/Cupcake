@@ -26,7 +26,7 @@ public class OrderController {
         config.routes.get("/menu", ctx -> renderMenu(ctx));
         // Customer posts
         config.routes.post("/addToCart", ctx -> addToCart(ctx));
-        config.routes.post("/order", ctx -> order(ctx));
+        config.routes.post("/order", ctx -> placeOrder(ctx));
 
         // Admin gets
         config.routes.get("/order-history", ctx -> renderOrderHistory(ctx));
@@ -99,7 +99,7 @@ public class OrderController {
         ctx.render("/cart");
     }
 
-    private void order(Context ctx) {
+    private void placeOrder(Context ctx) {
         User currentUser = getCurrentUser(ctx);
 
         if (currentUser == null) {

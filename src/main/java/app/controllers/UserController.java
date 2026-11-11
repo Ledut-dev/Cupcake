@@ -55,12 +55,11 @@ public class UserController {
 
             ctx.sessionAttribute("currentUser", user);
             ctx.sessionAttribute("isUserAdmin", userService.isUserAdmin(user));
-
+            ctx.redirect("/");
         } catch (IncorrectLoginInfoException e){
             ctx.attribute("error", e.getMessage());
             renderLoginForm(ctx);
         }
-        ctx.redirect("/");
     }
 
 	private void register(Context ctx) {
