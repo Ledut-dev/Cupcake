@@ -94,7 +94,7 @@ public class UserMapper {
 	public User createUser(User user) throws DatabaseException {
 	String query = "INSERT INTO customers (email, name, password, balance) VALUES (?, ?, ?, ?)";
 		try (Connection connection = connectionPool.getConnection();
-		PreparedStatement stm = connection.prepareStatement(query)) {
+		PreparedStatement stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 			stm.setString(1, user.getEmail());
 			stm.setString(2, user.getName());
 			stm.setString(3, user.getPassword());
