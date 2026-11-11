@@ -183,12 +183,6 @@ public class OrderController {
         orderService.updateOrderStatus(id, status);
         ctx.redirect("/active-orders");
     }
-    private void updateOrderStatus(Context ctx) {
-        String status = ctx.formParam("status");
-        int id = Integer.parseInt(ctx.pathParam("id"));
-        orderService.updateOrderStatus(id, status);
-        ctx.redirect("/admin");
-    }
 
     private void redirectCustomer(Context ctx){
         Boolean isUserAdmin = ctx.sessionAttribute("isUserAdmin");

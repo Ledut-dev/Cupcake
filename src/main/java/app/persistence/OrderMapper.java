@@ -136,7 +136,7 @@ public class OrderMapper {
     private List<Order> getOrdersByStatus(OrderStatus status) {
         List<Order> orders = new ArrayList<>();
         String query = """
-            SELECT o.order_id, o.status, o.order_date, o.pickup_date,
+            SELECT o.order_id, o.status, o.order_date,
                    c.costumer_id, c.email, c.name,
                    l.quantity,
                    t.top_flavor, t.price AS top_price,
@@ -161,13 +161,11 @@ public class OrderMapper {
 
                     if (currentOrder == null || currentOrder.getId() != orderId) {
                         LocalDate orderDate = rs.getDate("order_date").toLocalDate();
-                        LocalDate pickupDate = rs.getDate("pickup_date").toLocalDate();
 
                         currentOrder = new Order(
                                 orderId,
                                 OrderStatus.valueOf(rs.getString("status")),
-                                orderDate,
-                                pickupDate);
+                                orderDate);
                                 currentOrder.setCustomer(new Customer(
                                 rs.getInt("costumer_id"),
                                 rs.getString("email"),

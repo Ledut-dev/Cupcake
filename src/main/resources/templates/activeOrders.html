@@ -4,8 +4,55 @@
     <meta charset="UTF-8">
     <title>Aktive Ordrer</title>
     <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="css/colors.css">
+    <link rel="stylesheet" href="css/activeOrders-style.css">
 </head>
 <body>
+
+<div id="header">
+  <!--lav grid-->
+  <!--butik navn+slogan-->
+  <!--basket knap-->
+  <!--kundenavn-->
+  <div id="header-grid">
+
+    <div class="headerItem" style="grid-area: header-area-1"></div>
+    <div class="headerItem" style="grid-area: logo-area">
+      <img id="logomark" src="../public/svg/Copenhagen Cupcakes_title.svg" alt="Copenhagen Cupcakes">
+    </div>
+
+    <a href="/">Tilbage til forsiden</a>
+
+    <div class="headerItem" style="grid-area: header-area-3">
+    </div>
+    <div class="headerItem" th:if="${session.currentUser == null}">
+      <form method="GET" action="/login">
+        <button class="button" type="submit">Login</button>
+      </form>
+    </div>
+
+    <div id="greeting" class="headerItem" style="grid-area: user-greeting" th:if="${session.currentUser != null}">
+      <p th:text="${'Velkommen ' + session.currentUser.name}">Welcome message</p>
+
+      <a href="/logout">Log ud</a>
+
+    </div>
+
+
+    <div class="headerItem" style="grid-area: header-area-4"></div>
+    <div class="headerItem" style="grid-area: slogan-area">
+      <img id="slogan" src="../public/svg/Artisan Cupcakes.svg" alt="Artisan Cupcakes">
+    </div>
+    <div class="headerItem" style="grid-area: header-area-6">
+      <a id="cart-anchor" href="cart.html">
+        <img src="../public/svg/cart.svg" alt="cart">
+        Min kurv
+      </a>
+    </div>
+
+  </div>
+</div>
+
 <div  class="expandable-table" id="placed-orders-table">
   <h4>Ordrer til godkendelse</h4>
   <table>

@@ -13,8 +13,6 @@ public class Order {
 
     // Constructors
     public Order(int id, OrderStatus status, LocalDate orderDate){ //constructor to use in mapper method that returns a order
-
-    public Order(int id, OrderStatus status, LocalDate orderDate){ //constructor to use in mapper method that returns a order
         this.id = id;
         this.status = status;
         orderlines = new ArrayList<>();
@@ -62,11 +60,6 @@ public class Order {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    public Order(){ //constructor to use when new user is logged in and cart is empty
-        this.status = OrderStatus.CART;
-        orderlines = new ArrayList<>();
     }
 
     public LocalDate getOrderDate() {

@@ -81,14 +81,6 @@ public class OrderService {
         return orderMapper.getApprovedOrders();
     }
 
-    public List<Order> getPlacedOrders() {
-        return orderMapper.getPlacedOrders();
-    }
-
-    public List<Order> getApprovedOrders() {
-        return orderMapper.getApprovedOrders();
-    }
-
     public void updateOrderStatus(int id, String status) {
         orderMapper.updateOrderStatus(id, status);
         if (status.equalsIgnoreCase("completed") || status.equalsIgnoreCase("denied")){
