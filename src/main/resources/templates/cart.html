@@ -24,9 +24,9 @@
     <tr th:each="orderline : ${session.cart.orderlines}">
         <td th:text="${orderline.quantity}">Amount</td>
         <td> x</td>
-        <td th:text="${orderline.cupcakeBottom}">Bottom</td>
+        <td th:text="${orderline.cupcakeBottom.flavor}">Bottom</td>
         <td>/</td>
-        <td th:text="${orderline.cupcakeTop}">Topping</td>
+        <td th:text="${orderline.cupcakeTop.flavor}">Topping</td>
         <td> á</td>
         <td th:text="${orderline.individualPrice}">Price</td>
         <td> kr./stk. -</td>
