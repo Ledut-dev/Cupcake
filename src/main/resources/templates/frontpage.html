@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Copenhagen Cupcakes</title>
 </head>
 <body>
 
@@ -13,15 +13,15 @@
 </div>
 
 <div th:if="${session.currentUser != null}">
-    <p th:text="${'Welcome ' + session.currentUser.name}">Welcome message</p>
+    <p th:text="${'Velkommen ' + session.currentUser.name}">Welcome message</p>
 
-    <form method="GET" action="/logout">
-        <button class="button" type="submit">Logout</button>
-    </form>
+    <a href="/logout">Log ud</a>
 
 </div>
 
-<a href="/menu">gå til menu</a>
+<a href="/menu">Gå til menu</a>
+
+<a href="/cart">Se din kurv</a>
 
 </body>
 </html>
