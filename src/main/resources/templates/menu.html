@@ -44,51 +44,67 @@
         <div class="headerItem" style="grid-area: slogan-area">
             <img id="slogan" src="../public/svg/Artisan Cupcakes.svg" alt="Artisan Cupcakes">
         </div>
-        <div class="headerItem" style="grid-area: header-area-6"></div>
+        <div class="headerItem" style="grid-area: header-area-6">
+            <a id="cart-anchor" href="cart.html">
+                <img src="../public/svg/cart.svg" alt="cart">
+                Min kurv
+            </a>
+        </div>
 
     </div>
 </div>
 
-<div id="test">
+<img src="../public/svg/cupcake-illustration.svg" id="cupcake-illutration">
 
+<div id="main-container">
+    <h1>Byg din cupcake</h1>
     <div id="select-options">
         <form id="grid-container-1" action="/addToCart" method="post">
+            <div class="column-1">
+                <div id="cake-option" class="grid-container-1-item">
+                    <label class="label1">
+                        Kagebund:
+                        <select class="select-option" name="bottom">
+                            <option value="" disabled selected hidden>Vælg bund</option>
+                            <option th:each="bottom : ${session.cupcakeBottoms}"
+                                    th:value="${bottom.flavor}"
+                                    th:data-price="${bottom.price}"
+                                    th:text="${bottom.flavor}+' '+${bottom.price}"></option>
+                        </select>
+                    </label>
+                </div>
 
-            <div id="cake-option" class="grid-container-1-item">
-                <label>
-                    <select class="select-option" name="bottom">
-                        <option value="" disabled selected hidden>Vælg bund</option>
-                        <option th:each="bottom : ${session.cupcakeBottoms}"
-                                th:value="${bottom.flavor}"
-                                th:data-price="${bottom.price}"
-                                th:text="${bottom.flavor}+' '+${bottom.price}"></option>
-                    </select>
-                </label>
+                <div id="topping-option" class="grid-container-1-item">
+                    <label class="label1">
+                        Topping:
+                        <select class="select-option" name="top">
+                            <option value="" disabled selected hidden>Vælg topping</option>
+                            <option th:each="top : ${session.cupcakeTops}"
+                                    th:value="${top.flavor}"
+                                    th:data-price="${top.price}"
+                                    th:text="${top.flavor}+' '+${top.price}"></option>
+                        </select>
+                    </label>
+                </div>
+
+                <div id="quantity" class="grid-container-1-item">
+                    <label class="label1">
+                        Antal:
+                        <input type="number" required placeholder="Antal" min="1" max="48" name="quantity">
+                    </label>
+                </div>
             </div>
 
-            <div id="topping-option" class="grid-container-1-item">
-                <label>
-                    <select class="select-option" name="top">
-                        <option value="" disabled selected hidden>Vælg topping</option>
-                        <option th:each="top : ${session.cupcakeTops}"
-                                th:value="${top.flavor}"
-                                th:data-price="${top.price}"
-                                th:text="${top.flavor}+' '+${top.price}"></option>
-                    </select>
-                </label>
-            </div>
+            <div class="column-2">
+                <div>
+                    <div id="line-price" class="grid-container-1-item">
+                        <label>Stykpris:</label>
+                        <p id="priceText">0</p>
+                    </div>
 
-            <div id="line-price" class="grid-container-1-item">
-                <label>styk pris:</label>
-                <p id="priceText">0</p>
+                    <button id="add-to-cart" class="grid-container-1-item" type="submit">Læg i kurv</button>
+                </div>
             </div>
-
-            <div id="quantity" class="grid-container-1-item">
-                <label>
-                    <input type="number" required placeholder="Antal" min="1" max="50" name="quantity">
-                </label>
-            </div>
-
             <button id="add-to-cart" class="grid-container-1-item" type="submit">Læg i kurv</button>
         </form>
     </div>

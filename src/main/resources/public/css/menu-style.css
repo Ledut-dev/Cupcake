@@ -16,11 +16,9 @@ p{
 
     aspect-ratio: 2170 / 500;
     position: sticky;
-    top: -200px;
+    top: -125px;
     background-repeat: repeat-x;                   /* gentag kun sidelæns */
     background-size: calc(100% / 5) auto;
-
-    outline: solid black 2px;
 }
 
 #header-grid{
@@ -41,14 +39,6 @@ p{
     "header-area-4 slogan-area slogan-area slogan-area header-area-6"
 
 ;
-}
-
-.headerItem{
-    outline: dashed rebeccapurple;
-    min-width: 0;
-    min-height: 0;
-
-
 }
 
 #logomark{
@@ -76,6 +66,18 @@ p{
 #greeting{
     display: flex;
     align-items: end;
+    p {
+        font-size: 3vw;
+    }
+}
+
+#cart-anchor{
+    display: flex;
+    justify-self: right;
+    flex-direction: column;
+    width: 4vw;
+    font-size: 1vw;
+    padding-right: 3vw;
 }
 
 #footer{
@@ -97,26 +99,43 @@ p{
 }
 
 .footerItem{
+    padding: 10px;
 
 }
 
-#test{
-    height: 100vh;
-    width: 100vw;
-    background-color: var(--lightYellow);
+#main-container{
+    margin: 10vh 10vw 10vh 10vw;
+}
+
+h1{
+    color: var(--darkBlue);
+    font-family: libre bodoni, serif;
 }
 
 #grid-container-1{
-    background-color: var(--yellow);
-    display: grid;
+    background-color: rgb(251, 247, 231, 0.7);
+    border: solid var(--yellow) 5px;
+    border-radius: 1vw;
     width: 80vw;
-    aspect-ratio: 5/1;
+    height: 16vw;
+    min-height: 30vh;
+    display: flex;
     justify-self: center;
-    align-content: center;
+    justify-content: center;
+    gap: 10vw;
+}
 
+.column-1,
+.column-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-
+.label1 {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
 }
 
 
@@ -126,23 +145,46 @@ p{
 
 }
 
-#select-options{
-
+.select-option,
+#quantity input {
+    background-color: white;
+    border-radius: 5px;
+    max-width: 20vw;
+    min-width: 350px;
+    height: 25px;
+    padding: 0;
+    padding-left: 2px;
+    border: 0;
 }
+
 #line-price{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    margin: 15px 10px 15px 10px;
+    gap: 5px;
+    color: var(--brown);
+    font-family: libre bodoni, serif;
 }
 
 #add-to-cart{
-    max-height: 10vh;
-    aspect-ratio: 3/1;
-    padding: 0;
-    border: 0;
     align-self: center;
+    margin: 15px 10px 15px 10px;
+    height: 5vw;
+    min-height: 10vh;
+    width: 15vw;
+    border-radius: 0 2.5vw 2.5vw 0;
+    border: 0;
+    background-color: var(--yellow);
+    color: var(--brown);
+    font-family: libre bodoni, serif;
+    font-size: 25px;
 }
 
-.select-option{
-    max-height: 10vh;
-    aspect-ratio: 3/1;
+#cupcake-illutration {
+    height: 250px;
+    position: absolute;
+    z-index: -1;
+    top: 475px;
+    left: 40px;
 }

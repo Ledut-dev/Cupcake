@@ -13,6 +13,8 @@ public class Order {
 
     // Constructors
     public Order(int id, OrderStatus status, LocalDate orderDate){ //constructor to use in mapper method that returns a order
+
+    public Order(int id, OrderStatus status, LocalDate orderDate){ //constructor to use in mapper method that returns a order
         this.id = id;
         this.status = status;
         orderlines = new ArrayList<>();
@@ -51,7 +53,7 @@ public class Order {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-        }
+    }
 
     public Order(){ //constructor to use when new user is logged in and cart is empty
         this.status = OrderStatus.CART;
@@ -85,5 +87,25 @@ public class Order {
             size += orderline.getQuantity();
         }
         return size;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public void setOrderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public LocalDate getOrderDate() {
+        return orderDate;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 }
