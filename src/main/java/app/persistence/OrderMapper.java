@@ -247,7 +247,6 @@ public class OrderMapper {
             logger.error(e.getMessage());
             throw new DatabaseException("Ordre kunne ikke gemmes");
         }
-        System.out.println("returning now");
         return orderId;
     }
 
@@ -256,7 +255,6 @@ public class OrderMapper {
                 INSERT INTO orderline_history (order_id, cupcake_topping, cupcake_bottom, cupcake_topping_price, cupcake_bottom_price, quantity)
                 VALUES (?, ?, ?, ?, ?, ?)
                 """;
-        System.out.println("Save to Orderline");
 
             try (Connection connection = connectionPool.getConnection();
                  PreparedStatement stm = connection.prepareStatement(query)) {
@@ -271,7 +269,6 @@ public class OrderMapper {
                 logger.error(e.getMessage());
                 throw new DatabaseException("Ordreline kunne ikke gemmes");
             }
-        System.out.println("after try");
         }
 
     public void removeOrder(Order order) throws DatabaseException {

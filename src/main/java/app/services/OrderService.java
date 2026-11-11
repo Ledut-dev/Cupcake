@@ -39,14 +39,6 @@ public class OrderService {
         return allCakeBottoms;
     }
 
-    public CupcakeBottom getCupcakeBottomByFlavor(String flavor) {
-        return null;
-    }
-
-    public CupcakeTop getCupcakeTopByFlavor(String flavor) {
-        return null;
-    }
-
     public void saveOrder(Order order) {
         int orderId = 0;
         try {
@@ -88,7 +80,7 @@ public class OrderService {
 
     public void updateOrderStatus(int id, String status) {
         orderMapper.updateOrderStatus(id, status);
-        if (status.equalsIgnoreCase("completed")){
+        if (status.equalsIgnoreCase("completed") || status.equalsIgnoreCase("denied")){
             try{
                 completeOrder(orderMapper.getOrderById(id));
             } catch (DatabaseException e) {
@@ -101,9 +93,8 @@ public class OrderService {
 
         try {
             int historicOrderId = orderMapper.saveToOrderHistory(order);
-            System.out.println(historicOrderId + "Order saved to history");
+
             for (Orderline ol : order.getOrderlines()){
-                System.out.println("in forloop");
                 orderMapper.saveToOrderlineHistory(ol, historicOrderId);
             }
 
