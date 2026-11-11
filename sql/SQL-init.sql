@@ -49,7 +49,7 @@ CREATE TABLE orders (
 -- 6. ORDERLINES
 CREATE TABLE orderlines (
     orderline_id SERIAL PRIMARY KEY,
-    order_id INTEGER REFERENCES orders(order_id),
+    order_id INTEGER REFERENCES orders(order_id) ON DELETE CASCADE,
     cupcake_topping VARCHAR REFERENCES cupcake_tops(flavor),
     cupcake_bottom VARCHAR REFERENCES cupcake_bottoms(flavor),
     quantity INTEGER
