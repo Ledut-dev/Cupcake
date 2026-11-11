@@ -30,4 +30,9 @@ public class Orderline {
     public double getTotalPrice() {
         return getIndividualPrice() * quantity;
     }
+
+    @Override
+    public String toString() {
+        return cupcakeBottom.getFlavor() + " " + cupcakeTop.getFlavor() + " cupcake (" + quantity + " styk)";
+    }
 }
