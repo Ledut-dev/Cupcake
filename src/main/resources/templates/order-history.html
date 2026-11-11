@@ -9,7 +9,7 @@
 <table class="expandable-table" id="orderHistoryTable">
     <thead>
     <tr>
-        <th scope="col" style="width: 5%;"></th>
+        <th scope="col" style="width: 5%;"> <form action="/admin"><input type="submit" value="Tilbage"></form> </th>
         <th scope="col">Ordre ID</th>
         <th scope="col">Email</th>
         <th scope="col">Totalpris</th>
@@ -32,9 +32,9 @@
                     <ul>
                         <!-- orderline.cupcakeBottom and top's getters return the flavor directly -->
                         <li th:each="orderline : ${order.orderlines}"
-                            th:text="${orderline.cupcakeBottom != null && orderline.cupcakeTop != null &&
+                            th:text="${orderline.cupcakeBottom.flavor != null && orderline.cupcakeTop.flavor != null &&
                             orderline.quantity != null && orderline.getTotalPrice() != null} ?
-                            ${orderline.cupcakeBottom} + ' + ' + ${orderline.cupcakeTop} + ' (' +
+                            ${orderline.cupcakeBottom.flavor} + ' + ' + ${orderline.cupcakeTop.flavor} + ' (' +
                             ${orderline.quantity} + ') - ' + ${orderline.getTotalPrice()} + 'kr'">
                             Bundsmag + toppingsmag (antal) - pris
                         </li>

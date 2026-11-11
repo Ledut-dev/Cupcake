@@ -38,6 +38,7 @@ public class OrderController {
     public void renderMenu(Context ctx) { //creates lists of all cupcaketops and bpttoms, savess the lists as sessionAttributes and renders /menu
         // List<CupcakeTop> cupcakeTops =orderService.allCakeTops();
         //List <CupcakeBottom> cupcakeBottoms = orderService.allCakeBottoms();
+        redirectAdmin(ctx);
 
         List<CupcakeTop> cupcakeTops = new ArrayList<>();
         List<CupcakeBottom> cupcakeBottoms = new ArrayList<>();
@@ -92,6 +93,7 @@ public class OrderController {
     }
 
     private void renderCart(Context ctx) {
+        redirectAdmin(ctx);
         ctx.render("/cart");
     }
 
@@ -158,11 +160,13 @@ public class OrderController {
     }
 
     private void renderOrderHistory(Context ctx) {
+        redirectCustomer(ctx);
         ctx.attribute("orders", orderService.getOrderHistory());
         ctx.render("/order-history");
     }
 
     private void renderAdminFrontPage(Context ctx) {
+        redirectCustomer(ctx);
         List<Order> placedOrders = orderService.getPlacedOrders();
         List<Order> approvedOrders = orderService.getApprovedOrders();
         ctx.attribute("placedOrders", placedOrders);
@@ -174,6 +178,20 @@ public class OrderController {
         String status = ctx.formParam("status");
         int id = Integer.parseInt(ctx.pathParam("id"));
         orderService.updateOrderStatus(id, status);
-        ctx.redirect("/active-orders");
+        ctx.redirect("/admin");
+    }
+
+    private void redirectCustomer(Context ctx){
+        Boolean isUserAdmin = ctx.sessionAttribute("isUserAdmin");
+        if (isUserAdmin == null || !isUserAdmin) {
+            ctx.redirect("/");
+        }
+    }
+
+    private void redirectAdmin(Context ctx) {
+        Boolean isUserAdmin = ctx.sessionAttribute("isUserAdmin");
+        if (isUserAdmin != null && isUserAdmin) {
+            ctx.redirect("/admin");
+        }
     }
 }
