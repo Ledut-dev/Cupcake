@@ -16,11 +16,9 @@ p{
 
     aspect-ratio: 2170 / 500;
     position: sticky;
-    top: -200px;
+    top: -125px;
     background-repeat: repeat-x;                   /* gentag kun sidelæns */
     background-size: calc(100% / 5) auto;
-
-    outline: solid black 2px;
 }
 
 #header-grid{
@@ -37,18 +35,10 @@ p{
     "header-area-1 logo-area logo-area logo-area header-area-3"
     "header-area-1 logo-area logo-area logo-area header-area-3"
     "header-area-1 logo-area logo-area logo-area user-greeting"
-    "header-area-4 slogan-area slogan-area slogan-area header-area-6"
-    "header-area-4 slogan-area slogan-area slogan-area header-area-6"
+    "header-area-4 slogan-area slogan-area slogan-area login-area"
+    "header-area-4 slogan-area slogan-area slogan-area cart-area"
 
 ;
-}
-
-.headerItem{
-    outline: dashed rebeccapurple;
-    min-width: 0;
-    min-height: 0;
-
-
 }
 
 #logomark{
@@ -76,12 +66,53 @@ p{
 #greeting{
     display: flex;
     align-items: end;
+    p {
+        font-size: 2.5vw;
+    }
+}
+
+#cart-anchor{
+    display: flex;
+    justify-self: right;
+    flex-direction: column;
+    width: 4vw;
+    font-size: 1vw;
+    padding-right: 3vw;
+    color: var(--darkBlue);
+}
+#login,
+#logout {
+    justify-self: left;
+    align-self: center;
+    margin: 0 3.5vw 0 3.5vw;
+}
+
+
+#login button,
+#logout a{
+    background: 0;
+    border: 0;
+    font-family: libre bodoni, serif;
+    color: var(--darkBlue);
+    font-size: 1vw;
+    text-decoration: underline;
+}
+
+#back-to-front {
+    margin: 0 .7vw 0 .7vw;
+}
+
+#back-to-front a {
+    font-family: libre bodoni, serif;
+    color: var(--darkBlue);
+    font-size: 1vw;
 }
 
 #footer{
+    margin-top: auto;
     background-color: var(--lightBlue);
     width: 100vw;
-    aspect-ratio: 2170 / 300;
+    aspect-ratio: 2170 / 150;
 
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -97,26 +128,46 @@ p{
 }
 
 .footerItem{
+    padding: 10px;
 
 }
 
-#test{
-    height: 100vh;
-    width: 100vw;
-    background-color: var(--lightYellow);
+#main-container{
+    margin: 10vh 10vw 10vh 10vw;
 }
+
+h1{
+    color: var(--darkBlue);
+    font-family: libre bodoni, serif;
+    margin: 0;
+}
+
+/* -------------------------------- */
 
 #grid-container-1{
-    background-color: var(--yellow);
-    display: grid;
+    background-color: rgb(251, 247, 231, 0.7);
+    border: solid var(--yellow) 5px;
+    border-radius: 1vw;
     width: 80vw;
-    aspect-ratio: 5/1;
+    height: 16vw;
+    min-height: 30vh;
+    display: flex;
     justify-self: center;
-    align-content: center;
+    justify-content: center;
+    gap: 10vw;
+}
 
+.column-1,
+.column-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-
+.label1 {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
 }
 
 
@@ -126,23 +177,52 @@ p{
 
 }
 
-#select-options{
-
+.select-option,
+#quantity input {
+    background-color: white;
+    border-radius: 5px;
+    max-width: 20vw;
+    min-width: 350px;
+    height: 25px;
+    padding: 0;
+    padding-left: 2px;
+    border: 0;
 }
+
 #line-price{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    margin: 15px 10px 15px 10px;
+    gap: 5px;
+    color: var(--brown);
+    font-family: libre bodoni, serif;
 }
 
 #add-to-cart{
-    max-height: 10vh;
-    aspect-ratio: 3/1;
-    padding: 0;
+    margin: 15px 10px 15px 10px;
+    height: 5vw;
+    min-height: 10vh;
+    width: 15vw;
+    border-radius: 0 2.5vw 2.5vw 0;
     border: 0;
-    align-self: center;
+    background-color: var(--paleYellow);
+    color: var(--brown);
+    font-family: libre bodoni, serif;
+    font-size: 25px;
 }
 
-.select-option{
-    max-height: 10vh;
-    aspect-ratio: 3/1;
+.message {
+    justify-self: end;
+    font-size: 1vw;
+    color: var(--brown);
+    font-family: libre bodoni, serif;
+}
+
+#cupcake-illustration {
+    height: 200px;
+    position: absolute;
+    z-index: -1;
+    top: 32vw;
+    left: 2vw;
 }

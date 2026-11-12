@@ -1,0 +1,163 @@
+body{
+    background-color: var(--lightYellow);
+    display: grid;
+    grid-template-areas:
+    "header header"
+    "table-1 table-2"
+    "footer footer";
+}
+p{
+    margin: 0;
+    font-family: libre bodoni, serif;
+    font-size: 2rem;
+    color: var(--brown);
+}
+
+
+#header{
+   background-image:url(../svg/Group2.svg);
+    width: 100vw;
+    /*height: 500px;*/
+
+    aspect-ratio: 2170 / 500;
+    position: sticky;
+    top: -125px;
+    background-repeat: repeat-x;                   /* gentag kun sidelæns */
+    background-size: calc(100% / 5) auto;
+}
+
+#header-grid{
+
+    display: grid;
+    width: 100%;
+    height: 100%;
+
+    grid-template-columns: 20vw 20vw 20vw 20vw 20vw;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+
+    grid-template-areas:
+    "header-area-1 logo-area logo-area logo-area header-area-3"
+    "header-area-1 logo-area logo-area logo-area header-area-3"
+    "header-area-1 logo-area logo-area logo-area header-area-3"
+    "header-area-1 logo-area logo-area logo-area user-greeting"
+    "header-area-4 slogan-area slogan-area slogan-area login-area"
+    "header-area-4 slogan-area slogan-area slogan-area cart-area"
+
+;
+}
+
+#logomark{
+    display: block;
+    max-width: 80%;
+
+    object-fit: contain;
+    align-self: end;
+    justify-self: center;
+}
+.headerItem:has(#logomark) {
+    display: grid;
+    align-items: center;
+}
+
+#slogan{
+    display: block;
+    max-width: 40%;
+
+    object-fit: contain;
+    align-self: center;
+    justify-self: center;
+}
+
+#greeting{
+    display: flex;
+    align-items: end;
+    p {
+        font-size: 2.5vw;
+    }
+}
+
+#cart-anchor{
+    display: flex;
+    justify-self: right;
+    flex-direction: column;
+    width: 4vw;
+    font-size: 1vw;
+    padding-right: 3vw;
+    color: var(--darkBlue);
+}
+#login,
+#logout {
+    justify-self: left;
+    align-self: center;
+    margin: 0 3.5vw 0 3.5vw;
+}
+
+
+#login button,
+#logout a{
+    background: 0;
+    border: 0;
+    font-family: libre bodoni, serif;
+    color: var(--darkBlue);
+    font-size: 1vw;
+    text-decoration: underline;
+}
+
+#back-to-front {
+    margin: 0 .7vw 0 .7vw;
+}
+
+#back-to-front a {
+    font-family: libre bodoni, serif;
+    color: var(--darkBlue);
+    font-size: 1vw;
+}
+
+#footer{
+    margin-top: auto;
+    background-color: var(--lightBlue);
+    width: 100vw;
+    aspect-ratio: 2170 / 150;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+
+    grid-gap: 10%;
+
+    grid-template-areas:
+    "footer-1 footer-2 footer-3"
+    "footer-4 footer-5 footer-6"
+    "footer-7 footer-8 footer-9";
+
+}
+
+.footerItem{
+    padding: 10px;
+
+}
+
+#main-container{
+    margin: 10vh 10vw 10vh 10vw;
+}
+
+h1{
+    color: var(--darkBlue);
+    font-family: libre bodoni, serif;
+}
+
+/* -------------------------------- */
+
+.expandable-table {
+    width: 40vw;
+    margin: 5vw;
+    h4 {
+        font-family: libre bodoni, serif;
+        color: var(--brown);
+        font-size: 3vw;
+        margin: 0;
+    }
+    thead tr th{
+        background-color: var(--yellow);
+    }
+}

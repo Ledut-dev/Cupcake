@@ -3,29 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link rel="stylesheet" href="css/colors.css">
+    <link rel="stylesheet" href="css/login-style.css">
 </head>
 <body>
+<div id="header">
+  <!--lav grid-->
+  <!--butik navn+slogan-->
+  <!--basket knap-->
+  <!--kundenavn-->
+  <div id="header">
+    <!--lav grid-->
+    <!--butik navn+slogan-->
+    <!--basket knap-->
+    <!--kundenavn-->
+    <div id="header-grid">
 
-<div class="login">
-  <form class="formula" method="POST" action="/login">
+      <div class="headerItem" style="grid-area: header-area-1"></div>
+      <div class="headerItem" style="grid-area: logo-area">
+        <img id="logomark" src="svg/Copenhagen Cupcakes_title.svg" alt="Copenhagen Cupcakes">
+      </div>
 
-    <label for="email">E-mail</label>
-    <input type="text" id="email" placeholder="Email" name="email" required>
+      <div id="back-to-front" class="headerItem" style="grid-area: header-area-4">
+        <a href="/">Tilbage til forsiden</a>
+      </div>
 
-    <label for="password">Password</label>
-    <input type="password" id="password" placeholder="Password" name="password" required>
+      <div id="greeting" class="headerItem" style="grid-area: user-greeting" th:if="${session.currentUser != null}">
+        <p th:text="${'Velkommen ' + session.currentUser.name}">Hej, fornavn</p>
+      </div>
 
-    <button type="submit">login</button>
-  </form>
+      <div id="logout" class="headerItem" style="grid-area: login-area" th:if="${session.currentUser != null}">
+        <a href="/logout">Log ud</a>
+      </div>
 
-  <div class="errorMessage" th:if="${error != null}">
-    <p th:text="${error}">Fejlbesked</p>
+      <div id="login" class="headerItem" style="grid-area: login-area" th:if="${session.currentUser == null}">
+        <form method="GET" action="/login">
+          <button class="button" type="submit">Login</button>
+        </form>
+      </div>
+
+      <div class="headerItem" style="grid-area: slogan-area">
+        <img id="slogan" src="svg/Artisan Cupcakes.svg" alt="Artisan Cupcakes">
+      </div>
+      <div class="headerItem" style="grid-area: cart-area">
+        <a id="cart-anchor" href="cart">
+          <img src="svg/cart.svg" alt="cart">
+          Min kurv
+        </a>
+      </div>
+
+    </div>
   </div>
 
-  <a href="/registerForm">Opret Bruger</a>
+<img src="svg/singleCherry-illustration.svg" id="singleCherry-illustration">
 
-  <a href="/">Tilbage til forsiden</a>
+<div id="main-container">
+  <h1>Login</h1>
+  <div id="select-options">
+    <form class="formula" method="POST" action="/login">
+      <div class="column-1">
+        <div class="select-option">
+          <label for="email">E-mail</label>
+          <input type="text" id="email" placeholder="Email" name="email" required>
+        </div>
 
+        <div class="select-option">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Password" name="password" required>
+        </div>
+      </div>
+
+      <div class="column-2">
+        <button type="submit">Login</button>
+
+        <a href="/registerForm">Opret Bruger</a>
+      </div>
+    </form>
+
+    <div class="errorMessage" th:if="${error != null}">
+      <p th:text="${error}">Fejlbesked</p>
+    </div>
+  </div>
+
+</div>
+
+<div id="footer">
+  <p class="footerItem" style="grid-area: footer-1">Om os</p>
+  <p class="footerItem" style="grid-area: footer-2">Kontakt</p>
+  <p class="footerItem" style="grid-area: footer-3">Karriere</p>
+  <p class="footerItem" style="grid-area: footer-4">Økologi</p>
+  <p class="footerItem" style="grid-area: footer-5">CSR</p>
+  <p class="footerItem" style="grid-area: footer-6">Kage til din fest?</p>
 </div>
 
 </body>

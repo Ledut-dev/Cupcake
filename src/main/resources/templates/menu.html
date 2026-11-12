@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Menu</title>
-    <link rel="stylesheet" href="../public/css/colors.css">
-    <link rel="stylesheet" href="../public/css/menu-style.css">
+    <link rel="stylesheet" href="css/colors.css">
+    <link rel="stylesheet" href="css/menu-style.css">
 
     <script src="/js/menu.js" defer></script>
 </head>
@@ -19,85 +19,97 @@
 
         <div class="headerItem" style="grid-area: header-area-1"></div>
         <div class="headerItem" style="grid-area: logo-area">
-            <img id="logomark" src="../public/svg/Copenhagen Cupcakes_title.svg" alt="Copenhagen Cupcakes">
+            <img id="logomark" src="svg/Copenhagen Cupcakes_title.svg" alt="Copenhagen Cupcakes">
         </div>
 
-        <a href="/">Tilbage til forsiden</a>
-
-        <div class="headerItem" style="grid-area: header-area-3">
+        <div id="back-to-front" class="headerItem" style="grid-area: header-area-4">
+            <a href="/">Tilbage til forsiden</a>
         </div>
-        <div class="headerItem" th:if="${session.currentUser == null}">
+
+        <div id="greeting" class="headerItem" style="grid-area: user-greeting" th:if="${session.currentUser != null}">
+            <p th:text="${'Velkommen ' + session.currentUser.name}">Hej, fornavn</p>
+        </div>
+
+        <div id="logout" class="headerItem" style="grid-area: login-area" th:if="${session.currentUser != null}">
+            <a href="/logout">Log ud</a>
+        </div>
+
+        <div id="login" class="headerItem" style="grid-area: login-area" th:if="${session.currentUser == null}">
             <form method="GET" action="/login">
                 <button class="button" type="submit">Login</button>
             </form>
         </div>
 
-        <div id="greeting" class="headerItem" style="grid-area: user-greeting" th:if="${session.currentUser != null}">
-            <p th:text="${'Velkommen ' + session.currentUser.name}">Welcome message</p>
-
-            <a href="/logout">Log ud</a>
-
-        </div>
-
-
-        <div class="headerItem" style="grid-area: header-area-4"></div>
         <div class="headerItem" style="grid-area: slogan-area">
-            <img id="slogan" src="../public/svg/Artisan Cupcakes.svg" alt="Artisan Cupcakes">
+            <img id="slogan" src="svg/Artisan Cupcakes.svg" alt="Artisan Cupcakes">
         </div>
-        <div class="headerItem" style="grid-area: header-area-6"></div>
+        <div class="headerItem" style="grid-area: cart-area">
+            <a id="cart-anchor" href="cart">
+                <img src="svg/cart.svg" alt="cart">
+                Min kurv
+            </a>
+        </div>
 
     </div>
 </div>
 
-<div id="test">
+<img src="svg/cupcake-illustration.svg" id="cupcake-illustration">
 
+<div id="main-container">
+    <h1>Byg din cupcake</h1>
     <div id="select-options">
         <form id="grid-container-1" action="/addToCart" method="post">
+            <div class="column-1">
+                <div id="cake-option" class="grid-container-1-item">
+                    <label class="label1">
+                        Kagebund:
+                        <select class="select-option" name="bottom">
+                            <option value="" disabled selected hidden>Vælg bund</option>
+                            <option th:each="bottom : ${session.cupcakeBottoms}"
+                                    th:value="${bottom.flavor}"
+                                    th:data-price="${bottom.price}"
+                                    th:text="${bottom.flavor}+' '+${bottom.price}"></option>
+                        </select>
+                    </label>
+                </div>
 
-            <div id="cake-option" class="grid-container-1-item">
-                <label>
-                    <select class="select-option" name="bottom">
-                        <option value="" disabled selected hidden>Vælg bund</option>
-                        <option th:each="bottom : ${session.cupcakeBottoms}"
-                                th:value="${bottom.flavor}"
-                                th:data-price="${bottom.price}"
-                                th:text="${bottom.flavor}+' '+${bottom.price}"></option>
-                    </select>
-                </label>
+                <div id="topping-option" class="grid-container-1-item">
+                    <label class="label1">
+                        Topping:
+                        <select class="select-option" name="top">
+                            <option value="" disabled selected hidden>Vælg topping</option>
+                            <option th:each="top : ${session.cupcakeTops}"
+                                    th:value="${top.flavor}"
+                                    th:data-price="${top.price}"
+                                    th:text="${top.flavor}+' '+${top.price}"></option>
+                        </select>
+                    </label>
+                </div>
+
+                <div id="quantity" class="grid-container-1-item">
+                    <label class="label1">
+                        Antal:
+                        <input type="number" required placeholder="Antal" min="1" max="48" name="quantity">
+                    </label>
+                </div>
             </div>
 
-            <div id="topping-option" class="grid-container-1-item">
-                <label>
-                    <select class="select-option" name="top">
-                        <option value="" disabled selected hidden>Vælg topping</option>
-                        <option th:each="top : ${session.cupcakeTops}"
-                                th:value="${top.flavor}"
-                                th:data-price="${top.price}"
-                                th:text="${top.flavor}+' '+${top.price}"></option>
-                    </select>
-                </label>
-            </div>
+            <div class="column-2">
+                <div>
+                    <div id="line-price" class="grid-container-1-item">
+                        <label>Stykpris:</label>
+                        <p id="priceText">0</p>
+                    </div>
 
-            <div id="line-price" class="grid-container-1-item">
-                <label>styk pris:</label>
-                <p id="priceText">0</p>
+                    <button id="add-to-cart" class="grid-container-1-item" type="submit">Læg i kurv</button>
+                </div>
             </div>
-
-            <div id="quantity" class="grid-container-1-item">
-                <label>
-                    <input type="number" required placeholder="Antal" min="1" max="50" name="quantity">
-                </label>
-            </div>
-
-            <button id="add-to-cart" class="grid-container-1-item" type="submit">Læg i kurv</button>
         </form>
     </div>
     <div class="message" th:if="${message != null}">
         <span th:text="${message}">Tilføjet til kurv</span>
     </div>
 </div>
-
-<a href="/cart">Se kurv</a>
 
 <div id="footer">
     <p class="footerItem" style="grid-area: footer-1">Om os</p>
@@ -106,8 +118,6 @@
     <p class="footerItem" style="grid-area: footer-4">Økologi</p>
     <p class="footerItem" style="grid-area: footer-5">CSR</p>
     <p class="footerItem" style="grid-area: footer-6">Kage til din fest?</p>
-
-
 </div>
 
 

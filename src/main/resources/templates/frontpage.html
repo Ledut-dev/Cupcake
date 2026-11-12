@@ -3,25 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <title>Copenhagen Cupcakes</title>
+    <link rel="stylesheet" href="css/colors.css">
+    <link rel="stylesheet" href="css/frontpage-style.css">
 </head>
 <body>
 
-<div th:if="${session.currentUser == null}">
-<form method="GET" action="/login">
-    <button class="button" type="submit">Login</button>
-</form>
+<div id="header">
+    <!--lav grid-->
+    <!--butik navn+slogan-->
+    <!--basket knap-->
+    <!--kundenavn-->
+    <div id="header-grid">
+
+        <div class="headerItem" style="grid-area: header-area-1"></div>
+        <div class="headerItem" style="grid-area: logo-area">
+            <img id="logomark" src="svg/Copenhagen Cupcakes_title.svg" alt="Copenhagen Cupcakes">
+        </div>
+
+        <div id="back-to-front" class="headerItem" style="grid-area: header-area-4">
+            <a href="/">Tilbage til forsiden</a>
+        </div>
+
+        <div id="greeting" class="headerItem" style="grid-area: user-greeting" th:if="${session.currentUser != null}">
+            <p th:text="${'Velkommen ' + session.currentUser.name}">Hej, fornavn</p>
+        </div>
+
+        <div id="logout" class="headerItem" style="grid-area: login-area" th:if="${session.currentUser != null}">
+            <a href="/logout">Log ud</a>
+        </div>
+
+        <div id="login" class="headerItem" style="grid-area: login-area" th:if="${session.currentUser == null}">
+            <form method="GET" action="/login">
+                <button class="button" type="submit">Login</button>
+            </form>
+        </div>
+
+        <div class="headerItem" style="grid-area: slogan-area">
+            <img id="slogan" src="svg/Artisan Cupcakes.svg" alt="Artisan Cupcakes">
+        </div>
+        <div class="headerItem" style="grid-area: cart-area">
+            <a id="cart-anchor" href="cart">
+                <img src="svg/cart.svg" alt="cart">
+                Min kurv
+            </a>
+        </div>
+
+    </div>
 </div>
 
-<div th:if="${session.currentUser != null}">
-    <p th:text="${'Velkommen ' + session.currentUser.name}">Welcome message</p>
+<img src="svg/blueberries-illustration.svg" id="blueberries-illustration">
+<img src="svg/lemon-illustration.svg" id="lemon-illustration">
 
-    <a href="/logout">Log ud</a>
+<div id="main-container">
+    <h1 style="grid-area: title">Om Copenhagen Cupcakes</h1>
+    <div id="info-container" style="grid-area: box-1">
+        <p>
+            Hos Copenhagen Cupcakes tror vi på, at den perfekte cupcake er en personlig sag.
+            Vi er en familieejet virksomhed med en stor kærlighed til bagværk og en ambition om at skabe cupcakes,
+            der smager lige så godt, som de ser ud.
+        </p>
+        <p>
+            Vi bager fra bunden med fokus på godt håndværk, nøje udvalgte råvarer og masser af kærlighed til detaljen.
+            Hos os bestemmer du selv! Vælg din yndlingsbund, find den topping, der frister mest, og sammensæt din helt egen cupcake.
+        </p>
+        <p>
+            For os handler det ikke bare om kager, men om små øjeblikke af forkælelse og glæde.
+            Vi glæder os til at byde dig velkommen i vores søde univers!
+        </p>
+    </div>
+
+    <div id="menu-anchor">
+        <a href="/menu" style="grid-area: box-2">Bestil cupcakes</a>
+    </div>
 
 </div>
 
-<a href="/menu">Gå til menu</a>
-
-<a href="/cart">Se din kurv</a>
+<div id="footer">
+    <p class="footerItem" style="grid-area: footer-1">Om os</p>
+    <p class="footerItem" style="grid-area: footer-2">Kontakt</p>
+    <p class="footerItem" style="grid-area: footer-3">Karriere</p>
+    <p class="footerItem" style="grid-area: footer-4">Økologi</p>
+    <p class="footerItem" style="grid-area: footer-5">CSR</p>
+    <p class="footerItem" style="grid-area: footer-6">Kage til din fest?</p>
+</div>
 
 </body>
 </html>
