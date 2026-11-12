@@ -139,6 +139,7 @@ p{
 h1{
     color: var(--darkBlue);
     font-family: libre bodoni, serif;
+    margin: 0;
 }
 
 /* -------------------------------- */
@@ -199,23 +200,29 @@ h1{
 }
 
 #add-to-cart{
-    align-self: center;
     margin: 15px 10px 15px 10px;
     height: 5vw;
     min-height: 10vh;
     width: 15vw;
     border-radius: 0 2.5vw 2.5vw 0;
     border: 0;
-    background-color: var(--yellow);
+    background-color: var(--paleYellow);
     color: var(--brown);
     font-family: libre bodoni, serif;
     font-size: 25px;
 }
 
-#cupcake-illutration {
-    height: 250px;
+.message {
+    justify-self: end;
+    font-size: 1vw;
+    color: var(--brown);
+    font-family: libre bodoni, serif;
+}
+
+#cupcake-illustration {
+    height: 200px;
     position: absolute;
     z-index: -1;
-    top: 475px;
-    left: 40px;
+    top: 32vw;
+    left: 2vw;
 }

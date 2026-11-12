@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-  <link rel="stylesheet" href="../public/css/colors.css">
-  <link rel="stylesheet" href="../public/css/login-style.css">
+    <link rel="stylesheet" href="css/colors.css">
+    <link rel="stylesheet" href="css/login-style.css">
 </head>
 <body>
 <div id="header">
@@ -16,7 +16,7 @@
 
     <div class="headerItem" style="grid-area: header-area-1"></div>
     <div class="headerItem" style="grid-area: logo-area">
-      <img id="logomark" src="../public/svg/Copenhagen Cupcakes_title.svg" alt="Copenhagen Cupcakes">
+      <img id="logomark" src="svg/Copenhagen Cupcakes_title.svg" alt="Copenhagen Cupcakes">
     </div>
 
     <div id="back-to-front" class="headerItem" style="grid-area: header-area-4">
@@ -40,11 +40,11 @@
 
     <div class="headerItem" style="grid-area: header-area-4"></div>
     <div class="headerItem" style="grid-area: slogan-area">
-      <img id="slogan" src="../public/svg/Artisan Cupcakes.svg" alt="Artisan Cupcakes">
+      <img id="slogan" src="svg/Artisan Cupcakes.svg" alt="Artisan Cupcakes">
     </div>
     <div class="headerItem" style="grid-area: header-area-6">
       <a id="cart-anchor" href="cart">
-        <img src="../public/svg/cart.svg" alt="cart">
+        <img src="svg/cart.svg" alt="cart">
         Min kurv
       </a>
     </div>
@@ -52,16 +52,22 @@
   </div>
 </div>
 
+<img src="svg/singleCherry-illustration.svg" id="singleCherry-illustration">
+
 <div id="main-container">
   <h1>Login</h1>
   <div id="select-options">
     <form class="formula" method="POST" action="/login">
       <div class="column-1">
-        <label for="email">E-mail</label>
-        <input type="text" id="email" placeholder="Email" name="email" required>
+        <div class="select-option">
+          <label for="email">E-mail</label>
+          <input type="text" id="email" placeholder="Email" name="email" required>
+        </div>
 
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Password" name="password" required>
+        <div class="select-option">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Password" name="password" required>
+        </div>
       </div>
 
       <div class="column-2">

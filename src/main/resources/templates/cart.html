@@ -3,51 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <title>Kurv</title>
+    <link rel="stylesheet" href="css/colors.css">
+    <link rel="stylesheet" href="css/cart-style.css">
 </head>
 <body>
 
-<div class="headerItem" th:if="${session.currentUser == null}">
-    <form method="GET" action="/login">
-        <button class="button" type="submit">Login</button>
-    </form>
+<div id="header">
+    <!--lav grid-->
+    <!--butik navn+slogan-->
+    <!--basket knap-->
+    <!--kundenavn-->
+    <div id="header-grid">
+
+        <div class="headerItem" style="grid-area: header-area-1"></div>
+        <div class="headerItem" style="grid-area: logo-area">
+            <img id="logomark" src="svg/Copenhagen Cupcakes_title.svg" alt="Copenhagen Cupcakes">
+        </div>
+
+        <div id="back-to-front" class="headerItem" style="grid-area: header-area-4">
+            <a href="/">Tilbage til forsiden</a>
+        </div>
+
+
+        <div id="greeting" class="headerItem" style="grid-area: user-greeting" th:if="${session.currentUser != null}">
+            <p th:text="${'Velkommen ' + session.currentUser.name}">Hej, fornavn</p>
+        </div>
+
+        <div id="logout" class="headerItem" style="grid-area: header-area-6" th:if="${session.currentUser != null}">
+            <a href="/logout">Log ud</a>
+        </div>
+
+        <div id="login" class="headerItem" style="grid-area: header-area-6" th:if="${session.currentUser == null}">
+            <form method="GET" action="/login">
+                <button class="button" type="submit">Login</button>
+            </form>
+        </div>
+
+        <div class="headerItem" style="grid-area: header-area-4"></div>
+        <div class="headerItem" style="grid-area: slogan-area">
+            <img id="slogan" src="svg/Artisan Cupcakes.svg" alt="Artisan Cupcakes">
+        </div>
+        <div class="headerItem" style="grid-area: header-area-6">
+            <a id="cart-anchor" href="cart">
+                <img src="svg/cart.svg" alt="cart">
+                Min kurv
+            </a>
+        </div>
+
+    </div>
 </div>
 
-<div id="greeting" class="headerItem" style="grid-area: user-greeting" th:if="${session.currentUser != null}">
-    <p th:text="${'Velkommen ' + session.currentUser.name}">Welcome message</p>
+<img src="svg/strawberry-illustration.svg" id="strawberry-illustration">
 
-    <a href="/logout">Log ud</a>
+<div id="main-container">
+    <h1 style="grid-area: title">Kurv</h1>
+    <div id="orderlines-container" style="grid-area: box-1">
+        <!-- Hver ordrelinje gives som en række i en tabel, så det er lettere at strukturere -->
+        <table th:if="${session.cart != null}" class="orderlines-table">
+            <tr th:each="orderline : ${session.cart.orderlines}">
+                <td th:text="${orderline.quantity}">Amount</td>
+                <td> x</td>
+                <td th:text="${orderline.cupcakeBottom.flavor}">Bottom</td>
+                <td>/</td>
+                <td th:text="${orderline.cupcakeTop.flavor}">Topping</td>
+                <td> á</td>
+                <td th:text="${orderline.individualPrice}">Price</td>
+                <td> kr./stk. -</td>
+                <td th:text="${orderline.totalPrice}">TotalPrice</td>
+                <td> kr.</td>
+            </tr>
+        </table>
+    </div>
 
+    <div th:if="${session.cart != null}" id="totalContainer" style="grid-area: box-2">
+        <p>Total: </p>
+        <p th:text="${session.cart.total}">Total</p>
+        <p> kr.</p>
+    </div>
+    <div id="order-container"> <!-- Only show if cart is not empty? -->
+        <form action="/order" method="post">
+            <button id="order" type="submit">Bestil</button>
+        </form>
+    </div>
+
+    <div id="shop">
+        <a href="/menu">Shop videre</a>
+    </div>
+
+    <span class="error-message" th:if="${error != null}" th:text="${error}"> Order error </span>
 </div>
 
-<!-- Hver ordrelinje gives som en række i en tabel, så det er lettere at strukturere -->
-<table th:if="${session.cart != null}" class="orderlines-table">
-    <tr th:each="orderline : ${session.cart.orderlines}">
-        <td th:text="${orderline.quantity}">Amount</td>
-        <td> x</td>
-        <td th:text="${orderline.cupcakeBottom.flavor}">Bottom</td>
-        <td>/</td>
-        <td th:text="${orderline.cupcakeTop.flavor}">Topping</td>
-        <td> á</td>
-        <td th:text="${orderline.individualPrice}">Price</td>
-        <td> kr./stk. -</td>
-        <td th:text="${orderline.totalPrice}">TotalPrice</td>
-        <td> kr.</td>
-    </tr>
-</table>
-
-<div th:if="${session.cart != null}" class="totalContainer">
-    <p>Total: </p>
-    <p th:text="${session.cart.total}">Total</p>
-    <p> kr.</p>
+<div id="footer">
+    <p class="footerItem" style="grid-area: footer-1">Om os</p>
+    <p class="footerItem" style="grid-area: footer-2">Kontakt</p>
+    <p class="footerItem" style="grid-area: footer-3">Karriere</p>
+    <p class="footerItem" style="grid-area: footer-4">Økologi</p>
+    <p class="footerItem" style="grid-area: footer-5">CSR</p>
+    <p class="footerItem" style="grid-area: footer-6">Kage til din fest?</p>
 </div>
-<div> <!-- Only show if cart is not empty? -->
-    <form action="/order" method="post">
-        <button id="order" type="submit">Bestil</button>
-    </form>
-</div>
-
-<a href="/menu">Shop videre</a>
-
-<span class="error-message" th:if="${error != null}" th:text="${error}"> Order error </span>
 </body>
 </html>
