@@ -63,14 +63,14 @@
     </tr>
     </thead>
     <tbody>
-    <div th:each="order : ${orders}">
+    <th:block th:each="order : ${orders}">
         <tr class="row-expandable">
             <td><span class="expand-icon">+</span></td>
             <td><span th:if="${order.id != null}" th:text="${order.id}">Ordre ID</span></td>
-            <td><span th:if="${order.customer.email != null}" th:text="${order.customer.email}">Email</span></td>
+            <td><span th:if="${order.customer != null and order.customer.email != null}" th:text="${order.customer.email}">Email</span></td>
             <td><span th:if="${order.getTotal() != null}" th:text="${order.getTotal()}">Totalpris</span></td>
             <td><span th:if="${order.orderDate != null}" th:text="${order.orderDate}">Bestillingsdato</span></td>
-            <td><span th:if="${order.orderDate != null}" th:text="${order.status}">Ordrestatus</span></td>
+            <td><span th:text="${order.status}">Ordrestatus</span></td>
         </tr>
         <tr class="row-details">
             <td colspan="6">
@@ -89,7 +89,7 @@
                 </div>
             </td>
         </tr>
-    </div>
+    </th:block>
     </tbody>
 </table>
 
