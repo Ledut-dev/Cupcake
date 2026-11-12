@@ -150,7 +150,7 @@ public class OrderController {
     }
 
     private void renderOrderHistory(Context ctx) {
-        redirectCustomer(ctx);
+        if (redirectCustomer(ctx)) return;
         ctx.attribute("orders", orderService.getOrderHistory());
         ctx.render("/order-history");
     }
@@ -171,11 +171,13 @@ public class OrderController {
         ctx.redirect("/admin");
     }
 
-    private void redirectCustomer(Context ctx) {
+    private boolean redirectCustomer(Context ctx) {
         Boolean isUserAdmin = ctx.sessionAttribute("isUserAdmin");
         if (isUserAdmin == null || !isUserAdmin) {
             ctx.redirect("/");
+            return true;
         }
+        return false;
     }
 
     private void redirectAdmin(Context ctx) {

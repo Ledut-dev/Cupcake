@@ -24,7 +24,7 @@ public class OrderMapper {
         String query="INSERT INTO orders (customer_id, status) VALUES(?, ?)";
 
         try (Connection connection = connectionPool.getConnection();
-             PreparedStatement stm = connection.prepareStatement(query)) {
+             PreparedStatement stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
              stm.setInt(1, order.getCustomer().getId());
              stm.setString(2, String.valueOf(order.getStatus()));
 
