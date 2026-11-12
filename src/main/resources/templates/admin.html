@@ -27,26 +27,24 @@
             <a href="/">Tilbage til forsiden</a>
         </div>
 
-
         <div id="greeting" class="headerItem" style="grid-area: user-greeting" th:if="${session.currentUser != null}">
             <p th:text="${'Velkommen ' + session.currentUser.name}">Hej, fornavn</p>
         </div>
 
-        <div id="logout" class="headerItem" style="grid-area: header-area-6" th:if="${session.currentUser != null}">
+        <div id="logout" class="headerItem" style="grid-area: login-area" th:if="${session.currentUser != null}">
             <a href="/logout">Log ud</a>
         </div>
 
-        <div id="login" class="headerItem" style="grid-area: header-area-6" th:if="${session.currentUser == null}">
+        <div id="login" class="headerItem" style="grid-area: login-area" th:if="${session.currentUser == null}">
             <form method="GET" action="/login">
                 <button class="button" type="submit">Login</button>
             </form>
         </div>
 
-        <div class="headerItem" style="grid-area: header-area-4"></div>
         <div class="headerItem" style="grid-area: slogan-area">
             <img id="slogan" src="svg/Artisan Cupcakes.svg" alt="Artisan Cupcakes">
         </div>
-        <div class="headerItem" style="grid-area: header-area-6">
+        <div class="headerItem" style="grid-area: cart-area">
             <a id="cart-anchor" href="cart">
                 <img src="svg/cart.svg" alt="cart">
                 Min kurv
