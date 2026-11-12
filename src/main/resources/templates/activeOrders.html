@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Aktive Ordrer</title>
-    <link rel="stylesheet" href="css/tables.css">
-    <link rel="stylesheet" href="css/colors.css">
-    <link rel="stylesheet" href="css/activeOrders-style.css">
+    <link rel="stylesheet" href="../public/css/tables.css">
+    <link rel="stylesheet" href="../public/css/colors.css">
+    <link rel="stylesheet" href="../public/css/activeOrders-style.css">
 </head>
 <body>
 
-<div id="header">
+<div id="header" style="grid-area: header">
   <!--lav grid-->
   <!--butik navn+slogan-->
   <!--basket knap-->
@@ -21,30 +21,31 @@
       <img id="logomark" src="../public/svg/Copenhagen Cupcakes_title.svg" alt="Copenhagen Cupcakes">
     </div>
 
-    <a href="/">Tilbage til forsiden</a>
-
-    <div class="headerItem" style="grid-area: header-area-3">
+    <div id="back-to-front" class="headerItem" style="grid-area: header-area-4">
+      <a href="/">Tilbage til forsiden</a>
     </div>
-    <div class="headerItem" th:if="${session.currentUser == null}">
+
+
+    <div id="greeting" class="headerItem" style="grid-area: user-greeting" th:if="${session.currentUser != null}">
+      <p th:text="${'Velkommen ' + session.currentUser.name}">Hej, fornavn</p>
+    </div>
+
+    <div id="logout" class="headerItem" style="grid-area: header-area-6" th:if="${session.currentUser != null}">
+      <a href="/logout">Log ud</a>
+    </div>
+
+    <div id="login" class="headerItem" style="grid-area: header-area-6" th:if="${session.currentUser == null}">
       <form method="GET" action="/login">
         <button class="button" type="submit">Login</button>
       </form>
     </div>
-
-    <div id="greeting" class="headerItem" style="grid-area: user-greeting" th:if="${session.currentUser != null}">
-      <p th:text="${'Velkommen ' + session.currentUser.name}">Welcome message</p>
-
-      <a href="/logout">Log ud</a>
-
-    </div>
-
 
     <div class="headerItem" style="grid-area: header-area-4"></div>
     <div class="headerItem" style="grid-area: slogan-area">
       <img id="slogan" src="../public/svg/Artisan Cupcakes.svg" alt="Artisan Cupcakes">
     </div>
     <div class="headerItem" style="grid-area: header-area-6">
-      <a id="cart-anchor" href="cart.html">
+      <a id="cart-anchor" href="cart">
         <img src="../public/svg/cart.svg" alt="cart">
         Min kurv
       </a>
@@ -53,7 +54,7 @@
   </div>
 </div>
 
-<div  class="expandable-table" id="placed-orders-table">
+<div  class="expandable-table" id="placed-orders-table" style="grid-area: table-1">
   <h4>Ordrer til godkendelse</h4>
   <table>
     <thead>
@@ -61,8 +62,7 @@
       <th scope="col">Ordrenummer</th>
       <th scope="col">Antal</th>
       <th scope="col">Beløb</th>
-      <th scope="col">Oprettelse</th>
-      <th scope="col">Afhentning</th>
+      <th scope="col">Dato</th>
       <th scope="col">Kundens navn</th>
       <th scope="col">Kundens e-mail</th>
       <th scope="col"></th>
@@ -92,7 +92,8 @@
     </tbody>
   </table>
 </div>
-<div  class="expandable-table" id="approved-orders-table">
+
+<div  class="expandable-table" id="approved-orders-table" style="grid-area: table-2">
   <h4>Godkendte ordrer</h4>
   <table>
     <thead>
@@ -122,6 +123,15 @@
       </td>
     </tbody>
   </table>
+</div>
+
+<div id="footer" style="grid-area: footer">
+  <p class="footerItem" style="grid-area: footer-1">Om os</p>
+  <p class="footerItem" style="grid-area: footer-2">Kontakt</p>
+  <p class="footerItem" style="grid-area: footer-3">Karriere</p>
+  <p class="footerItem" style="grid-area: footer-4">Økologi</p>
+  <p class="footerItem" style="grid-area: footer-5">CSR</p>
+  <p class="footerItem" style="grid-area: footer-6">Kage til din fest?</p>
 </div>
 </body>
 </html>

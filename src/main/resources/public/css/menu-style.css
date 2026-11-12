@@ -141,6 +141,8 @@ h1{
     font-family: libre bodoni, serif;
 }
 
+/* -------------------------------- */
+
 #grid-container-1{
     background-color: rgb(251, 247, 231, 0.7);
     border: solid var(--yellow) 5px;
