@@ -3,9 +3,6 @@ package app.services;
 
 import app.entities.*;
 import app.exceptions.DatabaseException;
-import app.entities.CupcakeBottom;
-import app.entities.CupcakeTop;
-import app.entities.Order;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
 
@@ -71,14 +68,6 @@ public class OrderService {
             e.getMessage();
         }
         return orderHistory;
-    }
-
-    public List<Order> getPlacedOrders() {
-        return orderMapper.getPlacedOrders();
-    }
-
-    public List<Order> getApprovedOrders() {
-        return orderMapper.getApprovedOrders();
     }
 
     public List<Order> getPlacedOrders() {

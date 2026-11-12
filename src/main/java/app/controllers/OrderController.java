@@ -1,7 +1,6 @@
 package app.controllers;
 import app.entities.*;
 import app.exceptions.BalanceTooLowException;
-
 import app.persistence.ConnectionPool;
 import app.services.OrderService;
 import app.util.StringCapitalizer;
@@ -27,9 +26,6 @@ public class OrderController {
         config.routes.get("/menu", ctx -> renderMenu(ctx));
         // Customer posts
         config.routes.post("/addToCart", ctx -> addToCart(ctx));
-        config.routes.post("/order", ctx -> order(ctx));
-        config.routes.get("/active-orders", ctx -> renderActiveOrders(ctx));
-        config.routes.post("/orders/{id}/status", ctx -> updateOrderStatus(ctx));
         config.routes.post("/order", ctx -> placeOrder(ctx));
 
         // Admin gets
@@ -42,8 +38,8 @@ public class OrderController {
 
     public void renderMenu(Context ctx) { //creates lists of all cupcaketops and bpttoms, savess the lists as sessionAttributes and renders /menu
         redirectAdmin(ctx);
-        List<CupcakeTop> cupcakeTops =orderService.allCakeTops();
-        List <CupcakeBottom> cupcakeBottoms = orderService.allCakeBottoms();
+        List<CupcakeTop> cupcakeTops = orderService.allCakeTops();
+        List<CupcakeBottom> cupcakeBottoms = orderService.allCakeBottoms();
 
         ctx.sessionAttribute("cupcakeTops", cupcakeTops);
         ctx.sessionAttribute("cupcakeBottoms", cupcakeBottoms);
@@ -151,17 +147,8 @@ public class OrderController {
         } catch (NullPointerException n) {
             return null;
         }
-
-
     }
 
-    private void renderActiveOrders(Context ctx) {
-        List<Order> placedOrders = orderService.getPlacedOrders();
-        List<Order> approvedOrders = orderService.getApprovedOrders();
-        ctx.attribute("placedOrders", placedOrders);
-        ctx.attribute("approvedOrders", approvedOrders);
-        ctx.render("activeOrders");
-    }
     private void renderOrderHistory(Context ctx) {
         redirectCustomer(ctx);
         ctx.attribute("orders", orderService.getOrderHistory());
@@ -181,16 +168,10 @@ public class OrderController {
         String status = ctx.formParam("status");
         int id = Integer.parseInt(ctx.pathParam("id"));
         orderService.updateOrderStatus(id, status);
-        ctx.redirect("/active-orders");
-    }
-    private void updateOrderStatus(Context ctx) {
-        String status = ctx.formParam("status");
-        int id = Integer.parseInt(ctx.pathParam("id"));
-        orderService.updateOrderStatus(id, status);
         ctx.redirect("/admin");
     }
 
-    private void redirectCustomer(Context ctx){
+    private void redirectCustomer(Context ctx) {
         Boolean isUserAdmin = ctx.sessionAttribute("isUserAdmin");
         if (isUserAdmin == null || !isUserAdmin) {
             ctx.redirect("/");
