@@ -8,7 +8,10 @@ object Customer
 
 object Order
 
-object Cupcake
+object Cupcake{
+- CupcakeTop
+- CupcakeBottom
+}
 
 object OrderHistory
 
