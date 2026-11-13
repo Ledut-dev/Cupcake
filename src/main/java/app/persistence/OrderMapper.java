@@ -27,6 +27,7 @@ public class OrderMapper {
              PreparedStatement stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
              stm.setInt(1, order.getCustomer().getId());
              stm.setString(2, String.valueOf(order.getStatus()));
+             stm.executeUpdate();                                                   //bugfix
 
             try (ResultSet rs = stm.getGeneratedKeys()) {
                 if (rs.next()) {
@@ -49,6 +50,7 @@ public class OrderMapper {
             stm.setString(2, orderline.getCupcakeTop().getFlavor());
             stm.setString(3,  orderline.getCupcakeBottom().getFlavor());
             stm.setInt(4, orderline.getQuantity());
+            stm.executeUpdate();                                                        //bugfix
 
         } catch (SQLException e) {
             throw new DatabaseException("orderline kunne ikke gemmes");

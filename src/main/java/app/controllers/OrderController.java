@@ -49,7 +49,7 @@ public class OrderController {
 
     private void addToCart(Context ctx) { //gets sessionAttribute user, cupcaketops(list), cupcakebottoms(list), checks if there is a sessionAttribute cart. ggets the cupcake choice from form in html, creates an orderline and adds to car
 
-        User currentUser = getCurrentUser(ctx);
+        //User currentUser = getCurrentUser(ctx);              bug fix for presentation, sessionAttribute never used
 
         ArrayList<CupcakeBottom> cupcakeBottoms = ctx.sessionAttribute("cupcakeBottoms");
         ArrayList<CupcakeTop> cupcakeTops = ctx.sessionAttribute("cupcakeTops");
@@ -64,11 +64,13 @@ public class OrderController {
         for (CupcakeBottom b : cupcakeBottoms) {
             if (bottom.equals(b.getFlavor())) {
                 currentCupcakeBottom = b;
+                break;                                  //bug fix for presentation, break
             }
         }
         for (CupcakeTop t : cupcakeTops) {
             if (top.equals(t.getFlavor())) {
                 currentCupcakeTop = t;
+                break;                                  //bug fix for presentation, break
             }
         }
 
