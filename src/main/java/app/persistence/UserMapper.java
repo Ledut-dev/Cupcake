@@ -103,7 +103,7 @@ public class UserMapper {
 			System.out.println("insertCount = " + insertCount);
 			try (ResultSet rs = stm.getGeneratedKeys()) {
 				if (rs.next()) {
-					user.setId(rs.getInt("user_id"));
+					user.setId(rs.getInt("customer_id")); // bug fix for presentation - wrong column name
 				} else throw new DatabaseException("argument kunne ikke oprettes");
 			}
 		} catch (SQLException e) {

@@ -116,8 +116,8 @@ public class OrderMapper {
                 FROM order_history o
                 JOIN orderline_history l ON o.id = l.order_id
                 JOIN customers c ON o.customer_id = c.customer_id
-                ORDER BY o.order_date DESC
-                """;
+                ORDER BY o.order_date DESC, o.id DESC
+                """;    // fixed ORDER BY to also order by id
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement stm = connection.prepareStatement(query)) {
             try (ResultSet rs = stm.executeQuery()) {
