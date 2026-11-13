@@ -131,12 +131,12 @@ public class OrderController {
                 ctx.sessionAttribute("cart", cart);
                 return cart;
             }
+            return cart;                                        //bug fix for presentation - missing return statement
         } catch (NullPointerException n) {
             ctx.sessionAttribute("cart", new Order());
             cart = ctx.sessionAttribute("cart");
             return cart;
         }
-        return null;
     }
 
     private User getCurrentUser(Context ctx) {
